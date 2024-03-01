@@ -7,4 +7,4 @@ Contributors
 2. Karina Chilkiewicz
 3. Gracjan Czyżewski
 
-Task:
+Responsibilities:
