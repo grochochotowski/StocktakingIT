@@ -19,7 +19,6 @@ namespace KropkaNet.Models
         public string PhoneNumber { get; set; }
         public string Note { get; set; }
 
-
         public virtual ICollection<Order>? Orderds { get; set; }
     }
 }
