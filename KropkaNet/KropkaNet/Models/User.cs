@@ -20,7 +20,6 @@ namespace KropkaNet.Models
         public string Note { get; set; }
 
 
-        public List<int> Orderds { get; set; }
-        public List<int> Companies { get; set; }
+        public virtual ICollection<Order>? Orderds { get; set; }
     }
 }
