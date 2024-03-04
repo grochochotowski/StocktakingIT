@@ -17,7 +17,7 @@ namespace KropkaNet.Models
         public string Email { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
-        public string Note { get; set; }
+        public string? Note { get; set; }
 
         public virtual ICollection<Order>? Orderds { get; set; }
     }
