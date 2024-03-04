@@ -6,7 +6,8 @@ namespace KropkaNet.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Name is required"),
+            Display(Name = "User first name")]
         public string Name { get; set; }
         [Required]
         public string Surname { get; set; }
@@ -16,6 +17,7 @@ namespace KropkaNet.Models
         public string Email { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
+        public string Note { get; set; }
 
 
         public List<int> Orderds { get; set; }
