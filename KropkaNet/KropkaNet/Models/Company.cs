@@ -11,9 +11,9 @@ public class Company
     [Required]
     public int KRS { get; set; }
     [Required]
-    public string NazwaFirmy { get; set; }
+    public string CompanyName { get; set; }
     
-    //public virtual ICollection<> { get; set; }
-    //public virtual ICollection<> { get; set; }
+    public virtual ICollection<Department> Departments { get; set; }
+    public virtual ICollection<Address> Addresses { get; set; }
 
 }
