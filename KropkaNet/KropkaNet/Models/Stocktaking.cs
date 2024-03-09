@@ -10,6 +10,7 @@ namespace KropkaNet.Models
         public int ExpectedTimeHours { get; set; }
         [Required]
         public int WarehouseId { get; set; }
+        public string? Note { get; set; }
 
         public virtual Warehouse Warehouse { get; set; }
         public virtual ICollection<Employee>? Employee { get; set; }

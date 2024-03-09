@@ -10,6 +10,7 @@ namespace KropkaNet.Models
         public int Quantity { get; set; }
         [Required]
         public int ProductId { get; set; }
+        public string? Note { get; set; }
 
         public virtual Product Product { get; set; }
     }
