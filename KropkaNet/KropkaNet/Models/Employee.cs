@@ -6,21 +6,20 @@ namespace KropkaNet.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Surname is required")]
         public string Surname { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Personal number is required")]
         public string PersonalNumber { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Phone number is required")]
         public string PhoneNumber { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Position ID is required")]
         public int PositionId { get; set; }
         public string? Note { get; set; }
 
-        [Required]
         public virtual Position Position { get; set; }
     }
 }
