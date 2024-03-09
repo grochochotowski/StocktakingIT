@@ -6,9 +6,9 @@ namespace KropkaNet.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Expected time of stocktaking is required")]
         public int ExpectedTimeHours { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Warehouse ID is required")]
         public int WarehouseId { get; set; }
         public string? Note { get; set; }
 
