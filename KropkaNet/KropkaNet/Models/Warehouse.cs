@@ -6,9 +6,9 @@ namespace KropkaNet.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Quantity is required")]
         public int Quantity { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Product ID is required")]
         public int ProductId { get; set; }
         public string? Note { get; set; }
 
