@@ -6,13 +6,14 @@ public class Company
 {
     [Key]
     public int Id { get; set; }
-    [Required]
+    [Required(ErrorMessage = "NIP is required")]
     public int NIP { get; set; }
-    [Required]
+    [Required(ErrorMessage = "KRS is required")]
     public int KRS { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Name of the Company is required")]
     public string CompanyName { get; set; }
-    
+    public string? Note { get; set; }
+
     public virtual ICollection<Department> Departments { get; set; }
     public virtual ICollection<Address> Addresses { get; set; }
 
