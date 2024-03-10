@@ -6,16 +6,15 @@ public class Address
 {
     [Key]
     public int Id { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Country is required")]
     public string Country { get; set; }
-    [Required]
+    [Required(ErrorMessage = "City is required")]
     public string City { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Zip code is required")]
     public int ZipCode { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Street is required")]
     public string Street { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Building is required")]
     public string Building { get; set; }
-    [Required]
-    public string Local { get; set; }
+    public string? Premises { get; set; }
 }
