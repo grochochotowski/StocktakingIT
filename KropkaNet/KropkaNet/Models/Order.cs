@@ -12,7 +12,7 @@ namespace KropkaNet.Models
         public virtual ICollection<User> Users { get; set; }
         public virtual Company Company { get; set; }
         public virtual ICollection<Department> Departments { get; set; }
-        //public virtual ICollection<>  { get; set; }
+        public virtual Stocktaking Stocktaking { get; set; }
 
     }
 }
