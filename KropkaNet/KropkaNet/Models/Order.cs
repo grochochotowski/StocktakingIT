@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿xxxusing System.ComponentModel.DataAnnotations;
 
 namespace KropkaNet.Models
 {
@@ -6,7 +6,7 @@ namespace KropkaNet.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Date of the order execution is required")]
         public DateTime DateOfOrderExecution { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
