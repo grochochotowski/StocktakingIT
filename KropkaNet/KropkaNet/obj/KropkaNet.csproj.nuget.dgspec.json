@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\karin\\OneDrive\\Pulpit\\StocktakingIT\\KropkaNet\\KropkaNet\\KropkaNet.csproj": {}
+    "D:\\dotnet_projekt_github\\KropkaNet\\KropkaNet\\KropkaNet.csproj": {}
   },
   "projects": {
-    "C:\\Users\\karin\\OneDrive\\Pulpit\\StocktakingIT\\KropkaNet\\KropkaNet\\KropkaNet.csproj": {
+    "D:\\dotnet_projekt_github\\KropkaNet\\KropkaNet\\KropkaNet.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\karin\\OneDrive\\Pulpit\\StocktakingIT\\KropkaNet\\KropkaNet\\KropkaNet.csproj",
+        "projectUniqueName": "D:\\dotnet_projekt_github\\KropkaNet\\KropkaNet\\KropkaNet.csproj",
         "projectName": "KropkaNet",
-        "projectPath": "C:\\Users\\karin\\OneDrive\\Pulpit\\StocktakingIT\\KropkaNet\\KropkaNet\\KropkaNet.csproj",
-        "packagesPath": "C:\\Users\\karin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\karin\\OneDrive\\Pulpit\\StocktakingIT\\KropkaNet\\KropkaNet\\obj\\",
+        "projectPath": "D:\\dotnet_projekt_github\\KropkaNet\\KropkaNet\\KropkaNet.csproj",
+        "packagesPath": "C:\\Users\\grac1\\.nuget\\packages\\",
+        "outputPath": "D:\\dotnet_projekt_github\\KropkaNet\\KropkaNet\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\karin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\grac1\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -38,32 +34,11 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "dependencies": {
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[8.0.2, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[8.0.2, )"
-            },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[8.0.2, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -75,15 +50,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
