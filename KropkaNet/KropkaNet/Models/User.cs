@@ -19,5 +19,6 @@ namespace KropkaNet.Models
         public string? Note { get; set; }
 
         public virtual ICollection<Order>? Orderds { get; set; }
+        public virtual ICollection<Company>? Companies { get; set; }
     }
 }

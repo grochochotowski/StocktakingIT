@@ -15,6 +15,6 @@ public class Company
     public string? Note { get; set; }
 
     public virtual ICollection<Department> Departments { get; set; }
-    public virtual ICollection<Address> Addresses { get; set; }
+    public virtual Address Address { get; set; }
 
 }
