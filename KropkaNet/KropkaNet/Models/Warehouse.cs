@@ -10,8 +10,10 @@ namespace KropkaNet.Models
         public int Quantity { get; set; }
         [Required(ErrorMessage = "Product ID is required")]
         public int ProductId { get; set; }
+        public int StocktakingId { get; set; }
         public string? Note { get; set; }
 
+        public virtual Stocktaking Stocktaking { get; set; }
         public virtual Product Product { get; set; }
     }
 }
