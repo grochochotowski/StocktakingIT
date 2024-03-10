@@ -1,4 +1,4 @@
-﻿xxxusing System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace KropkaNet.Models
 {
