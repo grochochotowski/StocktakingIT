@@ -9,6 +9,7 @@ namespace KropkaNet
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
