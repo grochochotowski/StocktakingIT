@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace KropkaNet.Models
+namespace KropkaNet.Models.Objects.ClientSide
 {
     public class User
     {

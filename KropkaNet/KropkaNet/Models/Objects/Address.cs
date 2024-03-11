@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace KropkaNet.Models;
+namespace KropkaNet.Models.Objects;
 
 public class Address
 {

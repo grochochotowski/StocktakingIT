@@ -1,3 +1,7 @@
+using KropkaNet.Models.system;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
 namespace KropkaNet
 {
     public class Program
@@ -5,9 +9,12 @@ namespace KropkaNet
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<StocktakingContext>(o => o.UseSqlServer(configuration.GetConnectionString("ShopDbConnection")));
 
             var app = builder.Build();
 
