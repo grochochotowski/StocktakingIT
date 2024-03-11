@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using KropkaNet.Models.Objects;
 
 namespace KropkaNet.Models.system
 {
@@ -6,4 +7,6 @@ namespace KropkaNet.Models.system
     {
         public StocktakingContext(DbContextOptions options) : base(options) { }
     }
+
+    
 }
