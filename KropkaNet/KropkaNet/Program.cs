@@ -1,3 +1,7 @@
+using KropkaNet.Models.system;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
 namespace KropkaNet
 {
     public class Program
@@ -8,6 +12,8 @@ namespace KropkaNet
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<StocktakingContext>(o => o.UseSqlServer(configuration.GetConnectionString("ShopDbConnection")));
 
             var app = builder.Build();
 
