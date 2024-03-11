@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace KropkaNet.Models.Objects
+namespace KropkaNet.Models.Objects.CompanySide
 {
-    public class User
+    public class Employee
     {
         [Key]
         public int Id { get; set; }
@@ -10,15 +10,16 @@ namespace KropkaNet.Models.Objects
         public string Name { get; set; }
         [Required(ErrorMessage = "Surname is required")]
         public string Surname { get; set; }
-        [Required(ErrorMessage = "Perosnal number is required")]
+        [Required(ErrorMessage = "Personal number is required")]
         public string PersonalNumber { get; set; }
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Phone number is required")]
         public string PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Position ID is required")]
+        public int PositionId { get; set; }
         public string? Note { get; set; }
 
-        public virtual ICollection<Order>? Orderds { get; set; }
-        public virtual ICollection<Company>? Companies { get; set; }
+        public virtual Position Position { get; set; }
     }
 }
