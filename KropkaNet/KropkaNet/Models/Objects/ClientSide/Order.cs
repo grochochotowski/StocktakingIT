@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using KropkaNet.Models.Objects.CompanySide;
 
-namespace KropkaNet.Models
+namespace KropkaNet.Models.Objects.ClientSide
 {
     public class Order
     {
