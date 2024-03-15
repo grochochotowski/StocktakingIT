@@ -12,7 +12,7 @@ namespace KropkaNet.Models.Objects.CompanySide
         public int WarehouseId { get; set; }
         public string? Note { get; set; }
 
-        public virtual Warehouse Warehouse { get; set; }
+        public virtual ICollection<Warehouse>? Warehouse { get; set; }
         public virtual ICollection<Employee>? Employee { get; set; }
     }
 }
