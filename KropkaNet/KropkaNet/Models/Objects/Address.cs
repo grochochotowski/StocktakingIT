@@ -11,7 +11,7 @@ public class Address
     [Required(ErrorMessage = "City is required")]
     public string City { get; set; }
     [Required(ErrorMessage = "Zip code is required")]
-    public int ZipCode { get; set; }
+    public string ZipCode { get; set; }
     [Required(ErrorMessage = "Street is required")]
     public string Street { get; set; }
     [Required(ErrorMessage = "Building is required")]
