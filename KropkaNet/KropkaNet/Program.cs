@@ -1,6 +1,7 @@
 using KropkaNet.Models.system;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace KropkaNet
 {
@@ -14,11 +15,17 @@ namespace KropkaNet
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddScoped<AppSeeder>();
             builder.Services.AddDbContext<StocktakingContext>(o => o.UseSqlServer(configuration.GetConnectionString("SystemDbConnection")));
 
             var app = builder.Build();
+            var scope = app.Services.CreateScope();
+            var seeder = scope.ServiceProvider.GetRequiredService<AppSeeder>();
 
             // Configure the HTTP request pipeline.
+            seeder.Seed();
+
+
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
