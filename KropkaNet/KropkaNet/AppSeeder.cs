@@ -29,12 +29,9 @@ namespace KropkaNet
         {
             var postions = new List<Position>()
             {
-                new Position { Name = "COO"},
-                new Position { Name = "Accountant"},
-                new Position { Name = "Manager"},
-                new Position { Name = "Deputy Manager"},
-                new Position { Name = "Decorator"},
-                new Position { Name = "Shop Assistant"}
+                new Position { Name = "Employee"},
+                new Position { Name = "Moderator"},
+                new Position { Name = "Adming"}
             };
 
             return postions;
