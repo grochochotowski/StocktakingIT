@@ -24,6 +24,9 @@ namespace KropkaNet.Models.system
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<WarehouseProduct>()
+                 .HasKey(wp => new { wp.WarehouseId, wp.ProductId });
         }
 
     }
