@@ -22,7 +22,7 @@ namespace KropkaNet.Models.Objects.CompanySide
 
         [Required(ErrorMessage = "Position ID is required")]
         public int PositionId { get; set; }
-        public virtual Position Position { get; set; }
+        public virtual Position? Position { get; set; }
 
 
 
