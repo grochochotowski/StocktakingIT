@@ -19,7 +19,7 @@ namespace KropkaNet.Models.Objects.ClientSide
 
 
         [Required(ErrorMessage = "Stocktaking is required")]
-        public int StockTakingIT { get; set; }
+        public int StocktakingIT { get; set; }
         public virtual Stocktaking Stocktaking { get; set; }
 
 
