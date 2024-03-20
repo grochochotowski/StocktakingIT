@@ -1,12 +1,13 @@
 ﻿using KropkaNet.Models.Objects.CompanySide;
+using KropkaNet.Models.system;
 
 namespace KropkaNet
 {
     public class AppSeeder
     {
-        private readonly AppContext _context;
+        private readonly StocktakingContext _context;
 
-        public AppSeeder(AppContext context)
+        public AppSeeder(StocktakingContext context)
         {
             _context = context;
         }
