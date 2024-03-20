@@ -1,15 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KropkaNet.Models.Objects.CompanySide
 {
     public class WarehouseProduct
     {
-        [Required(ErrorMessage = "Warehouse ID is required")]
+        [Key, Column(Order = 0)]
         public int WarehouseId { get; set; }
         public virtual Warehouse Warehouse { get; set; }
 
 
 
+        [Key, Column(Order = 1)]
         [Required(ErrorMessage = "Product ID required")]
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
