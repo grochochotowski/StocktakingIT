@@ -1,4 +1,6 @@
-﻿namespace KropkaNet
+﻿using KropkaNet.Models.Objects.CompanySide;
+
+namespace KropkaNet
 {
     public class AppSeeder
     {
