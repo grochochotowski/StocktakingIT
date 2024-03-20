@@ -3,11 +3,11 @@ using KropkaNet.Models.system;
 
 namespace KropkaNet
 {
-    public class AppSeeder
+    public class PositionSeeder
     {
         private readonly StocktakingContext _context;
 
-        public AppSeeder(StocktakingContext context)
+        public PositionSeeder(StocktakingContext context)
         {
             _context = context;
         }

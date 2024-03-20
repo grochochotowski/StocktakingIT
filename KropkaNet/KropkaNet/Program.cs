@@ -15,12 +15,12 @@ namespace KropkaNet
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddScoped<AppSeeder>();
+            builder.Services.AddScoped<PositionSeeder>();
             builder.Services.AddDbContext<StocktakingContext>(o => o.UseSqlServer(configuration.GetConnectionString("SystemDbConnection")));
 
             var app = builder.Build();
             var scope = app.Services.CreateScope();
-            var seeder = scope.ServiceProvider.GetRequiredService<AppSeeder>();
+            var seeder = scope.ServiceProvider.GetRequiredService<PositionSeeder>();
 
             // Configure the HTTP request pipeline.
             seeder.Seed();
