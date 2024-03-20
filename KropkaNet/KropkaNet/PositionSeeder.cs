@@ -31,7 +31,7 @@ namespace KropkaNet
             {
                 new Position { Name = "Employee"},
                 new Position { Name = "Moderator"},
-                new Position { Name = "Adming"}
+                new Position { Name = "Admin"}
             };
 
             return postions;
