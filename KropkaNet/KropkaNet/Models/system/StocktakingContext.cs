@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using KropkaNet.Models.Objects;
 using KropkaNet.Models.Objects.ClientSide;
 using KropkaNet.Models.Objects.CompanySide;
 

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using KropkaNet.Models.Objects;
 using KropkaNet.Models.system;
+using KropkaNet.Models.Objects.ClientSide;
 
 namespace KropkaNet.Controllers
 {
