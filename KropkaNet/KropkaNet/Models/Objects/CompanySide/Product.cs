@@ -10,7 +10,6 @@ namespace KropkaNet.Models.Objects.CompanySide
         public string Category { get; set; }
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
-
         public string? Note { get; set; }
 
 

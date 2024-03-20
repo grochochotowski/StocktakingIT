@@ -16,10 +16,16 @@ namespace KropkaNet.Models.Objects.CompanySide
         public string Email { get; set; }
         [Required(ErrorMessage = "Phone number is required")]
         public string PhoneNumber { get; set; }
-        [Required(ErrorMessage = "Position ID is required")]
-        public int PositionId { get; set; }
         public string? Note { get; set; }
 
+
+
+        [Required(ErrorMessage = "Position ID is required")]
+        public int PositionId { get; set; }
         public virtual Position Position { get; set; }
+
+
+
+        public virtual ICollection<Stocktaking>? Stocktakings { get; set; }
     }
 }

@@ -10,10 +10,20 @@ namespace KropkaNet.Models.Objects.ClientSide
         [Required(ErrorMessage = "Date of the order execution is required")]
         public DateTime DateOfOrderExecution { get; set; }
 
-        public virtual ICollection<User>? Users { get; set; }
-        public virtual Company Company { get; set; }
-        public virtual ICollection<Department>? Departments { get; set; }
+
+
+        [Required(ErrorMessage = "Departament is required")]
+        public int DepartamentId { get; set; }
+        public virtual Department Departments { get; set; }
+
+
+
+        [Required(ErrorMessage = "Stocktaking is required")]
+        public int StockTakingIT { get; set; }
         public virtual Stocktaking Stocktaking { get; set; }
 
+
+
+        public virtual ICollection<User>? Users { get; set; }
     }
 }

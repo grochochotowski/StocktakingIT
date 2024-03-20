@@ -6,14 +6,11 @@ namespace KropkaNet.Models.Objects.CompanySide
     {
         [Key]
         public int Id { get; set; }
-        [Required(ErrorMessage = "Quantity is required")]
-        public int Quantity { get; set; }
-        [Required(ErrorMessage = "Product ID is required")]
-
         public string? Note { get; set; }
 
 
 
+        [Required(ErrorMessage = "Stocktaking ID is required")]
         public int StocktakingId { get; set; }
         public virtual Stocktaking Stocktaking { get; set; }
 
