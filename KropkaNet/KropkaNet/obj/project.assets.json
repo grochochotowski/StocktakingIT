@@ -7839,19 +7839,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\gmich\\.nuget\\packages\\": {}
+    "C:\\Users\\grac1\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\nonSystem\\IT\\Code\\stocktakingIT\\KropkaNet\\KropkaNet\\KropkaNet.csproj",
+      "projectUniqueName": "D:\\dotnet_projekt_github\\KropkaNet\\KropkaNet\\KropkaNet.csproj",
       "projectName": "KropkaNet",
-      "projectPath": "C:\\nonSystem\\IT\\Code\\stocktakingIT\\KropkaNet\\KropkaNet\\KropkaNet.csproj",
-      "packagesPath": "C:\\Users\\gmich\\.nuget\\packages\\",
-      "outputPath": "C:\\nonSystem\\IT\\Code\\stocktakingIT\\KropkaNet\\KropkaNet\\obj\\",
+      "projectPath": "D:\\dotnet_projekt_github\\KropkaNet\\KropkaNet\\KropkaNet.csproj",
+      "packagesPath": "C:\\Users\\grac1\\.nuget\\packages\\",
+      "outputPath": "D:\\dotnet_projekt_github\\KropkaNet\\KropkaNet\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\gmich\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\grac1\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -7920,7 +7920,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
