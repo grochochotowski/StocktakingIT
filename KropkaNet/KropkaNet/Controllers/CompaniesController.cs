@@ -48,7 +48,7 @@ namespace KropkaNet.Controllers
         // GET: Companies/Create
         public IActionResult Create()
         {
-            ViewData["AddressId"] = new SelectList(_context.Addresses, "Id", "Building");
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "Id", "Id");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace KropkaNet.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AddressId"] = new SelectList(_context.Addresses, "Id", "Building", company.AddressId);
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "Id", "Id", company.AddressId);
             return View(company);
         }
 
@@ -118,7 +118,7 @@ namespace KropkaNet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AddressId"] = new SelectList(_context.Addresses, "Id", "Building", company.AddressId);
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "Id", "Id", company.AddressId);
             return View(company);
         }
 

@@ -59,6 +59,15 @@ namespace KropkaNet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Surname,PersonalNumber,Email,PhoneNumber,Note,PositionId")] Employee employee)
         {
+            foreach (var modelStateEntry in ModelState.Values)
+            {
+                foreach (var error in modelStateEntry.Errors)
+                {
+                    // Log or display the error message
+                    Console.WriteLine(error.ErrorMessage);
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(employee);
