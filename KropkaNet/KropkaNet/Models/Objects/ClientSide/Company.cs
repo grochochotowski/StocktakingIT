@@ -14,7 +14,15 @@ public class Company
     public string CompanyName { get; set; }
     public string? Note { get; set; }
 
-    public virtual ICollection<Department>? Departments { get; set; }
+
+
+    [Required(ErrorMessage = "Address is required")]
+    public int AddressId { get; set; }
     public virtual Address Address { get; set; }
+
+
+
+    public virtual ICollection<Department>? Departments { get; set; }
+    public virtual ICollection<User> Users { get; set; }
 
 }

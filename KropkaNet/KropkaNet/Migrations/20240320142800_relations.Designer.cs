@@ -4,6 +4,7 @@ using KropkaNet.Models.system;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KropkaNet.Migrations
 {
     [DbContext(typeof(StocktakingContext))]
-    partial class StocktakingContextModelSnapshot : ModelSnapshot
+    [Migration("20240320142800_relations")]
+    partial class relations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,18 +155,18 @@ namespace KropkaNet.Migrations
                     b.Property<DateTime>("DateOfOrderExecution")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int>("DepartamentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StocktakingId")
+                    b.Property<int>("DepartmentsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StockTakingIT")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("StocktakingId")
-                        .IsUnique();
+                    b.HasIndex("DepartmentsId");
 
                     b.ToTable("Orders");
                 });
@@ -308,6 +311,9 @@ namespace KropkaNet.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
                     b.HasIndex("WarehouseId")
                         .IsUnique();
 
@@ -422,21 +428,13 @@ namespace KropkaNet.Migrations
 
             modelBuilder.Entity("KropkaNet.Models.Objects.ClientSide.Order", b =>
                 {
-                    b.HasOne("KropkaNet.Models.Objects.ClientSide.Department", "Department")
+                    b.HasOne("KropkaNet.Models.Objects.ClientSide.Department", "Departments")
                         .WithMany("Orders")
-                        .HasForeignKey("DepartmentId")
+                        .HasForeignKey("DepartmentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("KropkaNet.Models.Objects.CompanySide.Stocktaking", "Stocktaking")
-                        .WithOne("Order")
-                        .HasForeignKey("KropkaNet.Models.Objects.ClientSide.Order", "StocktakingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-
-                    b.Navigation("Stocktaking");
+                    b.Navigation("Departments");
                 });
 
             modelBuilder.Entity("KropkaNet.Models.Objects.CompanySide.Employee", b =>
@@ -452,11 +450,19 @@ namespace KropkaNet.Migrations
 
             modelBuilder.Entity("KropkaNet.Models.Objects.CompanySide.Stocktaking", b =>
                 {
+                    b.HasOne("KropkaNet.Models.Objects.ClientSide.Order", "Order")
+                        .WithOne("Stocktaking")
+                        .HasForeignKey("KropkaNet.Models.Objects.CompanySide.Stocktaking", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("KropkaNet.Models.Objects.CompanySide.Warehouse", "Warehouse")
                         .WithOne("Stocktaking")
                         .HasForeignKey("KropkaNet.Models.Objects.CompanySide.Stocktaking", "WarehouseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Order");
 
                     b.Navigation("Warehouse");
                 });
@@ -505,15 +511,15 @@ namespace KropkaNet.Migrations
                     b.Navigation("Orders");
                 });
 
+            modelBuilder.Entity("KropkaNet.Models.Objects.ClientSide.Order", b =>
+                {
+                    b.Navigation("Stocktaking")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("KropkaNet.Models.Objects.CompanySide.Product", b =>
                 {
                     b.Navigation("WarehouseProducts");
-                });
-
-            modelBuilder.Entity("KropkaNet.Models.Objects.CompanySide.Stocktaking", b =>
-                {
-                    b.Navigation("Order")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("KropkaNet.Models.Objects.CompanySide.Warehouse", b =>

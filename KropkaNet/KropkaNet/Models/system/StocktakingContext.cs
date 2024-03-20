@@ -27,6 +27,29 @@ namespace KropkaNet.Models.system
 
             modelBuilder.Entity<WarehouseProduct>()
                  .HasKey(wp => new { wp.WarehouseId, wp.ProductId });
+
+
+            modelBuilder.Entity<Stocktaking>()
+               .HasOne(s => s.Warehouse)
+               .WithOne(w => w.Stocktaking)
+               .HasForeignKey<Warehouse>(w => w.StocktakingId);
+
+            modelBuilder.Entity<Warehouse>()
+                .HasOne(w => w.Stocktaking)
+                .WithOne(s => s.Warehouse)
+                .HasForeignKey<Stocktaking>(s => s.WarehouseId);
+
+
+
+            modelBuilder.Entity<Order>()
+               .HasOne(o => o.Stocktaking)
+               .WithOne(s => s.Order)
+               .HasForeignKey<Stocktaking>(s => s.OrderId);
+
+            modelBuilder.Entity<Stocktaking>()
+                .HasOne(s => s.Order)
+                .WithOne(o => o.Stocktaking)
+                .HasForeignKey<Order>(o => o.StocktakingId);
         }
 
     }

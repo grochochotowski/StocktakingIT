@@ -4,6 +4,7 @@ using KropkaNet.Models.system;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KropkaNet.Migrations
 {
     [DbContext(typeof(StocktakingContext))]
-    partial class StocktakingContextModelSnapshot : ModelSnapshot
+    [Migration("20240320143709_namingv2")]
+    partial class namingv2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,7 +155,10 @@ namespace KropkaNet.Migrations
                     b.Property<DateTime>("DateOfOrderExecution")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int>("DepartamentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DepartmentsId")
                         .HasColumnType("int");
 
                     b.Property<int>("StocktakingId")
@@ -160,7 +166,7 @@ namespace KropkaNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("DepartmentsId");
 
                     b.HasIndex("StocktakingId")
                         .IsUnique();
@@ -422,9 +428,9 @@ namespace KropkaNet.Migrations
 
             modelBuilder.Entity("KropkaNet.Models.Objects.ClientSide.Order", b =>
                 {
-                    b.HasOne("KropkaNet.Models.Objects.ClientSide.Department", "Department")
+                    b.HasOne("KropkaNet.Models.Objects.ClientSide.Department", "Departments")
                         .WithMany("Orders")
-                        .HasForeignKey("DepartmentId")
+                        .HasForeignKey("DepartmentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -434,7 +440,7 @@ namespace KropkaNet.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Department");
+                    b.Navigation("Departments");
 
                     b.Navigation("Stocktaking");
                 });
