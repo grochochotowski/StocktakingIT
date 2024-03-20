@@ -9,11 +9,16 @@ namespace KropkaNet.Models.Objects.CompanySide
         [Required(ErrorMessage = "Quantity is required")]
         public int Quantity { get; set; }
         [Required(ErrorMessage = "Product ID is required")]
-        public int ProductId { get; set; }
-        public int StocktakingId { get; set; }
+
         public string? Note { get; set; }
 
+
+
+        public int StocktakingId { get; set; }
         public virtual Stocktaking Stocktaking { get; set; }
-        public virtual Product Product { get; set; }
+
+
+
+        public virtual ICollection<WarehouseProduct> WarehouseProducts { get; set; }
     }
 }
