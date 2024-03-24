@@ -1,7 +1,4 @@
-﻿using KropkaNet.Models.Dtos.CompanySide.Position;
-using KropkaNet.Models.Dtos.CompanySide.Stocktaking;
-
-namespace KropkaNet.Models.Dtos.CompanySide.Employee
+﻿namespace KropkaNet.Models.Dtos.CompanySide.Employee
 {
     public class CreateEmployeeDto
     {
