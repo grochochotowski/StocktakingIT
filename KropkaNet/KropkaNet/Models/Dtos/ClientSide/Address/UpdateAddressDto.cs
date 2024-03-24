@@ -1,6 +1,6 @@
 ﻿namespace KropkaNet.Models.Dtos.ClientSide.Address
 {
-    public class UpDateAddressDto
+    public class UpdateAddressDto
     {
         public string? Country { get; set; }
 
