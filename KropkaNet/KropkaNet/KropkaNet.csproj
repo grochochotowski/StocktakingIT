@@ -17,4 +17,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Dtos\CompanySide\Employee\" />
+    <Folder Include="Models\Dtos\CompanySide\WarehouseProduct\" />
+    <Folder Include="Models\Dtos\CompanySide\Warehouse\" />
+    <Folder Include="Models\Dtos\CompanySide\Stocktaking\" />
+    <Folder Include="Models\Dtos\CompanySide\Product\" />
+  </ItemGroup>
+
 </Project>
