@@ -20,7 +20,6 @@
   <ItemGroup>
     <Folder Include="Models\Dtos\CompanySide\WarehouseProduct\" />
     <Folder Include="Models\Dtos\CompanySide\Warehouse\" />
-    <Folder Include="Models\Dtos\CompanySide\Stocktaking\" />
   </ItemGroup>
 
 </Project>
