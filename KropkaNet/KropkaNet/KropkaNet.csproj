@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Dtos\CompanySide\Employee\" />
     <Folder Include="Models\Dtos\CompanySide\WarehouseProduct\" />
     <Folder Include="Models\Dtos\CompanySide\Warehouse\" />
     <Folder Include="Models\Dtos\CompanySide\Stocktaking\" />
