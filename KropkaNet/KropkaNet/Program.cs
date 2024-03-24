@@ -1,6 +1,7 @@
 using KropkaNet.Models.system;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Reflection;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace KropkaNet
@@ -15,6 +16,7 @@ namespace KropkaNet
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.AddScoped<PositionSeeder>();
             builder.Services.AddDbContext<StocktakingContext>(o => o.UseSqlServer(configuration.GetConnectionString("SystemDbConnection")));
 
