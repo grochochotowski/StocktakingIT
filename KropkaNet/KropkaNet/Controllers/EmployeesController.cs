@@ -7,23 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KropkaNet.Models.Objects.CompanySide;
 using KropkaNet.Models.system;
+using AutoMapper;
+using KropkaNet.Models.Dtos.CompanySide.Employee;
 
 namespace KropkaNet.Controllers
 {
     public class EmployeesController : Controller
     {
         private readonly StocktakingContext _context;
+        private readonly IMapper _mapper;
 
-        public EmployeesController(StocktakingContext context)
+        public EmployeesController(StocktakingContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var stocktakingContext = _context.Employees.Include(e => e.Position);
-            return View(await stocktakingContext.ToListAsync());
+            var stocktakingContext = _context.Employees.Include(e => e.Position).ToList();
+            var stocktakingContextDtos = _mapper.Map<List<EmployeeDto>>(stocktakingContext);
+
+            return View(stocktakingContextDtos);
         }
 
         // GET: Employees/Details/5
@@ -42,7 +48,9 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
-            return View(employee);
+            var employeeDto = _mapper.Map<EmployeeDto>(employee);
+
+            return View(employeeDto);
         }
 
         // GET: Employees/Create
@@ -57,17 +65,9 @@ namespace KropkaNet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Surname,PersonalNumber,Email,PhoneNumber,Note,PositionId")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Name,Surname,PersonalNumber,Email,PhoneNumber,Note,PositionId")] CreateEmployeeDto employeeDto)
         {
-            foreach (var modelStateEntry in ModelState.Values)
-            {
-                foreach (var error in modelStateEntry.Errors)
-                {
-                    // Log or display the error message
-                    Console.WriteLine(error.ErrorMessage);
-                }
-            }
-
+            var employee = _mapper.Map<CreateEmployeeDto>(employeeDto);
             if (ModelState.IsValid)
             {
                 _context.Add(employee);
