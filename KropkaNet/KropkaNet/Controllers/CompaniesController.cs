@@ -7,23 +7,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KropkaNet.Models.Objects.ClientSide;
 using KropkaNet.Models.system;
+using AutoMapper;
+using KropkaNet.Models.Dtos.ClientSide.Company;
 
 namespace KropkaNet.Controllers
 {
     public class CompaniesController : Controller
     {
         private readonly StocktakingContext _context;
+        private readonly IMapper _mapper;
 
-        public CompaniesController(StocktakingContext context)
+        public CompaniesController(StocktakingContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Companies
         public async Task<IActionResult> Index()
         {
             var stocktakingContext = _context.Companies.Include(c => c.Address);
-            return View(await stocktakingContext.ToListAsync());
+            var stocktakingContextDto = _mapper.Map<List<CompanyDto>>(stocktakingContext);
+            return View(stocktakingContextDto);
         }
 
         // GET: Companies/Details/5
@@ -42,7 +47,9 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
-            return View(company);
+            var companyDto = _mapper.Map<CompanyDto>(company);
+
+            return View(companyDto);
         }
 
         // GET: Companies/Create
@@ -57,8 +64,9 @@ namespace KropkaNet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NIP,KRS,CompanyName,Note,AddressId")] Company company)
+        public async Task<IActionResult> Create([Bind("NIP,KRS,CompanyName,Note,AddressId")] Company company)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(company);
