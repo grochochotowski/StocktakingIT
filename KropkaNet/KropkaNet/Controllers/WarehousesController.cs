@@ -7,23 +7,32 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KropkaNet.Models.Objects.CompanySide;
 using KropkaNet.Models.system;
+using AutoMapper;
+using KropkaNet.Models.Dtos.ClientSide.Department;
+using KropkaNet.Models.Objects.ClientSide;
+using KropkaNet.Models.Dtos.CompanySide.Warehouse;
+using KropkaNet.Models.Dtos.CompanySide.WarehouseProduct;
 
 namespace KropkaNet.Controllers
 {
     public class WarehousesController : Controller
     {
         private readonly StocktakingContext _context;
+        private readonly IMapper _mapper;
 
-        public WarehousesController(StocktakingContext context)
+        public WarehousesController(StocktakingContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Warehouses
         public async Task<IActionResult> Index()
         {
-            var stocktakingContext = _context.Warehouses.Include(w => w.Stocktaking);
-            return View(await stocktakingContext.ToListAsync());
+            var warehouses = _context.Warehouses.Include(w => w.Stocktaking).ToList();
+            var warehouseDtos = _mapper.Map<List<WarehouseDto>>(warehouses);
+
+            return View(warehouseDtos);
         }
 
         // GET: Warehouses/Details/5
@@ -42,7 +51,9 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
-            return View(warehouse);
+            var warehouseDto = _mapper.Map<WarehouseProductDto>(warehouse);
+
+            return View(warehouseDto);
         }
 
         // GET: Warehouses/Create
@@ -57,15 +68,16 @@ namespace KropkaNet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Note,StocktakingId")] Warehouse warehouse)
+        public async Task<IActionResult> Create([Bind("Id,Note,StocktakingId")] CreateWarehouseDto createWarehouseDto)
         {
             if (ModelState.IsValid)
             {
+                var warehouse = _mapper.Map<Warehouse>(createWarehouseDto);
                 _context.Add(warehouse);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(warehouse);
+            return View(createWarehouseDto);
         }
 
         // GET: Warehouses/Edit/5
