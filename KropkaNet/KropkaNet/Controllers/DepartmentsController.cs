@@ -7,23 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KropkaNet.Models.Objects.ClientSide;
 using KropkaNet.Models.system;
+using AutoMapper;
+using KropkaNet.Models.Dtos.ClientSide.Department;
+using KropkaNet.Models.Dtos.CompanySide.Employee;
+using KropkaNet.Models.Objects.CompanySide;
 
 namespace KropkaNet.Controllers
 {
     public class DepartmentsController : Controller
     {
         private readonly StocktakingContext _context;
+        private readonly IMapper _mapper;
 
-        public DepartmentsController(StocktakingContext context)
+        public DepartmentsController(StocktakingContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Departments
         public async Task<IActionResult> Index()
         {
-            var stocktakingContext = _context.Departments.Include(d => d.Company);
-            return View(await stocktakingContext.ToListAsync());
+            var departments = _context.Departments.Include(d => d.Company).ToList();
+            var departmentDtos = _mapper.Map<List<DepartmentDto>>(departments);
+
+            return View(departmentDtos);
         }
 
         // GET: Departments/Details/5
@@ -42,6 +50,8 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
+            var departmentDto = _mapper.Map<DepartmentDto>(department);
+
             return View(department);
         }
 
@@ -57,16 +67,17 @@ namespace KropkaNet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DepartmentName,CompanyId")] Department department)
+        public async Task<IActionResult> Create([Bind("Id,DepartmentName,CompanyId")] CreateDepartmentDto createDepartmentDto)
         {
             if (ModelState.IsValid)
             {
+                var department = _mapper.Map<Department>(createDepartmentDto);
                 _context.Add(department);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "CompanyName", department.CompanyId);
-            return View(department);
+            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "CompanyName", createDepartmentDto.CompanyId);
+            return View(createDepartmentDto);
         }
 
         // GET: Departments/Edit/5
