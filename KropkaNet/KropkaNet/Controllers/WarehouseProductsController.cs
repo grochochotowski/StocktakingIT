@@ -7,23 +7,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KropkaNet.Models.Objects.CompanySide;
 using KropkaNet.Models.system;
+using AutoMapper;
+using KropkaNet.Models.Dtos.CompanySide.WarehouseProduct;
+using KropkaNet.Models.Dtos.CompanySide.Warehouse;
 
 namespace KropkaNet.Controllers
 {
     public class WarehouseProductsController : Controller
     {
         private readonly StocktakingContext _context;
+        private readonly IMapper _mapper;
 
-        public WarehouseProductsController(StocktakingContext context)
+        public WarehouseProductsController(StocktakingContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: WarehouseProducts
         public async Task<IActionResult> Index()
         {
-            var stocktakingContext = _context.WarehouseProduct.Include(w => w.Product).Include(w => w.Warehouse);
-            return View(await stocktakingContext.ToListAsync());
+            var warehouseProducts = _context.WarehouseProduct.Include(w => w.Product).Include(w => w.Warehouse).ToList();
+            var warehouseProductDtos = _mapper.Map<List<WarehouseProductDto>>(warehouseProducts);
+
+            return View(warehouseProductDtos);
         }
 
         // GET: WarehouseProducts/Details/5
@@ -43,7 +50,9 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
-            return View(warehouseProduct);
+            var warehouseProductDto = _mapper.Map<WarehouseProductDto>(warehouseProduct);
+
+            return View(warehouseProductDto);
         }
 
         // GET: WarehouseProducts/Create
@@ -59,17 +68,18 @@ namespace KropkaNet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("WarehouseId,ProductId,Quantity")] WarehouseProduct warehouseProduct)
+        public async Task<IActionResult> Create([Bind("WarehouseId,ProductId,Quantity")] CreateWarehouseProductDto createWarehouseProductDto)
         {
             if (ModelState.IsValid)
             {
+                var warehouseProduct = _mapper.Map<Warehouse>(createWarehouseProductDto);
                 _context.Add(warehouseProduct);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Category", warehouseProduct.ProductId);
-            ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id", warehouseProduct.WarehouseId);
-            return View(warehouseProduct);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Category", createWarehouseProductDto.ProductId);
+            ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id", createWarehouseProductDto.WarehouseId);
+            return View(createWarehouseProductDto);
         }
 
         // GET: WarehouseProducts/Edit/5
