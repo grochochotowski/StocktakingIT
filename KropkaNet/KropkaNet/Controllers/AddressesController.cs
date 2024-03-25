@@ -7,22 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KropkaNet.Models.system;
 using KropkaNet.Models.Objects.ClientSide;
+using KropkaNet.Models.Dtos.CompanySide.Employee;
+using AutoMapper;
+using KropkaNet.Models.Dtos.ClientSide.Address;
+using KropkaNet.Models.Dtos.ClientSide.Company;
 
 namespace KropkaNet.Controllers
 {
     public class AddressesController : Controller
     {
         private readonly StocktakingContext _context;
+        public readonly IMapper _mapper;
 
-        public AddressesController(StocktakingContext context)
+        public AddressesController(StocktakingContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Addresses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Addresses.ToListAsync());
+            var addresses = _context.Addresses.ToList();
+            var addressDtos = _mapper.Map<List<AddressDto>>(addresses);
+
+            return View(addressDtos);
         }
 
         // GET: Addresses/Details/5
@@ -40,6 +49,9 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
+
+            var addressDto = _mapper.Map<AddressDto>(address);
+
             return View(address);
         }
 
@@ -54,15 +66,16 @@ namespace KropkaNet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Country,City,ZipCode,Street,Building,Premises")] Address address)
+        public async Task<IActionResult> Create([Bind("Id,Country,City,ZipCode,Street,Building,Premises")] CreateAddressDto createAddressDto)
         {
             if (ModelState.IsValid)
             {
+                var address = _mapper.Map<Address>(createAddressDto);
                 _context.Add(address);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(address);
+            return View(createAddressDto);
         }
 
         // GET: Addresses/Edit/5
