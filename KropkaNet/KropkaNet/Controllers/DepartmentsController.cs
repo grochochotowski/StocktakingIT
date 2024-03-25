@@ -52,7 +52,7 @@ namespace KropkaNet.Controllers
 
             var departmentDto = _mapper.Map<DepartmentDto>(department);
 
-            return View(department);
+            return View(departmentDto);
         }
 
         // GET: Departments/Create
