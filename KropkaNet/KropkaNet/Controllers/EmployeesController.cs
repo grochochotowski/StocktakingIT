@@ -26,10 +26,10 @@ namespace KropkaNet.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var stocktakingContext = _context.Employees.Include(e => e.Position).ToList();
-            var stocktakingContextDtos = _mapper.Map<List<EmployeeDto>>(stocktakingContext);
+            var employees = _context.Employees.Include(e => e.Position).ToList();
+            var employeeDtos = _mapper.Map<List<EmployeeDto>>(employees);
 
-            return View(stocktakingContextDtos);
+            return View(employeeDtos);
         }
 
         // GET: Employees/Details/5
@@ -69,8 +69,8 @@ namespace KropkaNet.Controllers
         {
             if (ModelState.IsValid)
             {
-                var employee = _mapper.Map<Employee>(createEmployeeDto); // Map to Employee entity
-                _context.Add(employee); // Add Employee entity to context
+                var employee = _mapper.Map<Employee>(createEmployeeDto);
+                _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
