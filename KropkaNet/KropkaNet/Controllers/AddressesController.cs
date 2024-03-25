@@ -52,7 +52,7 @@ namespace KropkaNet.Controllers
 
             var addressDto = _mapper.Map<AddressDto>(address);
 
-            return View(address);
+            return View(addressDto);
         }
 
         // GET: Addresses/Create

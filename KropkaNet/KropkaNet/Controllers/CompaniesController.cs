@@ -51,6 +51,16 @@ namespace KropkaNet.Controllers
 
             var companyDto = _mapper.Map<CompanyDto>(company);
 
+            var addressString = $"{companyDto.Address.Country} ," +
+                                $"{companyDto.Address.City}, " +
+                                $"{companyDto.Address.ZipCode}, " +
+                                $"{companyDto.Address.Street}, " +
+                                $"{companyDto.Address.Building} " +
+                                $"{(companyDto.Address.Premises != null ? "/" + companyDto.Address.Premises : "")}\n";
+
+
+            ViewBag.AddressString = addressString;
+
             return View(companyDto);
         }
 
