@@ -1,7 +1,6 @@
 ﻿using KropkaNet.Models.Dtos.ClientSide.Department;
 using KropkaNet.Models.Dtos.ClientSide.User;
-using KropkaNet.Models.Objects.CompanySide;
-using KropkaNet.Models.Dtos.CompanySide.StockTaking;
+using KropkaNet.Models.Dtos.CompanySide.Stocktaking;
 
 namespace KropkaNet.Models.Dtos.ClientSide.Order
 {

@@ -65,17 +65,18 @@ namespace KropkaNet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Surname,PersonalNumber,Email,PhoneNumber,Note,PositionId")] CreateEmployeeDto employeeDto)
+        public async Task<IActionResult> Create([Bind("Name,Surname,PersonalNumber,Email,PhoneNumber,Note,PositionId")] CreateEmployeeDto createEmployeeDto)
         {
-            var employee = _mapper.Map<CreateEmployeeDto>(employeeDto);
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
+                var employee = _mapper.Map<Employee>(createEmployeeDto); // Map to Employee entity
+                _context.Add(employee); // Add Employee entity to context
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PositionId"] = new SelectList(_context.Positions, "Id", "Name", employee.PositionId);
-            return View(employee);
+
+            ViewData["PositionId"] = new SelectList(_context.Positions, "Id", "Name", createEmployeeDto.PositionId);
+            return View(createEmployeeDto);
         }
 
         // GET: Employees/Edit/5
