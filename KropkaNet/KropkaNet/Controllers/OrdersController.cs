@@ -72,7 +72,7 @@ namespace KropkaNet.Controllers
         {
             if (ModelState.IsValid)
             {
-                var order = _mapper.Map<OrderDto>(createOrderDto);
+                var order = _mapper.Map<Order>(createOrderDto);
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
