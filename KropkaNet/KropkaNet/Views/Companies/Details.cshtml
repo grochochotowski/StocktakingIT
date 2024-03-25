@@ -1,4 +1,4 @@
-﻿@model KropkaNet.Models.Objects.ClientSide.Company
+﻿@model KropkaNet.Models.Dtos.ClientSide.Company.CompanyDto
 
 @{
     ViewData["Title"] = "Details";
@@ -38,7 +38,7 @@
             @Html.DisplayNameFor(model => model.Address)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address.Building)
+            @Html.Raw(ViewBag.AddressString)
         </dd>
     </dl>
 </div>

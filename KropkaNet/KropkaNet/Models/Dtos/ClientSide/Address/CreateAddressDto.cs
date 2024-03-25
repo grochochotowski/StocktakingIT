@@ -14,4 +14,3 @@
         public string? Premises { get; set; }
     }
 }
-}

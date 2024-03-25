@@ -7,23 +7,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KropkaNet.Models.Objects.ClientSide;
 using KropkaNet.Models.system;
+using AutoMapper;
+using KropkaNet.Models.Dtos.ClientSide.Order;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace KropkaNet.Controllers
 {
     public class OrdersController : Controller
     {
         private readonly StocktakingContext _context;
+        private readonly IMapper _mapper;
 
-        public OrdersController(StocktakingContext context)
+        public OrdersController(StocktakingContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var stocktakingContext = _context.Orders.Include(o => o.Department).Include(o => o.Stocktaking);
-            return View(await stocktakingContext.ToListAsync());
+            var orders = _context.Orders.Include(o => o.Department).Include(o => o.Stocktaking).ToList();
+            var orderDtos = _mapper.Map<List<OrderDto>>(orders);
+
+            return View(orderDtos);
         }
 
         // GET: Orders/Details/5
@@ -43,7 +50,9 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
-            return View(order);
+            var orderDto = _mapper.Map<OrderDto>(order);
+
+            return View(orderDto);
         }
 
         // GET: Orders/Create
@@ -59,17 +68,17 @@ namespace KropkaNet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DateOfOrderExecution,DepartmentId,StocktakingId")] Order order)
+        public async Task<IActionResult> Create([Bind("Id,DateOfOrderExecution,DepartmentId,StocktakingId")] CreateOrderDto createOrderDto)
         {
             if (ModelState.IsValid)
             {
+                var order = _mapper.Map<Order>(createOrderDto);
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "DepartmentName", order.DepartmentId);
-            ViewData["StocktakingId"] = new SelectList(_context.Stocktakings, "Id", "Id", order.StocktakingId);
-            return View(order);
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "DepartmentName", createOrderDto.DepartmentId);
+            return View(createOrderDto);
         }
 
         // GET: Orders/Edit/5

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<KropkaNet.Models.Objects.ClientSide.Company>
+﻿@model IEnumerable<KropkaNet.Models.Dtos.ClientSide.Company.CompanyDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -24,9 +24,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Note)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -44,9 +41,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Note)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address.Building)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

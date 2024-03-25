@@ -9,6 +9,8 @@ using KropkaNet.Models.Objects.ClientSide;
 using KropkaNet.Models.system;
 using AutoMapper;
 using KropkaNet.Models.Dtos.ClientSide.Company;
+using KropkaNet.Models.Dtos.ClientSide.Department;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace KropkaNet.Controllers
 {
@@ -49,6 +51,16 @@ namespace KropkaNet.Controllers
 
             var companyDto = _mapper.Map<CompanyDto>(company);
 
+            var addressString = $"{companyDto.Address.Country} ," +
+                                $"{companyDto.Address.City}, " +
+                                $"{companyDto.Address.ZipCode}, " +
+                                $"{companyDto.Address.Street}, " +
+                                $"{companyDto.Address.Building} " +
+                                $"{(companyDto.Address.Premises != null ? "/" + companyDto.Address.Premises : "")}\n";
+
+
+            ViewBag.AddressString = addressString;
+
             return View(companyDto);
         }
 
@@ -64,17 +76,18 @@ namespace KropkaNet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NIP,KRS,CompanyName,Note,AddressId")] Company company)
+        public async Task<IActionResult> Create([Bind("NIP,KRS,CompanyName,Note,AddressId")] CreateCompanyDto createCompanyDto)
         {
 
             if (ModelState.IsValid)
             {
+                var company = _mapper.Map<Company>(createCompanyDto);
                 _context.Add(company);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AddressId"] = new SelectList(_context.Addresses, "Id", "Id", company.AddressId);
-            return View(company);
+            ViewData["AddressId"] = new SelectList(_context.Addresses, "Id", "Id", createCompanyDto.AddressId);
+            return View(createCompanyDto);
         }
 
         // GET: Companies/Edit/5

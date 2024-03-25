@@ -7,22 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KropkaNet.Models.Objects.CompanySide;
 using KropkaNet.Models.system;
+using AutoMapper;
+using KropkaNet.Models.Dtos.ClientSide.User;
+using KropkaNet.Models.Dtos.CompanySide.Stocktaking;
+using KropkaNet.Models.Dtos.CompanySide.Product;
 
 namespace KropkaNet.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly StocktakingContext _context;
+        private readonly IMapper _mapper;
 
-        public ProductsController(StocktakingContext context)
+        public ProductsController(StocktakingContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            var products = _context.Products.ToList();
+            var productDtos = _mapper.Map<List<ProductDto>>(products);
+
+            return View(productDtos);
         }
 
         // GET: Products/Details/5
@@ -40,7 +49,9 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
-            return View(product);
+            var productDtos = _mapper.Map<ProductDto>(product);
+
+            return View(productDtos);
         }
 
         // GET: Products/Create
@@ -54,15 +65,16 @@ namespace KropkaNet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Category,Name,Note")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Category,Name,Note")] CreateProductDto createProductDto)
         {
             if (ModelState.IsValid)
             {
+                var product = _mapper.Map<Warehouse>(createProductDto);
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            return View(createProductDto);
         }
 
         // GET: Products/Edit/5

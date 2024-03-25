@@ -7,23 +7,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KropkaNet.Models.Objects.CompanySide;
 using KropkaNet.Models.system;
+using AutoMapper;
+using KropkaNet.Models.Dtos.ClientSide.User;
+using KropkaNet.Models.Dtos.CompanySide.Stocktaking;
 
 namespace KropkaNet.Controllers
 {
     public class StocktakingsController : Controller
     {
         private readonly StocktakingContext _context;
+        private readonly IMapper _mapper;
 
-        public StocktakingsController(StocktakingContext context)
+        public StocktakingsController(StocktakingContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Stocktakings
         public async Task<IActionResult> Index()
         {
-            var stocktakingContext = _context.Stocktakings.Include(s => s.Warehouse);
-            return View(await stocktakingContext.ToListAsync());
+            var stocktakings = _context.Stocktakings.Include(s => s.Warehouse);
+            var stocktakingDtos = _mapper.Map<List<StocktakingDto>>(stocktakings);
+
+            return View(stocktakingDtos);
         }
 
         // GET: Stocktakings/Details/5
@@ -42,7 +49,9 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
-            return View(stocktaking);
+            var stocktakingDto = _mapper.Map<StocktakingDto>(stocktaking);
+
+            return View(stocktakingDto);
         }
 
         // GET: Stocktakings/Create
@@ -57,16 +66,17 @@ namespace KropkaNet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ExpectedTimeHours,Note,WarehouseId,OrderId")] Stocktaking stocktaking)
+        public async Task<IActionResult> Create([Bind("Id,ExpectedTimeHours,Note,WarehouseId,OrderId")] CreateStocktakingDto createStocktakingDto)
         {
             if (ModelState.IsValid)
             {
+                var stocktaking = _mapper.Map<Warehouse>(createStocktakingDto);
                 _context.Add(stocktaking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id", stocktaking.WarehouseId);
-            return View(stocktaking);
+            ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id", createStocktakingDto.WarehouseId);
+            return View(createStocktakingDto);
         }
 
         // GET: Stocktakings/Edit/5
