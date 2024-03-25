@@ -7,22 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KropkaNet.Models.Objects.ClientSide;
 using KropkaNet.Models.system;
+using AutoMapper;
+using KropkaNet.Models.Dtos.ClientSide.User;
+using KropkaNet.Models.Dtos.CompanySide.WarehouseProduct;
+using KropkaNet.Models.Objects.CompanySide;
 
 namespace KropkaNet.Controllers
 {
     public class UsersController : Controller
     {
         private readonly StocktakingContext _context;
+        private readonly IMapper _mapper;
 
-        public UsersController(StocktakingContext context)
+        public UsersController(StocktakingContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            var users = _context.Users.ToList();
+            var userDtos = _mapper.Map<List<UserDto>>(users);
+
+            return View(userDtos);
         }
 
         // GET: Users/Details/5
@@ -40,7 +49,9 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
-            return View(user);
+            var userDto = _mapper.Map<UserDto>(user);
+
+            return View(userDto);
         }
 
         // GET: Users/Create
@@ -54,15 +65,16 @@ namespace KropkaNet.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Surname,PersonalNumber,Email,PhoneNumber,Note")] User user)
+        public async Task<IActionResult> Create([Bind("Id,Name,Surname,PersonalNumber,Email,PhoneNumber,Note")] CreateUserDto createUserDto)
         {
             if (ModelState.IsValid)
             {
+                var user = _mapper.Map<Warehouse>(createUserDto);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(createUserDto);
         }
 
         // GET: Users/Edit/5
