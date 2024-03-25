@@ -69,7 +69,7 @@ namespace KropkaNet.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _mapper.Map<Warehouse>(createUserDto);
+                var user = _mapper.Map<User>(createUserDto);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
