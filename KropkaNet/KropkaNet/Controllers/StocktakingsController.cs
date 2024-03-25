@@ -49,7 +49,7 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
-            var stocktakingDto = _mapper.Map<StocktakingDtos>(stocktaking);
+            var stocktakingDto = _mapper.Map<StocktakingDto>(stocktaking);
 
             return View(stocktakingDto);
         }
