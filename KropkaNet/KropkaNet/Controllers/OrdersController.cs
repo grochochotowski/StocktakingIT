@@ -78,7 +78,6 @@ namespace KropkaNet.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "DepartmentName", createOrderDto.DepartmentId);
-            ViewData["StocktakingId"] = new SelectList(_context.Stocktakings, "Id", "Id", createOrderDto.StocktakingId);
             return View(createOrderDto);
         }
 
