@@ -226,10 +226,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlUHJvZHVjdHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Warehouses/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlc1xDcmVhdGUuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Warehouses/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlc1xEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

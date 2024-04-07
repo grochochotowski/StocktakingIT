@@ -10,6 +10,7 @@ using KropkaNet.Models.system;
 using AutoMapper;
 using KropkaNet.Models.Dtos.ClientSide.User;
 using KropkaNet.Models.Dtos.CompanySide.Stocktaking;
+using KropkaNet.Models.Dtos.CompanySide.Warehouse;
 
 namespace KropkaNet.Controllers
 {
@@ -70,9 +71,15 @@ namespace KropkaNet.Controllers
         {
             if (ModelState.IsValid)
             {
-                var stocktaking = _mapper.Map<Warehouse>(createStocktakingDto);
+                var stocktaking = _mapper.Map<Stocktaking>(createStocktakingDto);
                 _context.Add(stocktaking);
                 await _context.SaveChangesAsync();
+
+                var warehouseDto = new CreateWarehouseDto("", stocktaking.Id);
+                var warehouse = _mapper.Map<Warehouse>(warehouseDto);
+                _context.Add(warehouse);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id", createStocktakingDto.WarehouseId);

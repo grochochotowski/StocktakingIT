@@ -4,5 +4,11 @@
     {
         public string? Note { get; set; }
         public int StocktakingId { get; set; }
+
+        public CreateWarehouseDto(string? Note, int StockatkingId)
+        {
+            this.Note = Note;
+            this.StocktakingId = StockatkingId;
+        }
     }
 }

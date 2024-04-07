@@ -56,30 +56,6 @@ namespace KropkaNet.Controllers
             return View(warehouseDto);
         }
 
-        // GET: Warehouses/Create
-        public IActionResult Create()
-        {
-            ViewData["StocktakingId"] = new SelectList(_context.Stocktakings, "Id", "Id");
-            return View();
-        }
-
-        // POST: Warehouses/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Note,StocktakingId")] CreateWarehouseDto createWarehouseDto)
-        {
-            if (ModelState.IsValid)
-            {
-                var warehouse = _mapper.Map<Warehouse>(createWarehouseDto);
-                _context.Add(warehouse);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(createWarehouseDto);
-        }
-
         // GET: Warehouses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
