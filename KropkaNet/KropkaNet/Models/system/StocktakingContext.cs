@@ -50,6 +50,20 @@ namespace KropkaNet.Models.system
                 .HasOne(s => s.Order)
                 .WithOne(o => o.Stocktaking)
                 .HasForeignKey<Order>(o => o.StocktakingId);
+
+
+
+            modelBuilder.Entity<Stocktaking>()
+               .HasOne(s => s.Warehouse)
+               .WithOne(w => w.Stocktaking)
+               .HasForeignKey<Warehouse>(w => w.StocktakingId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Stocktaking)
+                .WithOne(s => s.Order)
+                .HasForeignKey<Stocktaking>(s => s.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
     }

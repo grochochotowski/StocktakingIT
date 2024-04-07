@@ -10,6 +10,7 @@ using KropkaNet.Models.system;
 using AutoMapper;
 using KropkaNet.Models.Dtos.ClientSide.User;
 using KropkaNet.Models.Dtos.CompanySide.Stocktaking;
+using KropkaNet.Models.Dtos.CompanySide.Warehouse;
 
 namespace KropkaNet.Controllers
 {
@@ -57,7 +58,7 @@ namespace KropkaNet.Controllers
         // GET: Stocktakings/Create
         public IActionResult Create()
         {
-            ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id");
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id");
             return View();
         }
 
@@ -70,12 +71,26 @@ namespace KropkaNet.Controllers
         {
             if (ModelState.IsValid)
             {
-                var stocktaking = _mapper.Map<Warehouse>(createStocktakingDto);
-                _context.Add(stocktaking);
+                var warehouse = new Warehouse();
+                var stocktaking = _mapper.Map<Stocktaking>(createStocktakingDto);
+
+                warehouse.Stocktaking = stocktaking;
+
+                _context.Add(warehouse);
                 await _context.SaveChangesAsync();
+
+                var order = await _context.Orders.FindAsync(createStocktakingDto.OrderId);
+                if (order != null)
+                {
+                    order.StocktakingId = stocktaking.Id;
+                    _context.Update(order);
+                    await _context.SaveChangesAsync();
+                }
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id", createStocktakingDto.WarehouseId);
+
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", createStocktakingDto.OrderId);
             return View(createStocktakingDto);
         }
 
@@ -93,6 +108,7 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
             ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id", stocktaking.WarehouseId);
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", stocktaking.OrderId);
             return View(stocktaking);
         }
 
@@ -129,6 +145,7 @@ namespace KropkaNet.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id", stocktaking.WarehouseId);
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", stocktaking.OrderId);
             return View(stocktaking);
         }
 

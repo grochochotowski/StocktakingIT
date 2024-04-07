@@ -51,36 +51,14 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
-            var warehouseDto = _mapper.Map<WarehouseProductDto>(warehouse);
+            var warehouseDto = _mapper.Map<WarehouseDto>(warehouse);
 
             return View(warehouseDto);
         }
 
-        // GET: Warehouses/Create
-        public IActionResult Create()
-        {
-            ViewData["StocktakingId"] = new SelectList(_context.Stocktakings, "Id", "Id");
-            return View();
-        }
-
-        // POST: Warehouses/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Note,StocktakingId")] CreateWarehouseDto createWarehouseDto)
-        {
-            if (ModelState.IsValid)
-            {
-                var warehouse = _mapper.Map<Warehouse>(createWarehouseDto);
-                _context.Add(warehouse);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(createWarehouseDto);
-        }
-
         // GET: Warehouses/Edit/5
+        [HttpGet]
+        [Route("Warehouses/Edit/{id}")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,13 +75,12 @@ namespace KropkaNet.Controllers
         }
 
         // POST: Warehouses/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Note,StocktakingId")] Warehouse warehouse)
+        [Route("Warehouses/Edit/{id}")]
+        public async Task<IActionResult> EditPost(int id, [Bind("Id,Note")] UpdateWarehouseDto updateWarehouseDto)
         {
-            if (id != warehouse.Id)
+            if (id != updateWarehouseDto.Id)
             {
                 return NotFound();
             }
@@ -112,12 +89,23 @@ namespace KropkaNet.Controllers
             {
                 try
                 {
+                    var warehouse = await _context.Warehouses.FindAsync(id);
+                    if (warehouse == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var existingStocktakingId = warehouse.StocktakingId;
+
+                    warehouse.Note = updateWarehouseDto.Note;
+                    warehouse.StocktakingId = existingStocktakingId;
+
                     _context.Update(warehouse);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!WarehouseExists(warehouse.Id))
+                    if (!WarehouseExists(id))
                     {
                         return NotFound();
                     }
@@ -128,7 +116,7 @@ namespace KropkaNet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(warehouse);
+            return View(updateWarehouseDto);
         }
 
         // GET: Warehouses/Delete/5
