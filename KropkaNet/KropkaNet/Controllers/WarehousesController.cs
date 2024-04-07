@@ -51,7 +51,7 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
 
-            var warehouseDto = _mapper.Map<WarehouseProductDto>(warehouse);
+            var warehouseDto = _mapper.Map<WarehouseDto>(warehouse);
 
             return View(warehouseDto);
         }
