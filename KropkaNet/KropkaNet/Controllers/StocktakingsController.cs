@@ -58,6 +58,7 @@ namespace KropkaNet.Controllers
         // GET: Stocktakings/Create
         public IActionResult Create()
         {
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id");
             return View();
         }
 
@@ -97,7 +98,7 @@ namespace KropkaNet.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id", createStocktakingDto.WarehouseId);
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", createStocktakingDto.OrderId);
             return View(createStocktakingDto);
         }
 
