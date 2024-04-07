@@ -58,7 +58,6 @@ namespace KropkaNet.Controllers
         // GET: Stocktakings/Create
         public IActionResult Create()
         {
-            ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id");
             return View();
         }
 
@@ -71,14 +70,30 @@ namespace KropkaNet.Controllers
         {
             if (ModelState.IsValid)
             {
+                var warehouse = new Warehouse();
+                _context.Add(warehouse);
+                await _context.SaveChangesAsync();
+
                 var stocktaking = _mapper.Map<Stocktaking>(createStocktakingDto);
+                stocktaking.WarehouseId = warehouse.Id;
                 _context.Add(stocktaking);
                 await _context.SaveChangesAsync();
 
-                var warehouseDto = new CreateWarehouseDto("", stocktaking.Id);
-                var warehouse = _mapper.Map<Warehouse>(warehouseDto);
-                _context.Add(warehouse);
-                await _context.SaveChangesAsync();
+                var order = await _context.Orders.FindAsync(createStocktakingDto.OrderId);
+                if (order != null)
+                {
+                    order.StocktakingId = stocktaking.Id;
+                    _context.Update(order);
+                    await _context.SaveChangesAsync();
+                }
+
+                warehouse = await _context.Warehouses.FindAsync(warehouse.Id);
+                if (warehouse != null)
+                {
+                    warehouse.StocktakingId = stocktaking.Id;
+                    _context.Update(warehouse);
+                    await _context.SaveChangesAsync();
+                }
 
                 return RedirectToAction(nameof(Index));
             }
