@@ -108,6 +108,7 @@ namespace KropkaNet.Controllers
                 return NotFound();
             }
             ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id", stocktaking.WarehouseId);
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", stocktaking.OrderId);
             return View(stocktaking);
         }
 
@@ -144,6 +145,7 @@ namespace KropkaNet.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["WarehouseId"] = new SelectList(_context.Warehouses, "Id", "Id", stocktaking.WarehouseId);
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", stocktaking.OrderId);
             return View(stocktaking);
         }
 
