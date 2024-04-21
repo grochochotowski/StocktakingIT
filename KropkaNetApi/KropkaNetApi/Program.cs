@@ -1,4 +1,5 @@
 using KropkaNetApi.X_Entities;
+using KropkaNetApi.Y_Services.CompanySide;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -20,6 +21,8 @@ namespace KropkaNetApi
             
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<IPositionService, PositionService>();
 
             var app = builder.Build();
             var scope = app.Services.CreateScope();
