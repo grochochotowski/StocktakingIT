@@ -1,12 +1,10 @@
 ﻿using KropkaNetApi.X_Models.CompanySide.Position;
 using KropkaNetApi.Y_Services.CompanySide;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 
 namespace KropkaNetApi.Y_Controllers.CompanySide
 {
-    [Route("api/position")]
+    [Route("api/kropkaNet/employee/position")]
     [ApiController]
     public class PositionController : ControllerBase
     {
@@ -19,7 +17,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
 
 
-        // GET api/position/all
+        // GET /api/kropkaNet/employee/position/all
         [HttpGet("all")]
         public ActionResult<IEnumerable<PositionDto>> GetAll()
         {
