@@ -1,7 +1,7 @@
-﻿using KropkaNetApi.Dtos.CompanySide.Stocktaking;
-using KropkaNetApi.Dtos.CompanySide.WarehouseProduct;
+﻿using KropkaNetApi.X_Models.CompanySide.Stocktaking;
+using KropkaNetApi.X_Models.CompanySide.WarehouseProduct;
 
-namespace KropkaNetApi.Dtos.CompanySide.Warehouse
+namespace KropkaNetApi.X_Models.CompanySide.Warehouse
 {
     public class WarehouseDto
     {

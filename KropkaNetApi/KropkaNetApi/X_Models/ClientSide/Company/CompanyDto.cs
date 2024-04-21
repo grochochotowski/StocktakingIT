@@ -1,8 +1,8 @@
-﻿using KropkaNetApi.Dtos.ClientSide.Address;
-using KropkaNetApi.Dtos.ClientSide.Department;
-using KropkaNetApi.Dtos.ClientSide.User;
+﻿using KropkaNetApi.X_Models.ClientSide.Address;
+using KropkaNetApi.X_Models.ClientSide.Department;
+using KropkaNetApi.X_Models.ClientSide.User;
 
-namespace KropkaNetApi.Dtos.ClientSide.Company
+namespace KropkaNetApi.X_Models.ClientSide.Company
 {
     public class CompanyDto
     {

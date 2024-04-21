@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace KropkaNet.Models.Objects.CompanySide
+namespace KropkaNetApi.X_Entities.Objects.CompanySide
 {
     public class Position
     {

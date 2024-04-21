@@ -1,7 +1,7 @@
-﻿using KropkaNetApi.Dtos.ClientSide.Company;
-using KropkaNetApi.Dtos.ClientSide.Order;
+﻿using KropkaNetApi.X_Models.ClientSide.Company;
+using KropkaNetApi.X_Models.ClientSide.Order;
 
-namespace KropkaNetApi.Dtos.ClientSide.Department
+namespace KropkaNetApi.X_Models.ClientSide.Department
 {
     public class DepartmentDto
     {

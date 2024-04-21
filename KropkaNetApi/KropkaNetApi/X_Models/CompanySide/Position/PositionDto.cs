@@ -1,4 +1,4 @@
-﻿namespace KropkaNetApi.Dtos.CompanySide.Position
+﻿namespace KropkaNetApi.X_Models.CompanySide.Position
 {
     public class PositionDto
     {

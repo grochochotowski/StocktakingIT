@@ -1,8 +1,8 @@
-﻿using KropkaNetApi.Dtos.ClientSide.Order;
-using KropkaNetApi.Dtos.CompanySide.Employee;
-using KropkaNetApi.Dtos.CompanySide.Warehouse;
+﻿using KropkaNetApi.X_Models.ClientSide.Order;
+using KropkaNetApi.X_Models.CompanySide.Employee;
+using KropkaNetApi.X_Models.CompanySide.Warehouse;
 
-namespace KropkaNetApi.Dtos.CompanySide.Stocktaking
+namespace KropkaNetApi.X_Models.CompanySide.Stocktaking
 {
     public class StocktakingDto
     {

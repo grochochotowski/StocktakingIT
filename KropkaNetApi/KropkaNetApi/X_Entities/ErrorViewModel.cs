@@ -1,4 +1,4 @@
-namespace KropkaNet.Models
+namespace KropkaNetApi.X_Entites
 {
     public class ErrorViewModel
     {

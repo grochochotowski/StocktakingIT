@@ -1,6 +1,6 @@
-﻿using KropkaNetApi.Dtos.CompanySide.Position;
-using KropkaNetApi.Dtos.CompanySide.Stocktaking;
-namespace KropkaNetApi.Dtos.CompanySide.Employee
+﻿using KropkaNetApi.X_Models.CompanySide.Position;
+using KropkaNetApi.X_Models.CompanySide.Stocktaking;
+namespace KropkaNetApi.X_Models.CompanySide.Employee
 {
     public class EmployeeDto
     {

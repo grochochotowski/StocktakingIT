@@ -1,7 +1,7 @@
-﻿using KropkaNet.Models.Objects.CompanySide;
-using KropkaNet.Models.system;
+﻿using KropkaNetApi.X_Entities;
+using KropkaNetApi.X_Entities.Objects.CompanySide;
 
-namespace KropkaNet
+namespace KropkaNetApi
 {
     public class PositionSeeder
     {

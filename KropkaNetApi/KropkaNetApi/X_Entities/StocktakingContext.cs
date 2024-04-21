@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using KropkaNet.Models.Objects.ClientSide;
-using KropkaNet.Models.Objects.CompanySide;
+using KropkaNetApi.X_Entities.Objects.ClientSide;
+using KropkaNetApi.X_Entities.Objects.CompanySide;
 
 namespace KropkaNetApi.X_Entities
 {

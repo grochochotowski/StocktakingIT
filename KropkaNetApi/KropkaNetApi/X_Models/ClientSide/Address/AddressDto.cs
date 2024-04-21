@@ -1,4 +1,4 @@
-﻿namespace KropkaNetApi.Dtos.ClientSide.Address
+﻿namespace KropkaNetApi.X_Models.ClientSide.Address
 {
     public class AddressDto
     {

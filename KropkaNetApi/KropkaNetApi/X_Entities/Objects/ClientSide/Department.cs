@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace KropkaNet.Models.Objects.ClientSide;
+namespace KropkaNetApi.X_Entities.Objects.ClientSide;
 
 public class Department
 {

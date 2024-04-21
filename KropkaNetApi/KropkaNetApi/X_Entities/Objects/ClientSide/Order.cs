@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using KropkaNet.Models.Objects.CompanySide;
+using KropkaNetApi.X_Entities.Objects.CompanySide;
 
-namespace KropkaNet.Models.Objects.ClientSide
+namespace KropkaNetApi.X_Entities.Objects.ClientSide
 {
     public class Order
     {

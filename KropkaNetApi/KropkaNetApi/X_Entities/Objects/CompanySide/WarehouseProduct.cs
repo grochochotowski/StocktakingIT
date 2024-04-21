@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace KropkaNet.Models.Objects.CompanySide
+namespace KropkaNetApi.X_Entities.Objects.CompanySide
 {
     public class WarehouseProduct
     {

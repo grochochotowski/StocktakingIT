@@ -1,6 +1,6 @@
-﻿using KropkaNetApi.Dtos.CompanySide.WarehouseProduct;
+﻿using KropkaNetApi.X_Models.CompanySide.WarehouseProduct;
 
-namespace KropkaNetApi.Dtos.CompanySide.Product
+namespace KropkaNetApi.X_Models.CompanySide.Product
 {
     public class ProductDto
     {
