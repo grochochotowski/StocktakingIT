@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KropkaNetApi", "KropkaNetApi.csproj", "{8206CF76-A6D9-4443-BDB8-E3FB201E1C4B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8206CF76-A6D9-4443-BDB8-E3FB201E1C4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8206CF76-A6D9-4443-BDB8-E3FB201E1C4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8206CF76-A6D9-4443-BDB8-E3FB201E1C4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8206CF76-A6D9-4443-BDB8-E3FB201E1C4B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {98619AB1-88E0-4747-A8FF-669C80BECDC5}
+	EndGlobalSection
+EndGlobal
