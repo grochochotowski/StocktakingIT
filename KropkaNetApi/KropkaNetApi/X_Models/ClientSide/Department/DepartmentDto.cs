@@ -13,7 +13,6 @@ namespace KropkaNetApi.X_Models.ClientSide.Department
         public virtual CompanyDto Company { get; set; }
 
 
-
         public virtual ICollection<OrderDto>? Orders { get; set; }
     }
 }

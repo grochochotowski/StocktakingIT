@@ -1,4 +1,3 @@
-
 namespace KropkaNetApi
 {
     public class Program

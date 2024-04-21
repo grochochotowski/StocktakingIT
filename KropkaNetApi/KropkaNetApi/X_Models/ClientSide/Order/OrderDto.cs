@@ -7,7 +7,6 @@ namespace KropkaNetApi.X_Models.ClientSide.Order
     public class OrderDto
     {
         public int Id { get; set; }
-
         public DateTime DateOfOrderExecution { get; set; }
 
 
@@ -17,6 +16,7 @@ namespace KropkaNetApi.X_Models.ClientSide.Order
 
         public int StocktakingId { get; set; }
         public virtual StocktakingDto Stocktaking { get; set; }
+
 
         public virtual ICollection<UserDto>? Users { get; set; }
     }

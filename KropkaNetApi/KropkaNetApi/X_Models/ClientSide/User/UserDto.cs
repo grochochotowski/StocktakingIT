@@ -13,6 +13,7 @@ namespace KropkaNetApi.X_Models.ClientSide.User
         public string PhoneNumber { get; set; }
         public string? Note { get; set; }
 
+
         public virtual ICollection<OrderDto>? Orderds { get; set; }
         public virtual ICollection<CompanyDto>? Companies { get; set; }
     }
