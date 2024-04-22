@@ -1,6 +1,7 @@
 ﻿using KropkaNetApi.X_Entities.Objects.ClientSide;
 using KropkaNetApi.X_Models.CompanySide.Product;
 using KropkaNetApi.Y_Services.CompanySide;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNetApi.Y_Controllers.CompanySide
@@ -39,6 +40,23 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         {
             var productList = _productService.GetList(filter);
             return Ok(productList);
+        }
+
+        // DELETE: /api/kropkaNet/product/delete/{id}
+        [HttpDelete("delete/{id}")]
+        public ActionResult Delete([FromRoute] int id)
+        {
+            try
+            {
+                var result = _productService.Delete(id);
+
+                if (result == -1) return NotFound("Product does not exist");
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
