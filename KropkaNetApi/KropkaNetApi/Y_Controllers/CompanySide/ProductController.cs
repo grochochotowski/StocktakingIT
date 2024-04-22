@@ -43,20 +43,13 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         }
 
         // DELETE: /api/kropkaNet/product/delete/{id}
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("delete")]
         public ActionResult Delete([FromRoute] int id)
         {
-            try
-            {
-                var result = _productService.Delete(id);
+            var result = _productService.Delete(id);
 
-                if (result == -1) return NotFound("Product does not exist");
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            if (result == -1) return NotFound("Product does not exist");
+            return NoContent();
         }
     }
 }
