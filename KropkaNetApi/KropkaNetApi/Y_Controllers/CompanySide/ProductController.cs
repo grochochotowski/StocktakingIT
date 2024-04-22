@@ -19,7 +19,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
 
         // POST: /api/kropkaNet/product/create
-        [HttpGet("create")]
+        [HttpPost("create")]
         public ActionResult<int> Create([FromBody] CreateProductDto dto)
         {
             var createdProductId = _productService.Create(dto);
