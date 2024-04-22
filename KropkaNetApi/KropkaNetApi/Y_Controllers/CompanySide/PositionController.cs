@@ -17,7 +17,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
 
 
-        // GET /api/kropkaNet/position/all
+        // GET: /api/kropkaNet/position/all
         [HttpGet("all")]
         public ActionResult<IEnumerable<PositionDto>> GetAll()
         {

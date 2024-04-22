@@ -22,6 +22,8 @@ namespace KropkaNetApi.Y_Services.CompanySide
             _mapper = mapper;
         }
 
+
+
         // POST: create product
         public int Create(CreateProductDto dto)
         {
@@ -32,7 +34,6 @@ namespace KropkaNetApi.Y_Services.CompanySide
 
             return product.Id;
         }
-
 
         // GET: get list of products
         public IEnumerable<ProductListDto> GetList(string filter)
