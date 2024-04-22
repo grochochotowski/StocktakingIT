@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using KropkaNetApi.X_Entities;
+using KropkaNetApi.X_Entities.Objects.CompanySide;
 using KropkaNetApi.X_Models.CompanySide.Product;
 
 namespace KropkaNetApi.Y_Services.CompanySide
 {
     public interface IProductService
     {
+        int Create(CreateProductDto dto);
         IEnumerable<ProductListDto> GetList(string filter);
     }
 
@@ -20,8 +22,19 @@ namespace KropkaNetApi.Y_Services.CompanySide
             _mapper = mapper;
         }
 
+        // POST: create product
+        public int Create(CreateProductDto dto)
+        {
+            var product = _mapper.Map<Product>(dto);
 
-        // Get product list
+            _context.Products.Add(product);
+            _context.SaveChanges();
+
+            return product.Id;
+        }
+
+
+        // GET: get list of products
         public IEnumerable<ProductListDto> GetList(string filter)
         {
             var productList = _context.Products
