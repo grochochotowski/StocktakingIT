@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNetApi.Y_Controllers.CompanySide
 {
-    [Route("api/kropkaNet/employee/position")]
+    [Route("api/kropkaNet/position")]
     [ApiController]
     public class PositionController : ControllerBase
     {
@@ -17,7 +17,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
 
 
-        // GET /api/kropkaNet/employee/position/all
+        // GET: /api/kropkaNet/position/all
         [HttpGet("all")]
         public ActionResult<IEnumerable<PositionDto>> GetAll()
         {

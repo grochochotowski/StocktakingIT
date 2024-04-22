@@ -21,7 +21,9 @@ namespace KropkaNetApi.Y_Services.CompanySide
             _mapper = mapper;
         }
 
-        // Get all postions
+
+
+        // GET: Get all postions
         public IEnumerable<PositionDto> GetAll()
         {
             var positions = _context.Positions.ToList();

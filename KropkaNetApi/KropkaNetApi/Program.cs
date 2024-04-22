@@ -23,6 +23,7 @@ namespace KropkaNetApi
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddScoped<IPositionService, PositionService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
 
             var app = builder.Build();
             var scope = app.Services.CreateScope();
