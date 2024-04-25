@@ -19,22 +19,22 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: <WelcomePage />,
-        errorElement: <NotFoundPage />
+        errorElement: <NotFoundPage />,
     },
     {
         path: '/login',
-        element: <LoginPage  />
+        element: <LoginPage  />,
     },
     {
         path: '/register',
-        element: <RegisterPage  />
+        element: <RegisterPage  />,
     }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <Suspense fallback={Fallback}>
-        <React.StrictMode>
+    <React.StrictMode>
+        <Suspense fallback={<Fallback />}>
             <RouterProvider router={router}/>
-        </React.StrictMode>
-    </Suspense>
+        </Suspense>
+    </React.StrictMode>
 )
