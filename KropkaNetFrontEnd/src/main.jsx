@@ -1,13 +1,15 @@
-import React from 'react'
+/* eslint-disable react-refresh/only-export-components */
+import React, { Suspense, lazy } from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 
-import WelcomePage  from './pages/BeginPages/WelcomePage'
-import LoginPage  from './pages/BeginPages/LoginPage'
-import RegisterPage from './pages/BeginPages/RegisterPage'
+const WelcomePage = lazy(() => import('./pages/BeginPages/WelcomePage'));
+const LoginPage = lazy(() => import('./pages/BeginPages/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/BeginPages/RegisterPage'));
 
 import NotFoundPage from './pages/ErrorPages/NotFoundPage'
+import Fallback from './pages/ErrorPages/Fallback'
 
 
 import './styles/index.css'
@@ -30,7 +32,9 @@ const router = createBrowserRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-        <RouterProvider router={router}/>
-    </React.StrictMode>,
+    <Suspense fallback={Fallback}>
+        <React.StrictMode>
+            <RouterProvider router={router}/>
+        </React.StrictMode>
+    </Suspense>
 )
