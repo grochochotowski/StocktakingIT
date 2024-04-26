@@ -4,13 +4,16 @@
     font-weight: 400;
 
     color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
+    color: var(--clr-txt-dark);
     background-color: #242424;
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    --clr-txt-dark: rgba(255, 255, 255, 0.87);
+    --clr-txt-light: #213547;
 
     --clr-light-1: #ffffff;
     --clr-light-2: #f9f9f9;
@@ -47,9 +50,13 @@ h6 {
     font-size: 1rem;
 }
 
+a {
+    color: var(--clr-txt-dark);
+}
+
 @media (prefers-color-scheme: light) {
     :root {
-        color: #213547;
+        color: var(--clr-txt-light);
         background-color: #ffffff;
     }
 }
