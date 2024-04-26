@@ -3,7 +3,8 @@ nav {
     height: 100vh;
 
     display: flex;
-    place-items: center;
+    flex-direction: column;
+    justify-content: center;
 
     box-shadow: 2px 0 5px 0 rgba(0, 0, 0, 0.5);
 }
@@ -12,7 +13,7 @@ nav * {
     transition: 150ms ease-in-out;
 }
 nav .options {
-    margin: 0;
+    margin: auto 0;
     padding: 0;
 
     width: 100%;
@@ -43,6 +44,34 @@ nav h4 {
     text-align: center;
 
     transform: translateX(-100%);
+    opacity: 0;
+}
+
+nav .bottom-row {
+    margin-top: auto;
+
+    height: 20vh;
+    
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+
+    transform: translateX(-100%);
+    opacity: 0;
+}
+nav .bottom-row button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: transparent;
+    border: none;
+
+    cursor: pointer;
+}
+nav .bottom-row button h6 {
+    margin: 0;
+    transform: translateY(200%);
     opacity: 0;
 }
 
