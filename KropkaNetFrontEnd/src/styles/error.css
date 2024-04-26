@@ -1,0 +1,99 @@
+/* ===== ERROR PAGES =====*/
+.error-container {
+    margin-top: 10vh;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.error-container h1 {
+    font-size: 10rem;
+    margin: 0;
+}
+.error-container h2 {
+    font-size: 3rem;
+    margin: 0;
+}
+.error-container p {
+    font-size: 1.5rem;
+    margin: 0;
+}
+.error-container a {
+    margin-top: 2vh;
+}
+
+/* ===== FALLBACK =====*/
+.fallback {
+    width: 100%;
+
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.fallback .bg {
+    width: 20vw;
+    aspect-ratio: 1;
+
+    position: absolute;
+
+    border-radius: 25px;
+    border: 9px solid var(--clr-txt-dark);
+
+    z-index: 10;
+
+    animation: rotate 2.5s infinite ease-in-out;
+}
+
+.fallback .text {
+    padding: 2vh 0;
+
+    width: 50vw;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+
+    background-color: var(--clr-bg-dark-main);
+
+    z-index: 12;
+}
+
+.loader {
+    text-align: center;
+}
+
+.loader::after {
+    content: "Loading page";
+    animation: loading 2.5s infinite linear;
+}
+
+@keyframes loading {
+    25% { content: "Loading page."; }
+    50% { content: "Loading page.."; }
+    75% { content: "Loading page..."; }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+@media (prefers-color-scheme: light) {
+    .fallback .text {
+      background-color: var(--clr-light-800);
+    }
+    .fallback .bg {
+        border: 5px solid var(--clr-txt-light);
+    }
+}

@@ -1,0 +1,108 @@
+nav {
+    width: 5vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    box-shadow: 2px 0 5px 0 rgba(0, 0, 0, 0.5);
+}
+nav,
+nav * {
+    transition: 150ms ease-in-out;
+}
+
+/* ===== OPTIONS =====*/
+nav .options {
+    margin: auto 0;
+    padding: 0;
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    list-style: none;
+}
+nav a {
+    padding: 0 1vw;
+
+    width: 100%;
+    
+    box-sizing: border-box;
+    display: flex;
+}
+nav h2 {
+    width: 3vw;
+
+    text-align: center;
+}
+nav h4 {
+    width: 0;
+    
+    text-align: center;
+
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+/* ===== BOTTOM-ROW =====*/
+nav .bottom-row {
+    margin-top: auto;
+
+    height: 20vh;
+    
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+
+    transform: translateX(-100%);
+    opacity: 0;
+}
+nav .bottom-row button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: transparent;
+    border: none;
+
+    cursor: pointer;
+}
+nav .bottom-row button h6 {
+    margin: 0;
+    transform: translateY(200%);
+    opacity: 0;
+}
+
+
+
+/* ===== OPTIONS ::HOVER =====*/
+nav:hover {
+    width: 12vw;
+}
+nav a:hover {
+    color: var(--clr-acc-dark-700);
+}
+nav a:hover h4 {
+    width: 7vw;
+    
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* ===== BOTTOW-ROW ::HOVER =====*/
+nav:hover .bottom-row {
+    transform: translateX(0);
+    opacity: 1;
+}
+nav .bottom-row button:hover * {
+    color: var(--clr-acc-dark-700);
+}
+nav .bottom-row button:hover h6 {
+    transform: translateY(0);
+    opacity: 1;
+}
