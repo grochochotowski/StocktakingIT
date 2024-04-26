@@ -40,6 +40,22 @@ nav h2 {
 nav h4 {
     width: 0;
     
-    transform: translateX(-150%);
+    text-align: center;
+
+    transform: translateX(-100%);
     opacity: 0;
+}
+
+nav:hover {
+    width: 12vw;
+}
+
+nav a:hover {
+    color: var(--clr-acc-dark-700);
+}
+nav a:hover h4 {
+    width: 7vw;
+    
+    transform: translateX(0);
+    opacity: 1;
 }

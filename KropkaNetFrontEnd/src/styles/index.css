@@ -15,6 +15,13 @@
     --clr-txt-dark: rgba(255, 255, 255, 0.87);
     --clr-txt-light: #213547;
 
+    --clr-acc-dark-200: #2C430F;
+    --clr-acc-dark-300: #5A644E;
+    --clr-acc-dark-400: #879675;
+    --clr-acc-dark-600: #588919;
+    --clr-acc-dark-700: #9DFF1E;
+    --clr-acc-dark-800: #E6FFC5;
+
     --clr-light-1: #ffffff;
     --clr-light-2: #f9f9f9;
     --clr-dark-3: #213547;
@@ -52,6 +59,7 @@ h6 {
 
 a {
     color: var(--clr-txt-dark);
+    text-decoration: none;
 }
 
 @media (prefers-color-scheme: light) {
