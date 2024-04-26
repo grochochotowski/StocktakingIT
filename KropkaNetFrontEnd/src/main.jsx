@@ -4,12 +4,14 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 
-const WelcomePage = lazy(() => import('./pages/BeginPages/WelcomePage'));
-const LoginPage = lazy(() => import('./pages/BeginPages/LoginPage'));
-const RegisterPage = lazy(() => import('./pages/BeginPages/RegisterPage'));
+const WelcomePage = lazy(() => import('./pages/BeginPages/WelcomePage'))
+const LoginPage = lazy(() => import('./pages/BeginPages/LoginPage'))
+const RegisterPage = lazy(() => import('./pages/BeginPages/RegisterPage'))
 
-import NotFoundPage from './pages/ErrorPages/NotFoundPage'
-import Fallback from './pages/ErrorPages/Fallback'
+const Unauthorized = lazy(() => import('./pages/ErrorPages/Unauthorized'))
+const Forbidden = lazy(() => import('./pages/ErrorPages/Forbidden'))
+const NotFoundPage = lazy(() => import('./pages/ErrorPages/NotFoundPage'))
+const Fallback = lazy(() => import('./pages/ErrorPages/Fallback'))
 
 
 import './styles/index.css'
@@ -28,7 +30,19 @@ const router = createBrowserRouter([
     {
         path: '/register',
         element: <RegisterPage  />,
-    }
+    },
+    {
+        path: '/401',
+        element: <Unauthorized  />,
+    },
+    {
+        path: '/403',
+        element: <Forbidden  />,
+    },
+    {
+        path: '/404',
+        element: <NotFoundPage  />,
+    },
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
