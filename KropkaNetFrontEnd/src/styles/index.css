@@ -18,6 +18,7 @@
     --clr-acc-dark-200: #2C430F;
     --clr-acc-dark-300: #5A644E;
     --clr-acc-dark-400: #879675;
+    --clr-acc-dark-500: #426613;
     --clr-acc-dark-600: #588919;
     --clr-acc-dark-700: #9DFF1E;
     --clr-acc-dark-800: #E6FFC5;
@@ -27,6 +28,10 @@
     --clr-dark-3: #213547;
     --clr-dark-4: #1a1a1a;
     --clr-dark-5: #242424;
+}
+
+* {
+    transition: 150ms ease-in-out;
 }
 
 html, body {
@@ -62,6 +67,24 @@ h6 {
 a {
     color: var(--clr-txt-dark);
     text-decoration: none;
+}
+
+button {
+    padding: 1vh 0;
+    width: 10vw;
+
+    font-size: 1.5rem;
+
+    outline: none;
+    border-radius: 10px;
+    border: 2px solid var(--clr-txt-dark);
+
+    background-color: #242424;
+
+    cursor: pointer;
+}
+button:hover {
+    background-color: var(--clr-acc-dark-500);
 }
 
 @media (prefers-color-scheme: light) {
