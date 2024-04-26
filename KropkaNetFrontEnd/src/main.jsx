@@ -43,6 +43,10 @@ const router = createBrowserRouter([
         path: '/404',
         element: <NotFoundPage  />,
     },
+    {
+        path: '/fallback',
+        element: <Fallback  />,
+    },
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
