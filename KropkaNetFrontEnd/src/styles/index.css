@@ -69,7 +69,8 @@ a {
     text-decoration: none;
 }
 
-button {
+button,
+.button {
     padding: 1vh 0;
     width: 10vw;
 
@@ -81,9 +82,11 @@ button {
 
     background-color: #242424;
 
+    text-align: center;
     cursor: pointer;
 }
-button:hover {
+button:hover,
+.button:hover {
     background-color: var(--clr-acc-dark-500);
 }
 
