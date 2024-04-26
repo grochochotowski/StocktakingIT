@@ -49,7 +49,6 @@ nav h4 {
 nav:hover {
     width: 12vw;
 }
-
 nav a:hover {
     color: var(--clr-acc-dark-700);
 }
