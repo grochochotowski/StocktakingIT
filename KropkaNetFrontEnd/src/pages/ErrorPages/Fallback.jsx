@@ -2,8 +2,11 @@ import '../../styles/error.css'
 
 function Fallback() {
     return (
-        <div className="error-container">
-            <h1>Loading ...</h1>
+        <div className="fallback">
+            <div className="text">
+                <h1 className="loader"></h1>
+            </div>
+            <div className="bg"></div>
         </div>
     )
 }
