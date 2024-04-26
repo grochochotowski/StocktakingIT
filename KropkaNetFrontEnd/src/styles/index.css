@@ -12,9 +12,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    nav:hover {
-        width: 10vw;
-    }
     --clr-light-1: #ffffff;
     --clr-light-2: #f9f9f9;
     --clr-dark-3: #213547;

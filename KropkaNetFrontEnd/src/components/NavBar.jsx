@@ -4,7 +4,7 @@ import '../styles/navbar.css'
 
 function NavBar() {
     return (
-        <nav className='closed'>
+        <nav>
             <div className='options'>
                 <Link to='/'>
                     <h2><i className="fa-solid fa-house"></i></h2>

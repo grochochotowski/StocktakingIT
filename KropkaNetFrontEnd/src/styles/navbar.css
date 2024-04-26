@@ -1,0 +1,45 @@
+nav {
+    width: 5vw;
+    height: 100vh;
+
+    display: flex;
+    place-items: center;
+
+    box-shadow: 2px 0 5px 0 rgba(0, 0, 0, 0.5);
+}
+nav,
+nav * {
+    transition: 150ms ease-in-out;
+}
+nav .options {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    list-style: none;
+}
+nav a {
+    padding: 0 1vw;
+
+    width: 100%;
+    
+    box-sizing: border-box;
+    display: flex;
+}
+nav h2 {
+    width: 3vw;
+
+    text-align: center;
+}
+nav h4 {
+    width: 0;
+    
+    transform: translateX(-150%);
+    opacity: 0;
+}
