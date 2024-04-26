@@ -5,7 +5,7 @@
 
     color-scheme: light dark;
     color: var(--clr-txt-dark);
-    background-color: #242424;
+    background-color: var(--clr-bg-dark-main);
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -23,7 +23,9 @@
     --clr-acc-dark-700: #9DFF1E;
     --clr-acc-dark-800: #E6FFC5;
 
-    --clr-light-1: #ffffff;
+    --clr-bg-dark-main: #242424;
+    --clr-bg-light-main: #ffffff;
+
     --clr-light-2: #f9f9f9;
     --clr-dark-3: #213547;
     --clr-dark-4: #1a1a1a;
@@ -80,7 +82,7 @@ button,
     border-radius: 10px;
     border: 2px solid var(--clr-txt-dark);
 
-    background-color: #242424;
+    background-color: var(--clr-bg-dark-main);
 
     text-align: center;
     cursor: pointer;
@@ -93,6 +95,6 @@ button:hover,
 @media (prefers-color-scheme: light) {
     :root {
         color: var(--clr-txt-light);
-        background-color: #ffffff;
+        background-color: var(--clr-bg-light-main);
     }
 }
