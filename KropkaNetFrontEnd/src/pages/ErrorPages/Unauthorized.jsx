@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import '../../styles/error.css'
 
 function Unauthorized() {
@@ -6,7 +8,7 @@ function Unauthorized() {
             <h1>401</h1>
             <h2>Unauthorized</h2>
             <p>Please log in before continuing</p>
-            <button>HOME</button>
+            <Link to="/" className="button">HOME</Link>
         </div>
     )
 }

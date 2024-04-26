@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import '../../styles/error.css'
 
 function Forbidden() {
@@ -6,7 +8,7 @@ function Forbidden() {
             <h1>403</h1>
             <h2>Forbidden</h2>
             <p>You are not allowed to be on this page</p>
-            <button>HOME</button>
+            <Link to="/" className="button">HOME</Link>
         </div>
     )
 }
