@@ -12,11 +12,42 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
+    nav:hover {
+        width: 10vw;
+    }
     --clr-light-1: #ffffff;
     --clr-light-2: #f9f9f9;
     --clr-dark-3: #213547;
     --clr-dark-4: #1a1a1a;
     --clr-dark-5: #242424;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+}
+#root {
+    width: 100vw;
+    height: 100vh;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+h2 {
+    font-size: 2rem;
+}
+h3 {
+    font-size: 1.75rem;
+}
+h4 {
+    font-size: 1.5rem;
+}
+h5 {
+    font-size: 1.15rem;
+}
+h6 {
+    font-size: 1rem;
 }
 
 @media (prefers-color-scheme: light) {
