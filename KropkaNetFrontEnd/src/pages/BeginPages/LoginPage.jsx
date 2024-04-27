@@ -8,6 +8,7 @@ function LoginPage() {
     const login = () => {
         alert("Log in")
     }
+
     return (
         <div className="main-container account">
             <div className="form-header">
@@ -25,7 +26,7 @@ function LoginPage() {
                     <div className="input-container">
                         <label htmlFor="password">Password:</label>
                         <input
-                            type="text"
+                            type="password"
                             id="password"
                         />
                     </div>
