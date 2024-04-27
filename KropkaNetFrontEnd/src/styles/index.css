@@ -39,6 +39,8 @@
 html, body {
     padding: 0;
     margin: 0;
+
+    overflow: hidden;
 }
 #root {
     width: 100vw;
@@ -104,7 +106,7 @@ button:hover,
     justify-content: center;
     align-items: center;
 
-    overflow-y: hidden;
+    overflow-x: hidden;
 
     background: radial-gradient(circle, rgba(9,9,121,0) 70%, rgba(66,102,19,0.1) 100%); 
 }
