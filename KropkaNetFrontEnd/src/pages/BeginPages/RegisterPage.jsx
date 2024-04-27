@@ -22,14 +22,14 @@ function RegisterPage() {
                             type="text"
                             id="firstName"
                         />
-                    </div>
+                    </div> {/* name */}
                     <div className="input-container">
                         <label htmlFor="lastName">Surname:</label>
                         <input
                             type="text"
                             id="password"
                         />
-                    </div>
+                    </div> {/* surname */}
                 </div>
                 <div className="layer">
                     <div className="input-container">
@@ -38,21 +38,21 @@ function RegisterPage() {
                             type="text"
                             id="login"
                         />
-                    </div>
+                    </div> {/* login */}
                     <div className="input-container">
                         <label htmlFor="password">Password:</label>
                         <input
                             type="password"
                             id="password"
                         />
-                    </div>
+                    </div> {/* password */}
                     <div className="input-container">
                         <label htmlFor="confirmPassword">Confirm password:</label>
                         <input
                             type="password"
                             id="confirmPassword"
                         />
-                    </div>
+                    </div> {/* confirm password */}
                 </div>
                 <div className="finish">
                     <p>Already have an account? <Link to="/login">Login</Link> instead.</p>

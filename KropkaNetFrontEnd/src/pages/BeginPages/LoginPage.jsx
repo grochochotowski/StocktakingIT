@@ -22,14 +22,14 @@ function LoginPage() {
                             type="text"
                             id="login"
                         />
-                    </div>
+                    </div> {/* login */}
                     <div className="input-container">
                         <label htmlFor="password">Password:</label>
                         <input
                             type="password"
                             id="password"
                         />
-                    </div>
+                    </div> {/* password */}
                 </div>
                 <div className="finish">
                     <p>Do not have an account? <Link to="/register">Register</Link> for free.</p>
