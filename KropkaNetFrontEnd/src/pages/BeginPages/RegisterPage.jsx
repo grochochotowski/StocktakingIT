@@ -55,7 +55,7 @@ function RegisterPage() {
                     </div> {/* confirm password */}
                 </div>
                 <div className="finish">
-                    <p>Already have an account? <Link to="/login">Login</Link> instead.</p>
+                    <p>Already have an account? <Link to="/login">Log in</Link> instead.</p>
                     <button onClick={register}>Register</button>
                 </div>
             </form>
