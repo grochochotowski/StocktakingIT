@@ -32,6 +32,11 @@ const router = createBrowserRouter([
         element: <RegisterPage  />,
     },
     {
+        path: '/dashboard',
+        element: <WelcomePage />,
+        errorElement: <NotFoundPage />,
+    },
+    {
         path: '/401',
         element: <Unauthorized  />,
     },
