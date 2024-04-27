@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 
 const WelcomePage = lazy(() => import('./pages/BeginPages/WelcomePage'))
+const DashboardPage = lazy(() => import('./pages/BeginPages/DashboardPage'))
 const LoginPage = lazy(() => import('./pages/BeginPages/LoginPage'))
 const RegisterPage = lazy(() => import('./pages/BeginPages/RegisterPage'))
 
@@ -33,8 +34,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <WelcomePage />,
-        errorElement: <NotFoundPage />,
+        element: <DashboardPage />,
     },
     {
         path: '/401',
