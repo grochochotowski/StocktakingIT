@@ -1,3 +1,21 @@
+.main-container.account::after {
+    content: '';
+    width: 150%;
+    height: 150%;
+
+    position: absolute;
+
+    background: url('../assets/lock.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%;
+    
+    transform: rotate(15deg);
+
+    opacity: 0.1;
+
+    z-index: -10;
+}
 /* ===== LAYOUT ===== */
 form {
     width: 70%;

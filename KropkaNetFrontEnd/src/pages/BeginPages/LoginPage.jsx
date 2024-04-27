@@ -9,7 +9,7 @@ function LoginPage() {
         alert("Log in")
     }
     return (
-        <div className="main-container">
+        <div className="main-container account">
             <div className="form-header">
                 <h1>Log in to your account</h1>
             </div>
