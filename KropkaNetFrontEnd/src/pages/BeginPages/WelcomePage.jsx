@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import logo from '../../assets/logo.png'
 
 import '../../styles/index.css'
+import '../../styles/welcome.css'
 
 function WelcomePage() {
     return (
@@ -15,7 +16,6 @@ function WelcomePage() {
                     <Link to="/login" className="button">Log in</Link>
                     <Link to="/register" className="button">Register</Link>
                 </div>
-                <div className="bg"></div>
             </main>
         </div>
     )
