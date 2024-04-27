@@ -14,12 +14,12 @@
 
     opacity: 0.1;
 
+    overflow-y: hidden;
     z-index: -10;
 }
 /* ===== LAYOUT ===== */
 form {
     width: 70%;
-    height: 70%;
 
     display: flex;
     flex-direction: column;
@@ -36,6 +36,12 @@ form {
 
     gap: 3vh;
 }
+.layer.row {
+    flex-direction: row;
+}
+.layer.row * {
+    flex-basis: 50%;
+}
 .input-container {
     display: flex;
     flex-direction: column;
@@ -45,7 +51,6 @@ form {
 
 .form-header {
     width: 70%;
-    height: 30%;
 
     display: flex;
     justify-content: center;
