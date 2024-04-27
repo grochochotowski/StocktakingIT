@@ -91,3 +91,6 @@ input {
 input:focus {
     background-color: var(--clr-acc-dark-100);
 }
+input.warning {
+    border-color: var(--clr-warning-dark);
+}
