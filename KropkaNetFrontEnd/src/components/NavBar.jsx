@@ -2,6 +2,8 @@ import {Link} from 'react-router-dom'
 
 import '../styles/navbar.css'
 
+import logo from '../assets/logo.png'
+
 function NavBar() {
 
     const handleSettings = () => {
@@ -13,6 +15,9 @@ function NavBar() {
 
     return (
         <nav>
+            <div className="logo-container">
+                <img src={logo} alt="kropka-net-logo" />
+            </div>
             <div className='options'>
                 <Link to='/'>
                     <h2><i className="fa-solid fa-house"></i></h2>
