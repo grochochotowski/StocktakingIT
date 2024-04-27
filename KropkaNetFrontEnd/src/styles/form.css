@@ -1,0 +1,72 @@
+/* ===== LAYOUT ===== */
+form {
+    width: 70%;
+    height: 70%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    gap: 5vh
+}
+.layer {
+    width: 50%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3vh;
+}
+.input-container {
+    display: flex;
+    flex-direction: column;
+    
+    gap: 1vh;
+}
+
+.form-header {
+    width: 70%;
+    height: 30%;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.finish {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+form p a {
+    text-decoration: underline;
+}
+form p a:hover {
+    color: var(--clr-acc-dark-700);
+}
+
+/* ===== ELEMENTS ===== */
+label {
+    display: inline-block;
+    user-select: none;
+    font-size: 1.25rem;
+}
+input {
+    padding: 0.4rem;
+
+    height: 2rem;
+
+    border-radius: 7px;
+    outline: none;
+    border: none;
+
+    background-color: var(--clr-dark-100);
+    border: 2px solid var(--clr-txt-dark);
+
+    font-size: 1.1rem;
+}
+input:focus {
+    background-color: var(--clr-acc-dark-200);
+}
