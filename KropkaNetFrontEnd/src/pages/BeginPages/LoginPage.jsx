@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import '../../styles/index.css'
 import '../../styles/form.css'
 
@@ -8,6 +10,9 @@ function LoginPage() {
     }
     return (
         <div className="main-container">
+            <div className="form-header">
+                <h1>Log in to your account</h1>
+            </div>
             <form>
                 <div className="layer">
                     <div className="input-container">
@@ -25,7 +30,10 @@ function LoginPage() {
                         />
                     </div>
                 </div>
-                <button onClick={login}>Log in</button>
+                <div className="finish">
+                    <p>Do not have an account? <Link to="/register">Register</Link> for free.</p>
+                    <button onClick={login}>Log in</button>
+                </div>
             </form>
         </div>
     )
