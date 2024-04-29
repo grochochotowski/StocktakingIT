@@ -25,10 +25,11 @@ function LoginPage() {
     }
 
     async function login() {
+        console.log(inputs.login)
+        console.log(inputs.password)
         try {
             const response = await instance().post('/account/login', JSON.stringify(inputs), {
-                headers: {'Content-Type': 'application/json'},
-                withCredentials: true
+                headers: {'Content-Type': 'application/json'}
             });
             const token = response?.data?.token
             setAuth({inputs, token})
