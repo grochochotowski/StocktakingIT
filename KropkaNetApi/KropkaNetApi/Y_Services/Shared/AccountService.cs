@@ -13,6 +13,7 @@ namespace KropkaNetApi.Y_Services.Shared
 {
     public interface IAccountService
     {
+        void Register(RegisterDto dto);
         string GenerateToken(LoginDto dto, HttpContext httpContext);
     }
 
@@ -30,6 +31,21 @@ namespace KropkaNetApi.Y_Services.Shared
         }
 
 
+
+        public void Register(RegisterDto dto)
+        {
+            var newAccount = new Account()
+            {
+                Login = dto.Login
+            };
+
+            var hashedPassword = _passwordHasher.HashPassword(newAccount, dto.Password);
+
+            newAccount.HashedPassword = hashedPassword;
+
+            _context.Accounts.Add(newAccount);
+            _context.SaveChanges();
+        }
 
         public string GenerateToken(LoginDto dto, HttpContext httpContext)
         {

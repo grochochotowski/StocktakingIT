@@ -16,6 +16,16 @@ namespace KropkaNetApi.Y_Controllers.Shared
             _accountService = accountService;
         }
 
+
+
+        [HttpPost("register")]
+        [Authorize]
+        public ActionResult Register([FromBody] RegisterDto dto)
+        {
+            _accountService.Register(dto);
+            return Ok();
+        }
+
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginDto dto)
         {
