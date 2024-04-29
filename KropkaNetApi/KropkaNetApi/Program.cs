@@ -13,11 +13,22 @@ namespace KropkaNetApi
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
             // Add services to the container.
+            builder.Services.AddDbContext<StocktakingContext>(o => o.UseSqlServer(configuration.GetConnectionString("SystemDbConnection")));
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("FrontEndClient", builder =>
+                {
+                    builder.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithOrigins(configuration["AllowedOrigins"]);
+                });
+            });
 
             builder.Services.AddControllers();
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.AddScoped<PositionSeeder>();
-            builder.Services.AddDbContext<StocktakingContext>(o => o.UseSqlServer(configuration.GetConnectionString("SystemDbConnection")));
             
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -30,6 +41,8 @@ namespace KropkaNetApi
             var seeder = scope.ServiceProvider.GetRequiredService<PositionSeeder>();
 
             // Configure the HTTP request pipeline.
+            app.UseCors("FrontEndClient");
+
             seeder.Seed();
 
             if (app.Environment.IsDevelopment())
