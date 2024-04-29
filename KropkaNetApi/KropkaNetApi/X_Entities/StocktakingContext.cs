@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using KropkaNetApi.X_Entities.Objects.ClientSide;
 using KropkaNetApi.X_Entities.Objects.CompanySide;
+using KropkaNetApi.X_Entities.Objects.Shared;
 
 namespace KropkaNetApi.X_Entities
 {
@@ -20,6 +21,8 @@ namespace KropkaNetApi.X_Entities
         public DbSet<Stocktaking> Stocktakings { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<WarehouseProduct> WarehouseProduct { get; set; }
+
+        public DbSet<Account> Accounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
