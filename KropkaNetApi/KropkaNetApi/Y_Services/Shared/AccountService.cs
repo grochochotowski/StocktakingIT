@@ -8,6 +8,7 @@ using System.Text;
 using System;
 using KropkaNetApi.X_Entities;
 using KropkaNetApi.Exceptions;
+using KropkaNet.Migrations;
 
 namespace KropkaNetApi.Y_Services.Shared
 {
@@ -38,6 +39,11 @@ namespace KropkaNetApi.Y_Services.Shared
             {
                 Login = dto.Login
             };
+
+            if (dto.Password != dto.ConfirmPassword)
+            {
+                throw new BadRequestException("Passwords do not match");
+            }
 
             var hashedPassword = _passwordHasher.HashPassword(newAccount, dto.Password);
 
