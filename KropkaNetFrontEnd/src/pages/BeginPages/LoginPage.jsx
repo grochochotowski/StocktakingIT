@@ -1,4 +1,6 @@
+
 import { Link } from 'react-router-dom'
+import useAuth from '../../hooks/useAuth'
 import instance from '../../api/axios'
 
 import '../../styles/index.css'
@@ -7,6 +9,8 @@ import { useState } from 'react'
 
 function LoginPage() {
 
+    const { setAuth } = useAuth();
+    
     const [inputs, setInputs] = useState({
         "login" : "",
         "password" : ""
