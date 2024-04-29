@@ -5,7 +5,7 @@ import NavBar from '../../components/NavBar'
 
 function DashboardPage() {
 
-    const [restult, setResult] = useState([])
+    const [result, setResult] = useState([])
 
     async function fetchData() {
         let apiCall = `kropkaNet/product/list`
@@ -24,7 +24,11 @@ function DashboardPage() {
     return (
         <>
             <NavBar />
-            <div>DashboardPage</div>
+            <div>
+                {result.map((item, key) => (
+                    <p key={key}>{item.id} - {item.name} - {item.category}</p>
+                ))}
+            </div>
         </>
     )
 }
