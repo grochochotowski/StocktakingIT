@@ -1,11 +1,10 @@
-
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import instance from '../../api/axios'
 
 import '../../styles/index.css'
 import '../../styles/form.css'
-import { useState } from 'react'
 
 function LoginPage() {
 
