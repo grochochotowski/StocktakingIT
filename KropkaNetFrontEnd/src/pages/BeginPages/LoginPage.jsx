@@ -2,8 +2,23 @@ import { Link } from 'react-router-dom'
 
 import '../../styles/index.css'
 import '../../styles/form.css'
+import { useState } from 'react'
 
 function LoginPage() {
+
+    const [inputs, setInputs] = useState({
+        "login" : "",
+        "password" : ""
+    })
+
+    function handleInputChange(inputId) {
+        setInputs(prev => (
+            {
+                ...prev,
+                [inputId]: document.getElementById(inputId).value
+            }
+        ))
+    }
 
     const login = () => {
         alert("Log in")
@@ -21,6 +36,8 @@ function LoginPage() {
                         <input
                             type="text"
                             id="login"
+                            onChange={() => handleInputChange("login")}
+                            value={inputs.login}
                         />
                     </div> {/* login */}
                     <div className="input-container">
@@ -28,6 +45,8 @@ function LoginPage() {
                         <input
                             type="password"
                             id="password"
+                            onChange={() => handleInputChange("password")}
+                            value={inputs.password}
                         />
                     </div> {/* password */}
                 </div>
