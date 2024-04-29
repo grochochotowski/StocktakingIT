@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import instance from '../../api/axios'
 
 import '../../styles/index.css'
 import '../../styles/form.css'
@@ -20,8 +21,17 @@ function LoginPage() {
         ))
     }
 
-    const login = () => {
-        alert("Log in")
+    async function login() {
+        try {
+            const response = await instance().post('/account/login', JSON.stringify(inputs), {
+                headers: {'Content-Type': 'application/json'},
+                withCredentials: true
+            });
+            const token = response?.data?.token
+            setAuth({inputs, token})
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return (
