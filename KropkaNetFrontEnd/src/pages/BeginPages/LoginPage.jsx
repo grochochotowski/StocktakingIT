@@ -1,12 +1,41 @@
+
 import { Link } from 'react-router-dom'
+import useAuth from '../../hooks/useAuth'
+import instance from '../../api/axios'
 
 import '../../styles/index.css'
 import '../../styles/form.css'
+import { useState } from 'react'
 
 function LoginPage() {
 
-    const login = () => {
-        alert("Log in")
+    const { setAuth } = useAuth();
+    
+    const [inputs, setInputs] = useState({
+        "login" : "",
+        "password" : ""
+    })
+
+    function handleInputChange(inputId) {
+        setInputs(prev => (
+            {
+                ...prev,
+                [inputId]: document.getElementById(inputId).value
+            }
+        ))
+    }
+
+    async function login() {
+        try {
+            const response = await instance().post('/account/login', JSON.stringify(inputs), {
+                headers: {'Content-Type': 'application/json'},
+                withCredentials: true
+            });
+            const token = response?.data?.token
+            setAuth({inputs, token})
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return (
@@ -21,6 +50,8 @@ function LoginPage() {
                         <input
                             type="text"
                             id="login"
+                            onChange={() => handleInputChange("login")}
+                            value={inputs.login}
                         />
                     </div> {/* login */}
                     <div className="input-container">
@@ -28,6 +59,8 @@ function LoginPage() {
                         <input
                             type="password"
                             id="password"
+                            onChange={() => handleInputChange("password")}
+                            value={inputs.password}
                         />
                     </div> {/* password */}
                 </div>

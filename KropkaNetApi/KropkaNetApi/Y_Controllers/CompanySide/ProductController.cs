@@ -1,6 +1,7 @@
 ﻿using KropkaNetApi.X_Entities.Objects.ClientSide;
 using KropkaNetApi.X_Models.CompanySide.Product;
 using KropkaNetApi.Y_Services.CompanySide;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 {
     [Route("api/kropkaNet/product")]
     [ApiController]
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;

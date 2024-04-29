@@ -1,11 +1,13 @@
 ﻿using KropkaNetApi.X_Models.CompanySide.Position;
 using KropkaNetApi.Y_Services.CompanySide;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNetApi.Y_Controllers.CompanySide
 {
     [Route("api/kropkaNet/position")]
     [ApiController]
+    [Authorize]
     public class PositionController : ControllerBase
     {
         private readonly IPositionService _positionService;
