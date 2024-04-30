@@ -24,7 +24,7 @@ function LoginPage() {
         ))
     }
 
-    async function login() {
+    async function login(event) {
         event.preventDefault();
         try {
             const response = await instance().post('/account/login', JSON.stringify(inputs), {
