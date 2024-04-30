@@ -1,15 +1,15 @@
-
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import instance from '../../api/axios'
 
 import '../../styles/index.css'
 import '../../styles/form.css'
-import { useState } from 'react'
 
 function LoginPage() {
 
     const { setAuth } = useAuth();
+    const navigate = useNavigate();
     
     const [inputs, setInputs] = useState({
         "login" : "",
@@ -25,14 +25,15 @@ function LoginPage() {
         ))
     }
 
-    async function login() {
+    async function login(event) {
+        event.preventDefault();
         try {
             const response = await instance().post('/account/login', JSON.stringify(inputs), {
-                headers: {'Content-Type': 'application/json'},
-                withCredentials: true
+                headers: {'Content-Type': 'application/json'}
             });
             const token = response?.data?.token
             setAuth({inputs, token})
+            navigate("/dashboard")
         } catch (error) {
             console.error(error);
         }
