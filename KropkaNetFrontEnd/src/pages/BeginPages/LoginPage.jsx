@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import instance from '../../api/axios'
 
@@ -9,6 +9,7 @@ import '../../styles/form.css'
 function LoginPage() {
 
     const { setAuth } = useAuth();
+    const navigate = useNavigate();
     
     const [inputs, setInputs] = useState({
         "login" : "",
@@ -32,6 +33,7 @@ function LoginPage() {
             });
             const token = response?.data?.token
             setAuth({inputs, token})
+            navigate("/dashboard")
         } catch (error) {
             console.error(error);
         }
