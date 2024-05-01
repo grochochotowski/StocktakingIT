@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import instance from "../../api/axios"
+import useRefreshToken from '../../hooks/useRefreshToken';
 
 import NavBar from '../../components/NavBar'
 import MessageBox from '../../components/MessageBox'
 
 function DashboardPage() {
+
+    const refresh = useRefreshToken()
 
     const [messageBoxOpt, setMessageBoxOpt] = useState({
         "active": false,
@@ -54,6 +57,7 @@ function DashboardPage() {
                 {result.map((item, key) => (
                     <p key={key}>{item.id} - {item.name} - {item.category}</p>
                 ))}
+                <button onClick={() => refresh()}>Refresh</button>
             </div>
             { messageBoxOpt.active && <MessageBox header={messageBoxOpt.header} message={messageBoxOpt.message} type={messageBoxOpt.type}/> }
         </>
