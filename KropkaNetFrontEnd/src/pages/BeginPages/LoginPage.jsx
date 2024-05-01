@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
-import instance from '../../api/axios'
+import axios from '../../api/axios'
 
 import '../../styles/index.css'
 import '../../styles/form.css'
@@ -35,7 +35,7 @@ function LoginPage() {
     async function login(event) {
         event.preventDefault();
         try {
-            const response = await instance().post('/account/login', JSON.stringify(inputs), {
+            const response = await axios.post('/account/login', JSON.stringify(inputs), {
                 headers: {'Content-Type': 'application/json'}
             });
             const token = response?.data?.token

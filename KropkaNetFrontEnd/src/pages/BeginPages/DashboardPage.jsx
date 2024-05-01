@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import instance from "../../api/axios"
+import axios from "../../api/axios"
 import useRefreshToken from '../../hooks/useRefreshToken';
 
 import NavBar from '../../components/NavBar'
@@ -24,7 +24,7 @@ function DashboardPage() {
 
         async function fetchData() {
             try {
-                const response = await instance().get(apiCall, {
+                const response = await axios.get(apiCall, {
                     signal: controller.signal
                 });
                 console.log(response.data)
