@@ -1,13 +1,20 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
-import instance from '../../api/axios'
+import axios from '../../api/axios'
 
 import '../../styles/index.css'
 import '../../styles/form.css'
+import MessageBox from '../../components/MessageBox'
 
 function LoginPage() {
 
+    const [messageBoxOpt, setMessageBoxOpt] = useState({
+        "active": false,
+        "header" : "",
+        "message" : "",
+        "type" : ""
+    })
     const { setAuth } = useAuth();
     const navigate = useNavigate();
     
@@ -28,13 +35,19 @@ function LoginPage() {
     async function login(event) {
         event.preventDefault();
         try {
-            const response = await instance().post('/account/login', JSON.stringify(inputs), {
-                headers: {'Content-Type': 'application/json'}
-            });
+            const response = await axios.post('/account/login', JSON.stringify(inputs));
             const token = response?.data?.token
             setAuth({inputs, token})
             navigate("/dashboard")
         } catch (error) {
+            setMessageBoxOpt(
+                {
+                    "active": true,
+                    "header" : error.code,
+                    "message" : error.message,
+                    "type" : "error"
+                }
+            )
             console.error(error);
         }
     }
@@ -70,6 +83,7 @@ function LoginPage() {
                     <button onClick={login}>Log in</button>
                 </div>
             </form>
+            { messageBoxOpt.active && <MessageBox header={messageBoxOpt.header} message={messageBoxOpt.message} type={messageBoxOpt.type}/> }
         </div>
     )
 }
