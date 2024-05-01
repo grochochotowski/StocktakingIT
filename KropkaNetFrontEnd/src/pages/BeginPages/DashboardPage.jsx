@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from "../../api/axios"
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import useRefreshToken from '../../hooks/useRefreshToken';
 
 import NavBar from '../../components/NavBar'
@@ -8,6 +8,7 @@ import MessageBox from '../../components/MessageBox'
 function DashboardPage() {
 
     const refresh = useRefreshToken()
+    const axiosPrivate = useAxiosPrivate()
 
     const [messageBoxOpt, setMessageBoxOpt] = useState({
         "active": false,
@@ -24,7 +25,7 @@ function DashboardPage() {
 
         async function fetchData() {
             try {
-                const response = await axios.get(apiCall, {
+                const response = await axiosPrivate.get(apiCall, {
                     signal: controller.signal,
                     withCredentials: true
                 });
