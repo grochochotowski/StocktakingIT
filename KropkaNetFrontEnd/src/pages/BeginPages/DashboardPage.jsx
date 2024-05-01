@@ -14,26 +14,37 @@ function DashboardPage() {
     })
     const [result, setResult] = useState([])
 
-    async function fetchData() {
-        let apiCall = `kropkaNet/product/list`
-        try {
-            const response = await instance().get(apiCall);
-            setResult(response.data);
-        } catch (error) {
-            setMessageBoxOpt(
-                {
-                    "active": true,
-                    "header" : error.code,
-                    "message" : error.message,
-                    "type" : "error"
-                }
-            )
-            console.error('Error fetching data:', error);
-        }
-    }
-
     useEffect(() => {
+        let isMounted = true
+        const controller = new AbortController()
+        let apiCall = `kropkaNet/product/list`
+
+        async function fetchData() {
+            try {
+                const response = await instance().get(apiCall, {
+                    signal: controller.signal
+                });
+                console.log(response.data)
+                isMounted && setResult(response.data);
+            } catch (error) {
+                setMessageBoxOpt(
+                    {
+                        "active": true,
+                        "header" : error.code,
+                        "message" : error.message,
+                        "type" : "error"
+                    }
+                )
+                console.error('Error fetching data:', error);
+            }
+        }
+
         fetchData();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
     }, []);
 
     return (
