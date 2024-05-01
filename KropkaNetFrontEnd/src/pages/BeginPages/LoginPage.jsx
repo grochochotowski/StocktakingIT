@@ -5,6 +5,7 @@ import instance from '../../api/axios'
 
 import '../../styles/index.css'
 import '../../styles/form.css'
+import MessageBox from '../../components/MessageBox'
 
 function LoginPage() {
 
@@ -70,6 +71,7 @@ function LoginPage() {
                     <button onClick={login}>Log in</button>
                 </div>
             </form>
+            <MessageBox header="Error header" message="error message goes here"/>
         </div>
     )
 }
