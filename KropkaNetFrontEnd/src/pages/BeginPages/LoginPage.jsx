@@ -9,6 +9,12 @@ import MessageBox from '../../components/MessageBox'
 
 function LoginPage() {
 
+    const [messageBoxOpt, setMessageBoxOpt] = useState({
+        "active": false,
+        "header" : "",
+        "message" : "",
+        "type" : ""
+    })
     const { setAuth } = useAuth();
     const navigate = useNavigate();
     
@@ -36,6 +42,14 @@ function LoginPage() {
             setAuth({inputs, token})
             navigate("/dashboard")
         } catch (error) {
+            setMessageBoxOpt(
+                {
+                    "active": true,
+                    "header" : error.code,
+                    "message" : error.message,
+                    "type" : "error"
+                }
+            )
             console.error(error);
         }
     }
@@ -71,7 +85,7 @@ function LoginPage() {
                     <button onClick={login}>Log in</button>
                 </div>
             </form>
-            <MessageBox header="Error header" message="error message goes here" type="success"/>
+            { messageBoxOpt.active && <MessageBox header={messageBoxOpt.header} message={messageBoxOpt.message} type={messageBoxOpt.type}/> }
         </div>
     )
 }
