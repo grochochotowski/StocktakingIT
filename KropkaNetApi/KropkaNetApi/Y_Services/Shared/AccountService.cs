@@ -93,7 +93,7 @@ namespace KropkaNetApi.Y_Services.Shared
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = SameSiteMode.Strict
+                SameSite = SameSiteMode.None
             });
 
             return tokenString;
