@@ -28,7 +28,10 @@
     --clr-bg-light-main: #ffffff;
 
     --clr-warning-dark: #be3838;
-    --clr-light-dark: #ff7272;
+    --clr-warning-light: #ff7272;
+
+    --clr-warning-bg-dark: rgba(190, 56, 56, 0.2);
+    --clr-warning-bg-light: rgba(255, 114, 114, 0.2);
 
     --clr-light-2: #f9f9f9;
     --clr-dark-3: #213547;

@@ -1,0 +1,25 @@
+.info-box {
+    width: 300px;
+    height: 100px;
+
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -100%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--clr-warning-bg-dark);
+    box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.2);
+
+    border-radius: 5px;
+
+    animation: showHide 3s ease-in-out;
+}
+.info-box * {
+    margin: 0;
+    padding: 0;
+}

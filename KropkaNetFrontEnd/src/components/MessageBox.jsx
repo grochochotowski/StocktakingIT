@@ -1,5 +1,8 @@
 import React from 'react'
 
+import '../styles/messageBox.css'
+import '../styles/index.css'
+
 function MessageBox(props) {
   return (
     <div className="info-box">
