@@ -35,10 +35,7 @@ function LoginPage() {
     async function login(event) {
         event.preventDefault();
         try {
-            const response = await axios.post('/account/login', JSON.stringify(inputs), {
-                headers: {'Content-Type': 'application/json'},
-                withCredentials: true
-            });
+            const response = await axios.post('/account/login', JSON.stringify(inputs));
             const token = response?.data?.token
             setAuth({inputs, token})
             navigate("/dashboard")
