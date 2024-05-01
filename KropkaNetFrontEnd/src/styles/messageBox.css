@@ -23,3 +23,18 @@
     margin: 0;
     padding: 0;
 }
+
+@keyframes showHide {
+    0% {
+        transform: translate(-50%, -100%);
+    }
+    25% {
+        transform: translate(-50%, 0%);
+    }
+    75% {
+        transform: translate(-50%, 0%);
+    }
+    100% {
+        transform: translate(-50%, -100%);
+    }
+}
