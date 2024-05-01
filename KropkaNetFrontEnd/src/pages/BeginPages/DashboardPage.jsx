@@ -14,38 +14,41 @@ function DashboardPage() {
     })
     const [result, setResult] = useState([])
 
-    useEffect(() => {
-        let isMounted = true
-        const controller = new AbortController()
+    async function fetchData() {
         let apiCall = `kropkaNet/product/list`
+        const jwtCookie = document.cookie
+            .split(';')
+            .map(cookie => cookie.trim())
+            .find(cookie => cookie.startsWith('jwtToken='));
 
-        async function fetchData() {
-            try {
-                const response = await axios.get(apiCall, {
-                    signal: controller.signal,
-                    withCredentials: true
-                });
-                console.log(response.data)
-                isMounted && setResult(response.data);
-            } catch (error) {
-                setMessageBoxOpt(
-                    {
-                        "active": true,
-                        "header" : error.code,
-                        "message" : error.message,
-                        "type" : "error"
-                    }
-                )
-                console.error('Error fetching data:', error);
-            }
+        let jwtToken = '';
+        if (jwtCookie) {
+            jwtToken = jwtCookie.split('=')[1];
         }
 
+        try {
+            const response = await axios.get(apiCall, {
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`
+                }
+            });
+            
+            console.log(response)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            /*setMessageBoxOpt(
+                {
+                    "active": true,
+                    "header" : error.response.status,
+                    "message" : error.message,
+                    "type" : "error"
+                }
+            )*/
+        }
+    }
+
+    useEffect(() => {
         fetchData();
-
-        return () => {
-            isMounted = false;
-            controller.abort();
-        }
     }, []);
 
     return (
