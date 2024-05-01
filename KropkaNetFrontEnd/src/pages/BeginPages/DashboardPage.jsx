@@ -25,7 +25,8 @@ function DashboardPage() {
         async function fetchData() {
             try {
                 const response = await axios.get(apiCall, {
-                    signal: controller.signal
+                    signal: controller.signal,
+                    withCredentials: true
                 });
                 console.log(response.data)
                 isMounted && setResult(response.data);
