@@ -12,12 +12,17 @@
     justify-content: center;
     align-items: center;
 
-    background-color: var(--clr-warning-bg-dark);
     box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.2);
 
     border-radius: 5px;
 
     animation: showHide 3s ease-in-out;
+}
+.info-box.error {
+    background-color: var(--clr-warning-bg-dark);
+}
+.info-box.success {
+    background-color: var(--clr-success-bg-dark);
 }
 .info-box * {
     margin: 0;
