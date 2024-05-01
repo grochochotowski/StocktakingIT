@@ -71,7 +71,7 @@ function LoginPage() {
                     <button onClick={login}>Log in</button>
                 </div>
             </form>
-            <MessageBox header="Error header" message="error message goes here"/>
+            <MessageBox header="Error header" message="error message goes here" type="success"/>
         </div>
     )
 }
