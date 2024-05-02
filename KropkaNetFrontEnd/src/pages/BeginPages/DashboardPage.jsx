@@ -24,14 +24,14 @@ function DashboardPage() {
             setResult(response.data)
         } catch (error) {
             console.error('Error fetching data:', error);
-            /*setMessageBoxOpt(
+            setMessageBoxOpt(
                 {
                     "active": true,
                     "header" : error.response.status,
                     "message" : error.message,
                     "type" : "error"
                 }
-            )*/
+            )
         }
     }
 
