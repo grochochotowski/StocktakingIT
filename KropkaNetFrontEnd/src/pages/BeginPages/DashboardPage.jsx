@@ -16,15 +16,6 @@ function DashboardPage() {
 
     async function fetchData() {
         let apiCall = `kropkaNet/product/list`
-        const jwtCookie = document.cookie
-            .split(';')
-            .map(cookie => cookie.trim())
-            .find(cookie => cookie.startsWith('jwtToken='));
-
-        let jwtToken = '';
-        if (jwtCookie) {
-            jwtToken = jwtCookie.split('=')[1];
-        }
 
         try {
             const response = await axios.get(apiCall);
