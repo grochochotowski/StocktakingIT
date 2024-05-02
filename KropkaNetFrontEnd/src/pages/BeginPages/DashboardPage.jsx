@@ -21,6 +21,7 @@ function DashboardPage() {
             const response = await axios.get(apiCall);
             
             console.log(response)
+            setResult(response.data)
         } catch (error) {
             console.error('Error fetching data:', error);
             /*setMessageBoxOpt(
