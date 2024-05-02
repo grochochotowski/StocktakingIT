@@ -27,11 +27,7 @@ function DashboardPage() {
         }
 
         try {
-            const response = await axios.get(apiCall, {
-                headers: {
-                    'Authorization': `Bearer ${jwtToken}`
-                }
-            });
+            const response = await axios.get(apiCall);
             
             console.log(response)
         } catch (error) {
