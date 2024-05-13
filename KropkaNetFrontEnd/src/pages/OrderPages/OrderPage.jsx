@@ -39,6 +39,31 @@ function OrderPage() {
             "id" : 5,
             "dateOfOrderExecution" : "05/05/0005",
             "departmentName" : "Department 5"
+            },
+            {
+            "id" : 6,
+            "dateOfOrderExecution" : "06/06/0006",
+            "departmentName" : "Department 6"
+            },
+            {
+            "id" : 7,
+            "dateOfOrderExecution" : "07/07/0007",
+            "departmentName" : "Department 7"
+            },
+            {
+            "id" : 8,
+            "dateOfOrderExecution" : "08/08/0008",
+            "departmentName" : "Department 8"
+            },
+            {
+            "id" : 9,
+            "dateOfOrderExecution" : "09/09/0009",
+            "departmentName" : "Department 9"
+            },
+            {
+            "id" : 10,
+            "dateOfOrderExecution" : "10/10/0010",
+            "departmentName" : "Department 10"
             }
         ],
         totalPages: 3
