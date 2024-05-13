@@ -46,9 +46,42 @@ td {
     padding: 2vh 2vw;
 }
 
-ul{
+ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+    padding: 2vh 0;
+    gap: 1vw;
+
+    font-size: 1.3rem;
+
+    user-select: none;
 }
 li {
+    height: 3rem;
+    width: 3rem;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    box-sizing: border-box;
+    
+    border-radius: 10px;
+}
+li.clickable:hover {
+    box-sizing: border-box;
+    border: 1px solid var(--clr-acc-dark-700);
+    cursor: pointer;
+}
+li.disable {
+    color: var(--clr-acc-dark-200);
+}
+li.selected {
+    color: var(--clr-acc-dark-700);
+    background-color: var(--clr-acc-dark-200);
+}
+ul i {
+    font-size: 1.5rem;
 }
