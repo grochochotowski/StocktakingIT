@@ -210,6 +210,15 @@ function OrderPage() {
             <NavBar />
             <div className="order-container">
                 <div className="list">
+                    <div className="filter">
+                        <input
+                            type="text"
+                            id="filters"
+                            onChange={() => updateFilters("filters")}
+                            value={filters.filters}
+                        />
+                        <button onClick={() => filter()}>Filter</button>
+                    </div>
                     { generateHeader() }
                     { generateBody() }
                     { generatePagination() }
