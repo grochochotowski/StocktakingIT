@@ -41,7 +41,7 @@ function OrderPage() {
             "departmentName" : "Department 5"
             }
         ],
-        totalPages: 1
+        totalPages: 3
     })
 
     function sortTable(column) {
@@ -139,7 +139,12 @@ function OrderPage() {
 
             if (result.totalPages <= 7) {
                 for (let i = 1; i <= result.totalPages; i++) {
-                    paginationItems.push(<li key={i} className="clickable" onClick={() => setPage(i)}>{i}</li>);
+                    if (i == page) {
+                    paginationItems.push(<li key={i} className="selected" onClick={() => setPage(i)}>{i}</li>);
+                    }
+                    else {
+                        paginationItems.push(<li key={i} className="clickable" onClick={() => setPage(i)}>{i}</li>);
+                    }
                 }
             }
             else {
