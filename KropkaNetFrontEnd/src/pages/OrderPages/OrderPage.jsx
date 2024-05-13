@@ -11,7 +11,7 @@ function OrderPage() {
 
     const [sorting, setSorting] = useState(["id", 0])
     const [filters, setFilters] = useState({ "filters" : "" })
-    const [selected, setSelected] = useState(1);
+    const [selected, setSelected] = useState(0);
     const [page, setPage] = useState(1);
     const [result, setResult] = useState({
         items: [
@@ -106,7 +106,7 @@ function OrderPage() {
         return (
             <tbody>
                 {result.items && result.items.map((order) => (
-                    <tr key={order.id} id={order.id}>
+                    <tr className={order.id === selected && "selected"} key={order.id} id={order.id} onClick={() => setSelected(order.id)}>
                         <td>{order.id}</td>
                         <td>{order.departmentName}</td>
                         <td>{order.dateOfOrderExecution}</td>
