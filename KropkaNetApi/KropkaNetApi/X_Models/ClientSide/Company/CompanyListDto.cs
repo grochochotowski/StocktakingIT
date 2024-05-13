@@ -2,7 +2,7 @@
 
 namespace KropkaNetApi.X_Models.ClientSide.Company
 {
-    public class ComapnyListDto
+    public class CompanyListDto
     {
         public int Id { get; set; }
         public int NIP { get; set; }
