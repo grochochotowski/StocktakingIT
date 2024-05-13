@@ -1,0 +1,46 @@
+table {
+    margin: 5vh auto 5vh 0;
+    width: 90%;
+
+    border-collapse: collapse;
+}
+thead {
+
+}
+tbody {
+
+}
+tr:nth-child(even){
+    background-color: var(--clr-acc-dark-200);
+}
+
+th {
+    padding: 2vh 2vw;
+    border-bottom: 1px solid var(--clr-txt-dark);
+
+    position: relative;
+
+    user-select: none;
+}
+th.thin {
+    width: 5vw;
+}
+th.wide {
+    width: auto;
+}
+th i {
+    position: absolute;
+    transform: translate(-120%, -50%);
+    top: 50%;
+}
+
+td {
+    padding: 2vh 2vw;
+}
+
+ul{
+
+}
+li {
+
+}
