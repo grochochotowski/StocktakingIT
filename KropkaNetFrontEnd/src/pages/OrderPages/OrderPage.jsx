@@ -9,7 +9,7 @@ function OrderPage() {
 
     const [selected, setSelected] = useState(1);
 
-    const [orders, setOrders] = useState([
+    const [result, setResult] = useState([
         {
         "id" : 1,
         "dateOfOrderExecution" : "01/01/0001",
@@ -37,7 +37,150 @@ function OrderPage() {
         },
     ])
 
-    
+    function generateHeader() {
+        return (
+            <thead>
+                <tr>
+                    <th className="thin" onClick={() => sortTable("id")}>
+                        {
+                            sorting[0] == "id" &&
+                            (
+                                sorting[1] === 0
+                                ? <i className="fa-solid fa-arrow-down-a-z"></i>
+                                : <i className="fa-solid fa-arrow-up-a-z"></i>
+                            )
+                        }
+                        Order
+                    </th>
+                    <th className="wide" onClick={() => sortTable("departmentName")}>
+                        {
+                            sorting[0] == "departmentName" &&
+                            (
+                                sorting[1] === 0
+                                ? <i className="fa-solid fa-arrow-down-a-z"></i>
+                                : <i className="fa-solid fa-arrow-up-a-z"></i>
+                            )
+                        }
+                        Department Name
+                    </th>
+                    <th className="wide" onClick={() => sortTable("dateOfOrderExecution")}>
+                        {
+                            sorting[0] == "dateOfOrderExecution" &&
+                            (
+                                sorting[1] === 0
+                                ? <i className="fa-solid fa-arrow-down-a-z"></i>
+                                : <i className="fa-solid fa-arrow-up-a-z"></i>
+                            )
+                        }
+                        Data of execution
+                    </th>
+                </tr>
+            </thead>
+        );
+    }
+    function generateBody() {
+        return (
+            <tbody>
+                {result.items && result.items.map((order) => (
+                    <tr key={order.id} id={order.id}>
+                        <td>{order.id}</td>
+                        <td>{order.departmentName}</td>
+                        <td>{order.dateOfOrderExecution}</td>
+                    </tr>
+                ))}
+            </tbody>
+        )
+    }
+    function generatePagination() {
+
+        const paginationItems = [];
+
+        if (result.length != 0) {
+
+            // Generate left arrow
+            if (page > 1) {
+                paginationItems.push(
+                    <li className="clickable" onClick={() => setPage(page - 1)} key={"arrow-left"}>
+                        <i className="fa-solid fa-caret-left"></i>
+                    </li>
+                )
+            }
+            else {
+                paginationItems.push(
+                    <li className="disable" key={"arrow-left"}>
+                        <i className="fa-solid fa-caret-left"></i>
+                    </li>
+                )
+            }
+
+            if (result.totalPages <= 7) {
+                for (let i = 1; i <= result.totalPages; i++) {
+                    paginationItems.push(<li key={i} className="clickable" onClick={() => setPage(i)}>{i}</li>);
+                }
+            }
+            else {
+
+                if (page <= 4) {
+                    for (let i = 1; i <= 7; i++) {
+                        if (i == page) {
+                            paginationItems.push(<li key={i} className="selected" onClick={() => setPage(i)}>{i}</li>);
+                        }
+                        else {
+                            paginationItems.push(<li key={i} className="clickable" onClick={() => setPage(i)}>{i}</li>);
+                        }
+                    }
+                    paginationItems.push(<li key={"dots2"}>...</li>)
+                    paginationItems.push(<li key={result.totalPages} className="clickable" onClick={() => setPage(result.totalPages)}>{result.totalPages}</li>);
+                }
+                else if (result.totalPages - page < 5) {
+                    paginationItems.push(<li key={1} className="clickable" onClick={() => setPage(1)}>{1}</li>);
+                    paginationItems.push(<li key={"dots1"}>...</li>)
+                    for (let i = result.totalPages-6; i <= result.totalPages; i++) {
+                        if (i == page) {
+                            paginationItems.push(<li key={i} className="selected" onClick={() => setPage(i)}>{i}</li>);
+                        }
+                        else {
+                            paginationItems.push(<li key={i} className="clickable" onClick={() => setPage(i)}>{i}</li>);
+                        }
+                    }
+                }
+                else {
+                    paginationItems.push(<li key={1} className="clickable" onClick={() => setPage(1)}>{1}</li>);
+                    paginationItems.push(<li key={"dots1"}>...</li>)
+
+                    for (let i = page-2; i < page; i++) {
+                        paginationItems.push(<li key={i} className="clickable" onClick={() => setPage(i)}>{i}</li>);
+                    }
+
+                    paginationItems.push(<li key={page} className="selected" onClick={() => setPage(page)}>{page}</li>)
+
+                    for (let i = page+1; i <= page+2; i++) {
+                        paginationItems.push(<li key={i} className="clickable" onClick={() => setPage(i)}>{i}</li>);
+                    }
+                
+                    paginationItems.push(<li key={"dots2"}>...</li>)
+                    paginationItems.push(<li key={result.totalPages} className="clickable" onClick={() => setPage(result.totalPages)}>{result.totalPages}</li>);
+                }
+            }
+                
+            // Generate right arrow
+            if (page < result.totalPages) {
+                paginationItems.push(
+                    <li className="clickable" onClick={() => setPage(page + 1)} key={"arrow-right"}>
+                        <i className="fa-solid fa-caret-right"></i>
+                    </li>
+                )
+            }
+            else {
+                paginationItems.push(
+                    <li className="disable" key={"arrow-right"}>
+                        <i className="fa-solid fa-caret-right"></i>
+                    </li>
+                )
+            }
+            return paginationItems;
+        }
+    }
 
 
     return (
