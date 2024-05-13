@@ -13,6 +13,10 @@ tbody {
 tr:nth-child(even){
     background-color: var(--clr-acc-dark-200);
 }
+tbody tr:hover {
+    cursor: pointer;
+    background-color: var(--clr-acc-dark-300);
+}
 
 th {
     padding: 2vh 2vw;
@@ -32,6 +36,10 @@ th i {
     position: absolute;
     transform: translate(-120%, -50%);
     top: 50%;
+}
+th:hover {
+    cursor: pointer;
+    background-color: var(--clr-acc-dark-300);
 }
 
 td {
