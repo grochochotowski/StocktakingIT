@@ -8,7 +8,7 @@ namespace KropkaNetApi.Y_Services.CompanySide
     public interface IProductService
     {
         int Create(CreateProductDto dto);
-        IEnumerable<ProductListDto> GetList(string filter);
+        IEnumerable<CompanyListDto> GetList(string filter);
         int Delete(int id);
     }
 
@@ -37,7 +37,7 @@ namespace KropkaNetApi.Y_Services.CompanySide
         }
 
         // GET: get list of products
-        public IEnumerable<ProductListDto> GetList(string filter)
+        public IEnumerable<CompanyListDto> GetList(string filter)
         {
             var productList = _context.Products
                 .Where(
@@ -48,7 +48,7 @@ namespace KropkaNetApi.Y_Services.CompanySide
                     p.Id.ToString().Contains(filter)
                 ))
                 .OrderBy(p => p.Name)
-                .Select(p => new ProductListDto
+                .Select(p => new CompanyListDto
                 {
                     Id = p.Id,
                     Name = p.Name,
