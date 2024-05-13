@@ -208,7 +208,7 @@ function OrderPage() {
     return (
         <>
             <NavBar />
-            <div className="order-container">
+            <div className="container">
                 <div className="list">
                     <div className="filter">
                         <input
