@@ -7,7 +7,27 @@ import '../../styles/order.css'
 
 function OrderPage() {
 
+    const [sorting, setSorting] = useState(["organization", 0])
+    const [filters, setFilters] = useState({ "filters" : "" })
     const [selected, setSelected] = useState(1);
+    const [page, setPage] = useState(1);
+
+    function sortTable(column) {
+        setSorting(prev => {
+            if (prev[0] === column && prev[1] === 0) return [column, 1]
+            return [column, 0]
+        })
+    }
+    function updateFilters(filter) {
+        setFilters(prev => ({
+            [filter] : document.getElementById(filter).value
+        }))
+    }
+    function filter() {
+        if(token) {
+            fetchData();
+        }
+    }
 
     const [result, setResult] = useState({
     items: [
@@ -190,8 +210,9 @@ function OrderPage() {
             <NavBar />
             <div className="order-container">
                 <div className="list">
-                    {generateHeader}
-                    {generateBody}
+                    { generateHeader() }
+                    { generateBody() }
+                    { generatePagination() }
                 </div>
                 <div className="options">
                     <Link to="/orders/list">List</Link>
