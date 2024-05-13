@@ -5,11 +5,14 @@ table {
     border-collapse: collapse;
 }
 tr:nth-child(even){
-    background-color: var(--clr-acc-dark-200);
+    background-color: var(--clr-acc-dark-150);
 }
 tbody tr:hover {
     cursor: pointer;
     background-color: var(--clr-acc-dark-300);
+}
+tbody tr.selected {
+    background-color: var(--clr-acc-dark-200);
 }
 
 th {

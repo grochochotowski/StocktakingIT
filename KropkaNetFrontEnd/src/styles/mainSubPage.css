@@ -45,9 +45,9 @@
     border-color: var(--clr-acc-dark-200);
 }
 .list-menu a.current {
-    background-color: var(--clr-acc-dark-500);
+    background-color: var(--clr-acc-dark-200);
     color: var(--clr-acc-dark-700);
-    border-color: var(--clr-acc-dark-700);
+    border-color: var(--clr-acc-dark-500);
 }
 .list-menu a:hover p{
     opacity: 1;
