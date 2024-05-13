@@ -30,8 +30,5 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
             return result;
         }
-
-
-
     }
 }

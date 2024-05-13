@@ -83,6 +83,7 @@ namespace KropkaNetApi
             builder.Services.AddScoped<IPositionService, PositionService>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICompanyService, CompanyService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
 
             var app = builder.Build();
             var scope = app.Services.CreateScope();
