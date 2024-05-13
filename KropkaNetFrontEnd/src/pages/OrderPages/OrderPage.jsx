@@ -9,7 +9,8 @@ function OrderPage() {
 
     const [selected, setSelected] = useState(1);
 
-    const [result, setResult] = useState([
+    const [result, setResult] = useState({
+    items: [
         {
         "id" : 1,
         "dateOfOrderExecution" : "01/01/0001",
@@ -34,8 +35,9 @@ function OrderPage() {
         "id" : 5,
         "dateOfOrderExecution" : "05/05/0005",
         "departmentName" : "Department 5"
-        },
-    ])
+        }
+    ]
+    })
 
     function generateHeader() {
         return (
