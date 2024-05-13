@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import NavBar from '../../components/NavBar'
 
 import '../../styles/order.css'
+import '../../styles/form.css'
+import '../../styles/list.css'
 
 function OrderPage() {
 
@@ -219,14 +221,31 @@ function OrderPage() {
                         />
                         <button onClick={() => filter()}>Filter</button>
                     </div>
-                    { generateHeader() }
-                    { generateBody() }
-                    { generatePagination() }
+                    <table>
+                        { generateHeader() }
+                        { generateBody() }
+                    </table>
+                    <ul>
+                        { generatePagination() }
+                    </ul>
                 </div>
-                <div className="options">
-                    <Link to="/orders" className="current">List</Link>
-                    <Link to={`/orders/details/${selected}`} className={selected ? "" : "disable"}>Details</Link>
-                    <Link to={`/orders/edit/${selected}`} className={selected ? "" : "disable"}>Edit</Link>
+                <div className="list-menu">
+                    <Link to="/orders" className="current button">
+                        <i className="fa-solid fa-list"></i>
+                        <p>List</p>
+                    </Link>
+                    <Link to={selected && `/orders/details/${selected}`} className={selected ? "button" : "disable button"}>
+                        <i className="fa-solid fa-info"></i>
+                        <p>Details</p>
+                    </Link>
+                    <Link to={selected && `/orders/edit/${selected}`} className={selected ? "button" : "disable button"}>
+                        <i className="fa-solid fa-pen-to-square"></i>
+                        <p>Edit</p>
+                    </Link>
+                    <Link to={`/orders/new/`} className="button">
+                        <i className="fa-solid fa-plus"></i>
+                        <p>New</p>
+                    </Link>
                 </div>
             </div>
         </>
