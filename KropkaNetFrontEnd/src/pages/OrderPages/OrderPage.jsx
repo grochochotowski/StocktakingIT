@@ -224,7 +224,7 @@ function OrderPage() {
                     { generatePagination() }
                 </div>
                 <div className="options">
-                    <Link to="/orders/list">List</Link>
+                    <Link to="/orders" className="current">List</Link>
                     <Link to={`/orders/details/${selected}`} className={selected ? "" : "disable"}>Details</Link>
                     <Link to={`/orders/edit/${selected}`} className={selected ? "" : "disable"}>Edit</Link>
                 </div>
