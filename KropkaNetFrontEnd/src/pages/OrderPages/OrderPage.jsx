@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import NavBar from '../../components/NavBar'
 
-import '../../styles/order.css'
+import '../../styles/mainSubPage.css'
 import '../../styles/form.css'
 import '../../styles/list.css'
 
