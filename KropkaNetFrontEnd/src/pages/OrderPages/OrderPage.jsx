@@ -7,10 +7,40 @@ import '../../styles/order.css'
 
 function OrderPage() {
 
-    const [sorting, setSorting] = useState(["organization", 0])
+    const [sorting, setSorting] = useState(["id", 0])
     const [filters, setFilters] = useState({ "filters" : "" })
     const [selected, setSelected] = useState(1);
     const [page, setPage] = useState(1);
+    const [result, setResult] = useState({
+        items: [
+            {
+            "id" : 1,
+            "dateOfOrderExecution" : "01/01/0001",
+            "departmentName" : "Department 1"
+            },
+            {
+            "id" : 2,
+            "dateOfOrderExecution" : "02/02/0002",
+            "departmentName" : "Department 2"
+            },
+            {
+            "id" : 3,
+            "dateOfOrderExecution" : "03/03/0003",
+            "departmentName" : "Department 3"
+            },
+            {
+            "id" : 4,
+            "dateOfOrderExecution" : "04/04/0004",
+            "departmentName" : "Department 4"
+            },
+            {
+            "id" : 5,
+            "dateOfOrderExecution" : "05/05/0005",
+            "departmentName" : "Department 5"
+            }
+        ],
+        totalPages: 1
+    })
 
     function sortTable(column) {
         setSorting(prev => {
@@ -28,36 +58,6 @@ function OrderPage() {
             fetchData();
         }
     }
-
-    const [result, setResult] = useState({
-    items: [
-        {
-        "id" : 1,
-        "dateOfOrderExecution" : "01/01/0001",
-        "departmentName" : "Department 1"
-        },
-        {
-        "id" : 2,
-        "dateOfOrderExecution" : "02/02/0002",
-        "departmentName" : "Department 2"
-        },
-        {
-        "id" : 3,
-        "dateOfOrderExecution" : "03/03/0003",
-        "departmentName" : "Department 3"
-        },
-        {
-        "id" : 4,
-        "dateOfOrderExecution" : "04/04/0004",
-        "departmentName" : "Department 4"
-        },
-        {
-        "id" : 5,
-        "dateOfOrderExecution" : "05/05/0005",
-        "departmentName" : "Department 5"
-        }
-    ]
-    })
 
     function generateHeader() {
         return (
