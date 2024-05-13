@@ -7,13 +7,12 @@ using System.Linq;
 
 namespace KropkaNetApi.Y_Services.CompanySide
 {
-        public interface IStocktakingService
-        {
-            int Create(CreateStocktakingDto dto);
-            IEnumerable<StocktakingListDto> GetAll();
-            bool Delete(int id);
-        }
-    
+    public interface IStocktakingService
+    {
+        int Create(CreateStocktakingDto dto);
+        IEnumerable<StocktakingListDto> GetAll();
+        int Delete(int id);
+    }
 
     public class StocktakingService : IStocktakingService
     {
@@ -37,19 +36,17 @@ namespace KropkaNetApi.Y_Services.CompanySide
         public IEnumerable<StocktakingListDto> GetAll()
         {
             var stocktakings = _context.Stocktakings.ToList();
-            var stocktakingDtos = _mapper.Map<List<StocktakingListDto>>(stocktakings);
-            return stocktakingDtos;
+            return _mapper.Map<List<StocktakingListDto>>(stocktakings);
         }
 
-        public bool Delete(int id)
+        public int Delete(int id)
         {
-            var stocktaking = _context.Stocktakings.Find(id);
-            if (stocktaking == null)
-                return false;
+            var stocktaking = _context.Stocktakings.FirstOrDefault(s => s.Id == id);
+            if (stocktaking == null) return -1;
 
             _context.Stocktakings.Remove(stocktaking);
             _context.SaveChanges();
-            return true;
+            return 0; // Changed to return 0 as a success flag similar to ProductService
         }
     }
 }
