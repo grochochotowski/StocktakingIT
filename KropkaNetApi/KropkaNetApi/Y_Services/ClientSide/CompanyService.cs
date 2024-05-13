@@ -1,8 +1,6 @@
 ﻿using KropkaNetApi.X_Models.ClientSide.Company;
 using AutoMapper;
 using KropkaNetApi.X_Entities;
-using KropkaNetApi.X_Models.CompanySide.Product;
-using KropkaNetApi.X_Entities.Objects.CompanySide;
 using KropkaNetApi.X_Entities.Objects.ClientSide;
 
 namespace KropkaNetApi.Y_Services.ClientSide
