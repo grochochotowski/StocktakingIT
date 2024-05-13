@@ -4,7 +4,6 @@
     {
         public int Id { get; set; }
         public DateTime DateOfOrderExecution { get; set; }
-        public int DepartmentId { get; set; }
-        public int StocktakingId { get; set; }
+        public int DepartmentName { get; set; }
     }
 }
