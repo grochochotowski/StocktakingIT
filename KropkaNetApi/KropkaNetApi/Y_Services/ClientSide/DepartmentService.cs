@@ -22,7 +22,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
             _mapper = mapper;
         }
 
-        // POST: create product
+        // POST: create department
         public int Create(CreateDepartmentDto dto)
         {
             var department = _mapper.Map<Department>(dto);
@@ -33,7 +33,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return department.Id;
         }
 
-        // GET: get list of products
+        // GET: get list of departments
         public IEnumerable<DepartmentListDto> GetList(string filter)
         {
             var departmentList = _context.Departments
@@ -53,7 +53,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return departmentList;
         }
 
-        // DELETE : delete product with id
+        // DELETE : delete department with id
         public int Delete(int id)
         {
             var department = _context.Departments.FirstOrDefault(p => p.Id == id);

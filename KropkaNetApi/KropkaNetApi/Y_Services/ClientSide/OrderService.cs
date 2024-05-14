@@ -22,7 +22,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
             _mapper = mapper;
         }
 
-        // POST: create product
+        // POST: create order
         public int Create(CreateOrderDto dto)
         {
             var order = _mapper.Map<Order>(dto);
@@ -33,7 +33,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return order.Id;
         }
 
-        // GET: get list of products
+        // GET: get list of orders
         public IEnumerable<OrderListDto> GetList(string filter)
         {
             var orderList = _context.Orders
@@ -54,7 +54,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
         }
 
 
-        // DELETE : delete product with id
+        // DELETE : delete order with id
         public int Delete(int id)
         {
             var order = _context.Orders.FirstOrDefault(p => p.Id == id);

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using KropkaNetApi.X_Models.ClientSide.Address;
+using System.ComponentModel.DataAnnotations;
 
 namespace KropkaNetApi.X_Models.ClientSide.Company
 {

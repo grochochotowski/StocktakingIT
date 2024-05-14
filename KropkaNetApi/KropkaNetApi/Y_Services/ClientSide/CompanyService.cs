@@ -22,7 +22,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
             _mapper = mapper;
         }
 
-        // POST: create product
+        // POST: create comany
         public int Create(CreateCompanyDto dto)
         {
             var company = _mapper.Map<Company>(dto);
@@ -33,7 +33,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return company.Id;
         }
 
-        // GET: get list of products
+        // GET: get list of comanies
         public IEnumerable<CompanyListDto> GetList(string filter)
         {
             var companyList = _context.Companies
@@ -55,7 +55,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return companyList;
         }
 
-        // DELETE : delete product with id
+        // DELETE : delete comany with id
         public int Delete(int id)
         {
             var company = _context.Companies.FirstOrDefault(p => p.Id == id);
@@ -64,6 +64,16 @@ namespace KropkaNetApi.Y_Services.ClientSide
             _context.Remove(company);
 
             return 0;
+        }
+        // POST: create comany_address
+        public int CreateAddress(CreateCompanyDto dto)
+        {
+            var address = _mapper.Map<Address>(dto);
+
+            _context.Addresses.Add(address);
+            _context.SaveChanges();
+
+            return address.Id;
         }
     }
 }
