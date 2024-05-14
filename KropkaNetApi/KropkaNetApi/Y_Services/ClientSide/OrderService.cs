@@ -9,6 +9,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
     {
         int Create(CreateOrderDto dto);
         IEnumerable<OrderListDto> GetList(string filter);
+        int Delete(int id);
     }
     public class OrderService : IOrderService
     {
@@ -50,6 +51,18 @@ namespace KropkaNetApi.Y_Services.ClientSide
                 .ToList();
 
             return orderList;
+        }
+
+
+        // DELETE : delete product with id
+        public int Delete(int id)
+        {
+            var order = _context.Orders.FirstOrDefault(p => p.Id == id);
+            if (order == null) return -1;
+
+            _context.Remove(order);
+
+            return 0;
         }
     }
 }

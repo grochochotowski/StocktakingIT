@@ -9,6 +9,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
     {
         int Create(CreateCompanyDto dto);
         IEnumerable<CompanyListDto> GetList(string filter);
+        int Delete(int id);
     }
     public class CompanyService : ICompanyService
     {
@@ -54,5 +55,15 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return companyList;
         }
 
+        // DELETE : delete product with id
+        public int Delete(int id)
+        {
+            var company = _context.Companies.FirstOrDefault(p => p.Id == id);
+            if (company == null) return -1;
+
+            _context.Remove(company);
+
+            return 0;
+        }
     }
 }

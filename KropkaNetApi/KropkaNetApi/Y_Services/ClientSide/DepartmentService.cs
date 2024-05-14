@@ -9,6 +9,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
     {
         int Create(CreateDepartmentDto dto);
         IEnumerable<DepartmentListDto> GetList(string filter);
+        int Delete(int id);
     }
     public class DepartmentService : IDepartmentService
     {
@@ -50,6 +51,18 @@ namespace KropkaNetApi.Y_Services.ClientSide
                 .ToList();
 
             return departmentList;
+        }
+
+        // DELETE : delete product with id
+        public int Delete(int id)
+        {
+            var department = _context.Departments.FirstOrDefault(p => p.Id == id);
+            if (department == null) return -1;
+
+            _context.Remove(department);
+            _context.SaveChanges();
+
+            return 0;
         }
     }
 }
