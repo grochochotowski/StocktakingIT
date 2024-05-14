@@ -1,6 +1,5 @@
 ﻿using Azure;
-using KropkaNetApi.X_Models.ClientSide.Order;
-using KropkaNetApi.Y_Controllers.CompanySide;
+using KropkaNetApi.X_Models.ClientSide.Department;
 using KropkaNetApi.Y_Services.ClientSide;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +21,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         [HttpPost("create")]
         public ActionResult Create([FromBody] CreateDepartmentDto dto)
         {
-            var createdOrderId = _departmentService.Create(dto);
+            var createdDepartmentId = _departmentService.Create(dto);
 
             var result = Created($"{createdDepartmentId}", null) as CreatedResult;
             if (result != null)
