@@ -20,7 +20,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         [HttpPost("create")]
         public ActionResult Create([FromBody] CreateCompanyDto dto)
         {
-            var createdCompanyId = _companyService.Create(dto);
+            var createdCompanyId = _companyService.Create(dto, CompanyDto);
 
             var result = Created($"{createdCompanyId}", null) as CreatedResult;
             if (result != null)
