@@ -2,6 +2,7 @@
 using AutoMapper;
 using KropkaNetApi.X_Entities;
 using KropkaNetApi.X_Entities.Objects.ClientSide;
+using Microsoft.EntityFrameworkCore;
 
 namespace KropkaNetApi.Y_Services.ClientSide
 {
@@ -26,16 +27,8 @@ namespace KropkaNetApi.Y_Services.ClientSide
         public int Create(CreateCompanyDto dto)
         {
             var company = _mapper.Map<Company>(dto);
-            var address = $"{company.Address.Country} ,"
-                + $"{company.Address.City}, "
-                + $"{company.Address.ZipCode}, "
-                + $"{company.Address.Street}, "
-                + $"{company.Address.Building} "
-                + $"{(company.Address.Premises != null ? "/" + company.Address.Premises : "")}\n";
-
             _context.Companies.Add(company);
             _context.SaveChanges();
-
             return company.Id;
         }
 
@@ -50,6 +43,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
                     p.KRS.ToString().Contains(filter) ||
                     p.Id.ToString().Contains(filter)
                 ))
+                .Include(p => p.Address)
                 .OrderBy(p => p.CompanyName)
                 .Select(p => new CompanyListDto
                 {
@@ -65,11 +59,9 @@ namespace KropkaNetApi.Y_Services.ClientSide
         public int Delete(int id)
         {
             var company = _context.Companies.FirstOrDefault(p => p.Id == id);
-            var address = _context.Addresses.FirstOrDefault(p => p.Id == id);
             if (company == null) return -1;
 
             _context.Remove(company);
-            _context.Remove(address);
 
             return 0;
         }
