@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from '../../api/axios';
+import { axiosInstance, refreshToken } from '../../api/axios';
 
 import NavBar from '../../components/NavBar'
 import MessageBox from '../../components/MessageBox'
@@ -18,9 +18,12 @@ function DashboardPage() {
         let apiCall = `kropkaNet/product/list`
 
         try {
-            const response = await axios.get(apiCall);
-            
-            console.log(response)
+            const token = await refreshToken();
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             setResult(response.data)
         } catch (error) {
             console.error('Error fetching data:', error);
