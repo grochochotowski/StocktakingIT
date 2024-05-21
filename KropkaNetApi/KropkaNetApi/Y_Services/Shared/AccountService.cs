@@ -17,7 +17,7 @@ namespace KropkaNetApi.Y_Services.Shared
     {
         void Register(RegisterDto dto);
         LoginResponse LogIn(LoginDto dto);
-        string GenerateRefreshToken()
+        string GenerateRefreshToken();
         string GenerateToken(Account account);
     }
 
@@ -74,7 +74,7 @@ namespace KropkaNetApi.Y_Services.Shared
 
             response.IsLoggedIn = true;
             response.JwtToken = GenerateToken(account);
-            response.JwtToken = GenerateRefreshToken();
+            response.RefreshToken = GenerateRefreshToken();
 
             return response;
         }
