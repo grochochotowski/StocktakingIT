@@ -70,7 +70,6 @@ namespace KropkaNetApi
             });
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.AddScoped<ErrorHandlingMiddleware>();
-            //builder.Services.AddScoped<JwtAuthorizationMiddleware>();
             builder.Services.AddScoped<IPasswordHasher<Account>, PasswordHasher<Account>>();
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
