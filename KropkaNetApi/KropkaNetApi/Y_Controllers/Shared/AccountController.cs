@@ -40,6 +40,19 @@ namespace KropkaNetApi.Y_Controllers.Shared
             return Unauthorized("Login or password is incorrect");
         }
 
+        [HttpPost("refresh")]
+        public ActionResult Refresh([FromBody] RefreshTokenModel model)
+        {
+            LoginResponse response = _accountService.Refresh(model);
+
+            if (response.IsLoggedIn)
+            {
+                return Ok(response);
+            }
+
+            return Unauthorized("Login or password is incorrect");
+        }
+
     }
 }
     

@@ -17,6 +17,7 @@ namespace KropkaNetApi.Y_Services.Shared
     {
         void Register(RegisterDto dto);
         LoginResponse LogIn(LoginDto dto);
+        LoginResponse Refresh(RefreshTokenModel model);
         string GenerateRefreshToken();
         string GenerateToken(Account account);
     }
@@ -84,6 +85,35 @@ namespace KropkaNetApi.Y_Services.Shared
             return response;
         }
 
+        public LoginResponse Refresh(RefreshTokenModel model)
+        {
+            var response = new LoginResponse();
+            var principal = GetTokenPrincipal(model.JwtToken);
+            if (principal.Identity.Name is null)
+            {
+                return response;
+            }
+
+            var account = _context.Accounts.FirstOrDefault(a => a.Login == principal.Identity.Name);
+
+            if (account is null || account.RefreshToken != model.RefreshToken || account.RefreshTokenExpire < DateTime.Now)
+            {
+                return response;
+            }
+
+            response.IsLoggedIn = true;
+            response.JwtToken = GenerateToken(account);
+            response.RefreshToken = GenerateRefreshToken();
+
+            account.RefreshToken = response.RefreshToken;
+            account.RefreshTokenExpire = DateTime.Now.AddDays(30);
+
+            _context.SaveChanges();
+
+            return response;
+
+        }
+        
         public string GenerateRefreshToken()
         {
             var randomNumber = new byte[64];
@@ -106,8 +136,7 @@ namespace KropkaNetApi.Y_Services.Shared
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            //var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
-            var expires = DateTime.Now.AddSeconds(60);
+            var expires = DateTime.Now.AddSeconds(_authenticationSettings.JwtExpireSeconds);
 
             var token = new JwtSecurityToken(
                 _authenticationSettings.JwtIssuer,
@@ -120,5 +149,20 @@ namespace KropkaNetApi.Y_Services.Shared
 
             return tokenString;
         }
+        private ClaimsPrincipal GetTokenPrincipal(string token)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
+            var validation = new TokenValidationParameters
+            {
+                IssuerSigningKey = key,
+                ValidateLifetime = false,
+                ValidateActor = false,
+                ValidateIssuer = false,
+                ValidateAudience = false,
+            };
+            return new JwtSecurityTokenHandler().ValidateToken(token, validation, out _);
+        }
+
+
     }
 }
