@@ -76,6 +76,11 @@ namespace KropkaNetApi.Y_Services.Shared
             response.JwtToken = GenerateToken(account);
             response.RefreshToken = GenerateRefreshToken();
 
+            account.RefreshToken = response.RefreshToken;
+            account.RefreshTokenExpire = DateTime.Now.AddDays(30);
+
+            _context.SaveChanges();
+
             return response;
         }
 
@@ -101,7 +106,8 @@ namespace KropkaNetApi.Y_Services.Shared
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
+            //var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
+            var expires = DateTime.Now.AddSeconds(60);
 
             var token = new JwtSecurityToken(
                 _authenticationSettings.JwtIssuer,
