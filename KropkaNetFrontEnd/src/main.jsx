@@ -2,7 +2,6 @@
 import React, { Suspense, lazy } from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { AuthProvider } from './context/AuthProvider'
 
 
 const WelcomePage = lazy(() => import('./pages/BeginPages/WelcomePage'))
@@ -62,10 +61,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <AuthProvider>
-            <Suspense fallback={<Fallback />}>
-                <RouterProvider router={router}/>
-            </Suspense>
-        </AuthProvider>
+        <Suspense fallback={<Fallback />}>
+            <RouterProvider router={router}/>
+        </Suspense>
     </React.StrictMode>
 )
