@@ -9,6 +9,7 @@ using System;
 using KropkaNetApi.X_Entities;
 using KropkaNetApi.Exceptions;
 using KropkaNet.Migrations;
+using System.Security.Cryptography;
 
 namespace KropkaNetApi.Y_Services.Shared
 {
@@ -16,6 +17,7 @@ namespace KropkaNetApi.Y_Services.Shared
     {
         void Register(RegisterDto dto);
         LoginResponse LogIn(LoginDto dto);
+        string GenerateRefreshToken()
         string GenerateToken(Account account);
     }
 
@@ -72,7 +74,21 @@ namespace KropkaNetApi.Y_Services.Shared
 
             response.IsLoggedIn = true;
             response.JwtToken = GenerateToken(account);
+            response.JwtToken = GenerateRefreshToken();
+
             return response;
+        }
+
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[64];
+
+            using (var numberGenerator = RandomNumberGenerator.Create())
+            {
+                numberGenerator.GetBytes(randomNumber);
+            }
+
+            return Convert.ToBase64String(randomNumber);
         }
 
         public string GenerateToken(Account account)
