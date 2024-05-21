@@ -85,16 +85,7 @@ namespace KropkaNetApi.Y_Services.Shared
                 expires: expires,
                 signingCredentials: cred);
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var tokenString = tokenHandler.WriteToken(token);
-
-            httpContext.Response.Cookies.Append("jwtToken", tokenString, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None
-            });
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
             return tokenString;
         }
