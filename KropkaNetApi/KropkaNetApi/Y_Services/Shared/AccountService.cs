@@ -15,7 +15,8 @@ namespace KropkaNetApi.Y_Services.Shared
     public interface IAccountService
     {
         void Register(RegisterDto dto);
-        string GenerateToken(LoginDto dto);
+        LoginResponse LogIn(LoginDto dto);
+        string GenerateToken(Account account);
     }
 
     public class AccountService : IAccountService
@@ -53,21 +54,29 @@ namespace KropkaNetApi.Y_Services.Shared
             _context.SaveChanges();
         }
 
-        public string GenerateToken(LoginDto dto)
+        public LoginResponse LogIn(LoginDto dto)
         {
+            var response = new LoginResponse();
             var account = _context.Accounts.FirstOrDefault(a => a.Login == dto.Login);
 
             if (account is null)
             {
-                throw new BadRequestException("Login or password is incorrect");
+                return response;
             }
 
             var hashedPassword = _passwordHasher.VerifyHashedPassword(account, account.HashedPassword, dto.Password);
             if (hashedPassword == PasswordVerificationResult.Failed)
             {
-                throw new BadRequestException("Login or password is incorrect");
+                return response;
             }
 
+            response.IsLoggedIn = true;
+            response.JwtToken = GenerateToken(account);
+            return response;
+        }
+
+        public string GenerateToken(Account account)
+        {
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
