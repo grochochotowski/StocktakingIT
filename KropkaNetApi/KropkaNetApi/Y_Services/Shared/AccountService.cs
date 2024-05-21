@@ -15,7 +15,7 @@ namespace KropkaNetApi.Y_Services.Shared
     public interface IAccountService
     {
         void Register(RegisterDto dto);
-        string GenerateToken(LoginDto dto, HttpContext httpContext);
+        string GenerateToken(LoginDto dto);
     }
 
     public class AccountService : IAccountService
@@ -53,7 +53,7 @@ namespace KropkaNetApi.Y_Services.Shared
             _context.SaveChanges();
         }
 
-        public string GenerateToken(LoginDto dto, HttpContext httpContext)
+        public string GenerateToken(LoginDto dto)
         {
             var account = _context.Accounts.FirstOrDefault(a => a.Login == dto.Login);
 

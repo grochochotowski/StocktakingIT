@@ -29,7 +29,7 @@ namespace KropkaNetApi.Y_Controllers.Shared
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginDto dto)
         {
-            string token = _accountService.GenerateToken(dto, HttpContext);
+            string token = _accountService.GenerateToken(dto);
 
             return Ok(new { token = token });
         }
