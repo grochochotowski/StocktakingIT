@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using KropkaNetApi.X_Entities.Objects.Shared;
+using System.ComponentModel.DataAnnotations;
 
 namespace KropkaNetApi.X_Entities.Objects.CompanySide
 {
@@ -17,6 +18,12 @@ namespace KropkaNetApi.X_Entities.Objects.CompanySide
         [Required(ErrorMessage = "Phone number is required")]
         public string PhoneNumber { get; set; }
         public string? Note { get; set; }
+
+
+
+        [Required]
+        public int AccountId { get; set; }
+        public virtual Account Account { get; set; }
 
 
 
