@@ -49,7 +49,8 @@ namespace KropkaNetApi
                 {
                     ValidIssuer = authenticationSettings.JwtIssuer,
                     ValidAudience = authenticationSettings.JwtIssuer,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
@@ -69,7 +70,6 @@ namespace KropkaNetApi
             });
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.AddScoped<ErrorHandlingMiddleware>();
-            //builder.Services.AddScoped<JwtAuthorizationMiddleware>();
             builder.Services.AddScoped<IPasswordHasher<Account>, PasswordHasher<Account>>();
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());

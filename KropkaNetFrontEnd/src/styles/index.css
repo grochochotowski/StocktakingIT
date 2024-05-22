@@ -16,6 +16,7 @@
     --clr-txt-light: #213547;
 
     --clr-acc-dark-100: #202518;
+    --clr-acc-dark-150: #2f3326;
     --clr-acc-dark-200: #2C430F;
     --clr-acc-dark-300: #5A644E;
     --clr-acc-dark-400: #879675;
@@ -91,7 +92,9 @@ button,
     padding: 1vh 0;
     width: 10vw;
 
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     font-size: 1.5rem;
 

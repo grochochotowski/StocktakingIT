@@ -1,4 +1,5 @@
-﻿using KropkaNetApi.X_Models.Shared.Account;
+﻿using KropkaNetApi.X_Entities;
+using KropkaNetApi.X_Models.Shared.Account;
 using KropkaNetApi.Y_Services.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,11 +28,29 @@ namespace KropkaNetApi.Y_Controllers.Shared
         }
 
         [HttpPost("login")]
-        public ActionResult Login([FromBody] LoginDto dto)
+        public ActionResult LogIn([FromBody] LoginDto dto)
         {
-            string token = _accountService.GenerateToken(dto, HttpContext);
+            LoginResponse response = _accountService.LogIn(dto);
 
-            return Ok(new { token = token });
+            if (response.IsLoggedIn)
+            {
+                return Ok(response);
+            }
+
+            return Unauthorized("Login or password is incorrect");
+        }
+
+        [HttpPost("refresh")]
+        public ActionResult Refresh([FromBody] RefreshTokenModel model)
+        {
+            LoginResponse response = _accountService.Refresh(model);
+
+            if (response.IsLoggedIn)
+            {
+                return Ok(response);
+            }
+
+            return Unauthorized("Login or password is incorrect");
         }
 
     }

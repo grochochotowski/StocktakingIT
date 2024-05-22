@@ -9,13 +9,17 @@ using System;
 using KropkaNetApi.X_Entities;
 using KropkaNetApi.Exceptions;
 using KropkaNet.Migrations;
+using System.Security.Cryptography;
 
 namespace KropkaNetApi.Y_Services.Shared
 {
     public interface IAccountService
     {
         void Register(RegisterDto dto);
-        string GenerateToken(LoginDto dto, HttpContext httpContext);
+        LoginResponse LogIn(LoginDto dto);
+        LoginResponse Refresh(RefreshTokenModel model);
+        string GenerateRefreshToken();
+        string GenerateToken(Account account);
     }
 
     public class AccountService : IAccountService
@@ -53,21 +57,77 @@ namespace KropkaNetApi.Y_Services.Shared
             _context.SaveChanges();
         }
 
-        public string GenerateToken(LoginDto dto, HttpContext httpContext)
+        public LoginResponse LogIn(LoginDto dto)
         {
+            var response = new LoginResponse();
             var account = _context.Accounts.FirstOrDefault(a => a.Login == dto.Login);
 
             if (account is null)
             {
-                throw new BadRequestException("Login or password is incorrect");
+                return response;
             }
 
             var hashedPassword = _passwordHasher.VerifyHashedPassword(account, account.HashedPassword, dto.Password);
             if (hashedPassword == PasswordVerificationResult.Failed)
             {
-                throw new BadRequestException("Login or password is incorrect");
+                return response;
             }
 
+            response.IsLoggedIn = true;
+            response.JwtToken = GenerateToken(account);
+            response.RefreshToken = GenerateRefreshToken();
+
+            account.RefreshToken = response.RefreshToken;
+            account.RefreshTokenExpire = DateTime.Now.AddDays(30);
+
+            _context.SaveChanges();
+
+            return response;
+        }
+
+        public LoginResponse Refresh(RefreshTokenModel model)
+        {
+            var response = new LoginResponse();
+            var principal = GetTokenPrincipal(model.JwtToken);
+            if (principal.Identity.Name is null)
+            {
+                return response;
+            }
+
+            var account = _context.Accounts.FirstOrDefault(a => a.Login == principal.Identity.Name);
+
+            if (account is null || account.RefreshToken != model.RefreshToken || account.RefreshTokenExpire < DateTime.Now)
+            {
+                return response;
+            }
+
+            response.IsLoggedIn = true;
+            response.JwtToken = GenerateToken(account);
+            response.RefreshToken = GenerateRefreshToken();
+
+            account.RefreshToken = response.RefreshToken;
+            account.RefreshTokenExpire = DateTime.Now.AddDays(30);
+
+            _context.SaveChanges();
+
+            return response;
+
+        }
+        
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[64];
+
+            using (var numberGenerator = RandomNumberGenerator.Create())
+            {
+                numberGenerator.GetBytes(randomNumber);
+            }
+
+            return Convert.ToBase64String(randomNumber);
+        }
+
+        public string GenerateToken(Account account)
+        {
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
@@ -76,7 +136,7 @@ namespace KropkaNetApi.Y_Services.Shared
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
+            var expires = DateTime.Now.AddSeconds(_authenticationSettings.JwtExpireSeconds);
 
             var token = new JwtSecurityToken(
                 _authenticationSettings.JwtIssuer,
@@ -85,18 +145,24 @@ namespace KropkaNetApi.Y_Services.Shared
                 expires: expires,
                 signingCredentials: cred);
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var tokenString = tokenHandler.WriteToken(token);
-
-            httpContext.Response.Cookies.Append("jwtToken", tokenString, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None
-            });
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
             return tokenString;
         }
+        private ClaimsPrincipal GetTokenPrincipal(string token)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
+            var validation = new TokenValidationParameters
+            {
+                IssuerSigningKey = key,
+                ValidateLifetime = false,
+                ValidateActor = false,
+                ValidateIssuer = false,
+                ValidateAudience = false,
+            };
+            return new JwtSecurityTokenHandler().ValidateToken(token, validation, out _);
+        }
+
+
     }
 }

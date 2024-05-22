@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import useAuth from '../../hooks/useAuth'
-import axios from '../../api/axios'
+import { axiosInstance } from '../../api/axios'
 
 import '../../styles/index.css'
 import '../../styles/form.css'
@@ -15,7 +14,6 @@ function LoginPage() {
         "message" : "",
         "type" : ""
     })
-    const { setAuth } = useAuth();
     const navigate = useNavigate();
     
     const [inputs, setInputs] = useState({
@@ -35,9 +33,8 @@ function LoginPage() {
     async function login(event) {
         event.preventDefault();
         try {
-            const response = await axios.post('/account/login', JSON.stringify(inputs));
-            const token = response?.data?.token
-            setAuth({inputs, token})
+            const response = await axiosInstance.post('/account/login', JSON.stringify(inputs));
+            localStorage.setItem("auth", JSON.stringify(response.data));
             navigate("/dashboard")
         } catch (error) {
             setMessageBoxOpt(
