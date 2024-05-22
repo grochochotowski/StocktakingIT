@@ -18,6 +18,8 @@ namespace KropkaNetApi.Y_Services.Shared
 {
     public interface IAccountService
     {
+        void RegisterEmployee(RegisterEmployeeDto dto);
+        void RegisterUser(RegisterUserDto dto);
         LoginResponse LogIn(LoginDto dto);
         LoginResponse Refresh(RefreshTokenModel model);
         string GenerateRefreshToken();
@@ -35,6 +37,74 @@ namespace KropkaNetApi.Y_Services.Shared
             _context = context;
             _passwordHasher = passwordHasher;
             _authenticationSettings = authenticationSettings;
+        }
+
+
+
+        public void RegisterEmployee(RegisterEmployeeDto dto)
+        {
+            var newAccount = new Account()
+            {
+                Login = dto.Login
+            };
+            if (dto.Password != dto.ConfirmPassword)
+            {
+                throw new BadRequestException("Passwords do not match");
+            }
+            var hashedPassword = _passwordHasher.HashPassword(newAccount, dto.Password);
+            newAccount.HashedPassword = hashedPassword;
+
+            _context.Accounts.Add(newAccount);
+            _context.SaveChanges();
+
+
+
+            var newEmployee = new Employee()
+            {
+                Name = dto.Name,
+                Surname = dto.Surname,
+                PersonalNumber = dto.PersonalNumber,
+                Email = dto.Email,
+                PhoneNumber = dto.PhoneNumber,
+                Note = dto.Note,
+                PositionId = dto.PositionId,
+                AccountId = newAccount.Id
+            };
+
+            _context.Employees.Add(newEmployee);
+            _context.SaveChanges();
+        }
+        public void RegisterUser(RegisterUserDto dto)
+        {
+            var newAccount = new Account()
+            {
+                Login = dto.Login
+            };
+            if (dto.Password != dto.ConfirmPassword)
+            {
+                throw new BadRequestException("Passwords do not match");
+            }
+            var hashedPassword = _passwordHasher.HashPassword(newAccount, dto.Password);
+            newAccount.HashedPassword = hashedPassword;
+
+            _context.Accounts.Add(newAccount);
+            _context.SaveChanges();
+
+
+
+            var newUser = new User()
+            {
+                Name = dto.Name,
+                Surname = dto.Surname,
+                PersonalNumber = dto.PersonalNumber,
+                Email = dto.Email,
+                PhoneNumber = dto.PhoneNumber,
+                Note = dto.Note,
+                AccountId = newAccount.Id
+            };
+
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
         }
 
         public LoginResponse LogIn(LoginDto dto)
