@@ -75,7 +75,7 @@ namespace KropkaNetApi
             builder.Services.AddScoped<IPasswordHasher<Account>, PasswordHasher<Account>>();
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            builder.Services.AddScoped<PositionSeeder>();
+            builder.Services.AddScoped<Seeder>();
             
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -90,7 +90,7 @@ namespace KropkaNetApi
 
             var app = builder.Build();
             var scope = app.Services.CreateScope();
-            var seeder = scope.ServiceProvider.GetRequiredService<PositionSeeder>();
+            var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
 
             // Configure the HTTP request pipeline.
             app.UseCors("FrontEndClient");
