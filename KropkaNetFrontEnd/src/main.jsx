@@ -10,6 +10,7 @@ const LoginPage = lazy(() => import('./pages/BeginPages/LoginPage'))
 const RegisterPage = lazy(() => import('./pages/BeginPages/RegisterPage'))
 
 const OrderPage = lazy(() => import('./pages/OrderPages/OrderPage'))
+const OrderNew = lazy(() => import('./pages/OrderPages/OrderNew'))
 
 const Unauthorized = lazy(() => import('./pages/ErrorPages/Unauthorized'))
 const Forbidden = lazy(() => import('./pages/ErrorPages/Forbidden'))
@@ -33,14 +34,21 @@ const router = createBrowserRouter([
         path: '/register',
         element: <RegisterPage  />,
     },
+
     {
         path: '/dashboard',
         element: <DashboardPage />,
     },
+
     {
         path: '/orders',
         element: <OrderPage />,
     },
+    {
+        path: '/new',
+        element: <OrderNew />,
+    },
+
     {
         path: '/401',
         element: <Unauthorized  />,
