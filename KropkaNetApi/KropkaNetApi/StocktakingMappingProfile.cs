@@ -12,6 +12,7 @@ using KropkaNetApi.X_Models.CompanySide.Warehouse;
 using KropkaNetApi.X_Models.CompanySide.WarehouseProduct;
 using KropkaNetApi.X_Entities.Objects.ClientSide;
 using KropkaNetApi.X_Entities.Objects.CompanySide;
+using System.Reflection.Emit;
 
 namespace KropkaNetApi
 {
@@ -44,6 +45,7 @@ namespace KropkaNetApi
 
             CreateMap<WarehouseProduct, WarehouseProductDto>();
 
+            CreateMap<CreateCompanyDto, Company>();
         }
     }
 }
