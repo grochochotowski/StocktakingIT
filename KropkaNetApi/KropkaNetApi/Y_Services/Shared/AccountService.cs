@@ -10,16 +10,18 @@ using KropkaNetApi.X_Entities;
 using KropkaNetApi.Exceptions;
 using KropkaNet.Migrations;
 using System.Security.Cryptography;
+using KropkaNetApi.X_Entities.Objects.CompanySide;
+using Microsoft.EntityFrameworkCore;
+using KropkaNetApi.X_Entities.Objects.ClientSide;
 
 namespace KropkaNetApi.Y_Services.Shared
 {
     public interface IAccountService
     {
-        void Register(RegisterDto dto);
         LoginResponse LogIn(LoginDto dto);
         LoginResponse Refresh(RefreshTokenModel model);
         string GenerateRefreshToken();
-        string GenerateToken(Account account);
+        string GenerateToken(Account account, LoginDto dto, string position);
     }
 
     public class AccountService : IAccountService
@@ -33,28 +35,6 @@ namespace KropkaNetApi.Y_Services.Shared
             _context = context;
             _passwordHasher = passwordHasher;
             _authenticationSettings = authenticationSettings;
-        }
-
-
-
-        public void Register(RegisterDto dto)
-        {
-            var newAccount = new Account()
-            {
-                Login = dto.Login
-            };
-
-            if (dto.Password != dto.ConfirmPassword)
-            {
-                throw new BadRequestException("Passwords do not match");
-            }
-
-            var hashedPassword = _passwordHasher.HashPassword(newAccount, dto.Password);
-
-            newAccount.HashedPassword = hashedPassword;
-
-            _context.Accounts.Add(newAccount);
-            _context.SaveChanges();
         }
 
         public LoginResponse LogIn(LoginDto dto)
@@ -73,8 +53,14 @@ namespace KropkaNetApi.Y_Services.Shared
                 return response;
             }
 
+            string position = "";
+            if (!dto.isUser)
+            {
+                position = _context.Employees.Include(e => e.Position).FirstOrDefault(e => e.AccountId == account.Id).Position.Name;
+            }
+
             response.IsLoggedIn = true;
-            response.JwtToken = GenerateToken(account);
+            response.JwtToken = GenerateToken(account, dto, position);
             response.RefreshToken = GenerateRefreshToken();
 
             account.RefreshToken = response.RefreshToken;
@@ -84,7 +70,6 @@ namespace KropkaNetApi.Y_Services.Shared
 
             return response;
         }
-
         public LoginResponse Refresh(RefreshTokenModel model)
         {
             var response = new LoginResponse();
@@ -101,8 +86,21 @@ namespace KropkaNetApi.Y_Services.Shared
                 return response;
             }
 
+            string position = "";
+            if (_context.Employees.Any(e => e.AccountId == account.Id))
+            {
+                position = _context.Employees.Include(e => e.Position).FirstOrDefault(e => e.AccountId == account.Id).Position.Name;
+            }
+
+            var loginDto = new LoginDto
+            {
+                Login = account.Login,
+                Password = string.Empty,
+                isUser = !_context.Employees.Any(e => e.AccountId == account.Id)
+            };
+
             response.IsLoggedIn = true;
-            response.JwtToken = GenerateToken(account);
+            response.JwtToken = GenerateToken(account, loginDto, position);
             response.RefreshToken = GenerateRefreshToken();
 
             account.RefreshToken = response.RefreshToken;
@@ -114,6 +112,8 @@ namespace KropkaNetApi.Y_Services.Shared
 
         }
         
+
+
         public string GenerateRefreshToken()
         {
             var randomNumber = new byte[64];
@@ -125,14 +125,17 @@ namespace KropkaNetApi.Y_Services.Shared
 
             return Convert.ToBase64String(randomNumber);
         }
-
-        public string GenerateToken(Account account)
+        public string GenerateToken(Account account, LoginDto dto, string position)
         {
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
                 new Claim(ClaimTypes.Name, $"{account.Login}")
             };
+            if (!dto.isUser)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, position));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
