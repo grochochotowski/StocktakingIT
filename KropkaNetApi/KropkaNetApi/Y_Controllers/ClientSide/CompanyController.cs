@@ -1,7 +1,9 @@
-﻿using KropkaNetApi.X_Models.ClientSide.Company;
+﻿using KropkaNetApi.X_Entities.Enum;
+using KropkaNetApi.X_Models.ClientSide.Company;
 using KropkaNetApi.Y_Services.ClientSide;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace KropkaNetApi.Y_Controllers.ClientSide
 {
@@ -17,10 +19,11 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             _companyService = companyService;
         }
 
-        [HttpPost("create")]
-        public ActionResult Create([FromBody] CreateCompanyDto dto)
+        // PSOT api/kropkaNet/company/create/{id}
+        [HttpPost("create/{userId}")]
+        public ActionResult Create([FromRoute] int userId, [FromBody] CreateCompanyDto dto)
         {
-            var createdCompanyId = _companyService.Create(dto);
+            var createdCompanyId = _companyService.Create(userId, dto);
 
             var result = Created($"{createdCompanyId}", null) as CreatedResult;
             if (result != null)
@@ -29,6 +32,20 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             }
 
             return result;
+        }
+
+        // GET api/kropkaNet/company/user/{id}
+        [HttpGet("user/{userId}")]
+        public ActionResult<IEnumerable<CompanyDto>> GetListUser(
+            [FromRoute] int userId,
+            [FromQuery] int page,
+            [FromQuery] string? filters,
+            [FromQuery] string? sortBy,
+            [FromQuery] SortDirection sortDireciton
+            )
+        {
+            var companyDtos = _companyService.GetListUser(userId, page, filters, sortBy, sortDireciton);
+            return Ok(companyDtos);
         }
     }
 }
