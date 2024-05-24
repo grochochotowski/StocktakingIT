@@ -18,6 +18,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
         CompanyDto GetDetails(int id);
         int Update(int id, CreateCompanyDto dto);
         void AddUser(int userId, int companyId);
+        void RemoveUser(int userId, int companyId);
         int Delete(int id);
     }
     public class CompanyService : ICompanyService
@@ -208,6 +209,23 @@ namespace KropkaNetApi.Y_Services.ClientSide
             if (company.Users.Any(u => u.Id == user.Id)) throw new BadRequestException("User already in company");
 
             company.Users.Add(user);
+            _context.SaveChanges();
+        }
+
+        // PATCH: remove user
+        public void RemoveUser(int userId, int companyId)
+        {
+            var company = _context.Companies
+                .Include(c => c.Users)
+                .FirstOrDefault(c => c.Id == companyId);
+            var user = _context.Users
+                .FirstOrDefault(c => c.Id == userId);
+
+            if (company == null) throw new NotFoundException("Company not found");
+            if (user == null) throw new NotFoundException("User not found");
+            if (!company.Users.Any(u => u.Id == user.Id)) throw new BadRequestException("User is not in company");
+
+            company.Users.Remove(user);
             _context.SaveChanges();
         }
 

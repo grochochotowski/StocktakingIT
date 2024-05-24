@@ -84,10 +84,20 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // PATCH api/kropkaNet/company/addUser
         [HttpPatch("addUser")]
-        //[Authorize]
+        [Authorize]
         public ActionResult AddUser([FromQuery] int userId, [FromQuery] int companyId)
         {
             _companyService.AddUser(userId, companyId);
+
+            return Ok();
+        }
+
+        // PATCH api/kropkaNet/company/removeUser
+        [HttpPatch("removeUser")]
+        [Authorize]
+        public ActionResult RemoveUser([FromQuery] int userId, [FromQuery] int companyId)
+        {
+            _companyService.RemoveUser(userId, companyId);
 
             return Ok();
         }
