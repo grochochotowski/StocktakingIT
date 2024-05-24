@@ -18,7 +18,8 @@ namespace KropkaNetApi.Y_Services.ClientSide
         int Create(CreateUserDto dto);
         IEnumerable<UserDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection);
         UserDto GetDetails(int id);
-        void Update(int id, UpdateUserDto dto);
+        void Update(int id, UserDto dto);
+
         void Delete(int id);
     }
 
@@ -72,14 +73,18 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return _mapper.Map<UserDto>(user);
         }
 
-        public void Update(int id, UpdateUserDto dto)
+        public void Update(int id, UserDto dto)
         {
             var user = _context.Users.Find(id);
-            if (user == null) throw new NotFoundException("User not found");
+            if (user == null)
+            {
+                throw new NotFoundException("User not found");
+            }
 
-            _mapper.Map(dto, user);
+            _mapper.Map(dto, user);  // Mapowanie UserDto na User
             _context.SaveChanges();
         }
+
 
         public void Delete(int id)
         {
