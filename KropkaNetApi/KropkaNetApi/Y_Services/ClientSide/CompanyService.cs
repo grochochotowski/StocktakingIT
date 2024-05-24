@@ -6,12 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using KropkaNetApi.X_Entities.Enum;
 using System.Linq.Expressions;
 using KropkaNetApi.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNetApi.Y_Services.ClientSide
 {
     public interface ICompanyService
     {
-        int Create(int userId, CreateCompanyDto dto);
+        int Create(int? userId, CreateCompanyDto dto);
         ReturnResult<CompanyListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton);
         ReturnResult<CompanyListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
         int Delete(int id);
@@ -30,16 +31,15 @@ namespace KropkaNetApi.Y_Services.ClientSide
 
 
         // POST: create comany
-        public int Create(int userId, CreateCompanyDto dto)
+        public int Create(int? userId, CreateCompanyDto dto)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
-            if (user == null)
-            {
-                throw new BadRequestException("User not found"+ userId);
-            }
-
             var company = _mapper.Map<Company>(dto);
-            company.Users = [user];
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            if (user != null)
+            {
+                company.Users = [user];
+            }
 
             var address = new Address()
             {
@@ -156,9 +156,10 @@ namespace KropkaNetApi.Y_Services.ClientSide
         public int Delete(int id)
         {
             var company = _context.Companies.FirstOrDefault(p => p.Id == id);
-            if (company == null) return -1;
+            if (company == null) throw new BadRequestException("Company not found");
 
             _context.Remove(company);
+            _context.SaveChanges();
 
             return 0;
         }

@@ -18,10 +18,10 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             _companyService = companyService;
         }
 
-        // PSOT api/kropkaNet/company/create/{id}
-        [HttpPost("create/{userId}")]
-        [Authorize(Roles = "User")]
-        public ActionResult Create([FromRoute] int userId, [FromBody] CreateCompanyDto dto)
+        // PSOT api/kropkaNet/company/create
+        [HttpPost("create")]
+        [Authorize]
+        public ActionResult Create([FromQuery] int? userId, [FromBody] CreateCompanyDto dto)
         {
             var createdCompanyId = _companyService.Create(userId, dto);
 
@@ -61,6 +61,16 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         {
             var companyDtos = _companyService.GetList(page, filters, sortBy, sortDireciton);
             return Ok(companyDtos);
+        }
+
+        // GET api/kropkaNet/company/delete{id}
+        [HttpDelete("delete/{id}")]
+        [Authorize]
+        public ActionResult<IEnumerable<CompanyDto>> Delete([FromRoute] int id)
+        {
+            var companyDtos = _companyService.Delete(id);
+
+            return NoContent();
         }
     }
 }
