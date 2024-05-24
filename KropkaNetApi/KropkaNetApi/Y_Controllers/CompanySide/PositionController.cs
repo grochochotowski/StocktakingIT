@@ -7,7 +7,6 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 {
     [Route("api/kropkaNet/position")]
     [ApiController]
-    [Authorize]
     public class PositionController : ControllerBase
     {
         private readonly IPositionService _positionService;
@@ -21,6 +20,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
         // GET: /api/kropkaNet/position/all
         [HttpGet("all")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<PositionDto>> GetAll()
         {
             var positionDtos = _positionService.GetAll();

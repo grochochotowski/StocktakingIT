@@ -23,6 +23,7 @@ namespace KropkaNetApi
             CreateMap<Address, AddressDto>();
 
             CreateMap<Company, CompanyDto>();
+            CreateMap<CreateCompanyDto, Company>();
 
             CreateMap<Department, DepartmentDto>();
 

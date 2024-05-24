@@ -7,9 +7,9 @@ namespace KropkaNetApi.X_Entities.Objects.ClientSide
         [Key]
         public int Id { get; set; }
         [Required(ErrorMessage = "NIP is required")]
-        public int NIP { get; set; }
+        public string NIP { get; set; }
         [Required(ErrorMessage = "KRS is required")]
-        public int KRS { get; set; }
+        public string KRS { get; set; }
         [Required(ErrorMessage = "Name of the Company is required")]
         public string CompanyName { get; set; }
         public string? Note { get; set; }

@@ -19,13 +19,18 @@ namespace KropkaNetApi.Y_Controllers.Shared
 
 
 
-        [HttpPost("register")]
-        public ActionResult Register([FromBody] RegisterDto dto)
+        [HttpPost("employee/register")]
+        public ActionResult RegisterEmployee([FromBody] RegisterEmployeeDto dto)
         {
-            _accountService.Register(dto);
+            _accountService.RegisterEmployee(dto);
             return Ok();
         }
-
+        [HttpPost("user/register")]
+        public ActionResult RegisterUser([FromBody] RegisterUserDto dto)
+        {
+            _accountService.RegisterUser(dto);
+            return Ok();
+        }
         [HttpPost("login")]
         public ActionResult LogIn([FromBody] LoginDto dto)
         {
@@ -38,7 +43,6 @@ namespace KropkaNetApi.Y_Controllers.Shared
 
             return Unauthorized("Login or password is incorrect");
         }
-
         [HttpPost("refresh")]
         public ActionResult Refresh([FromBody] RefreshTokenModel model)
         {

@@ -75,7 +75,7 @@ namespace KropkaNetApi
             builder.Services.AddScoped<IPasswordHasher<Account>, PasswordHasher<Account>>();
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            builder.Services.AddScoped<PositionSeeder>();
+            builder.Services.AddScoped<Seeder>();
             
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -86,10 +86,11 @@ namespace KropkaNetApi
             builder.Services.AddScoped<ICompanyService, CompanyService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
             var app = builder.Build();
             var scope = app.Services.CreateScope();
-            var seeder = scope.ServiceProvider.GetRequiredService<PositionSeeder>();
+            var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
 
             // Configure the HTTP request pipeline.
             app.UseCors("FrontEndClient");
