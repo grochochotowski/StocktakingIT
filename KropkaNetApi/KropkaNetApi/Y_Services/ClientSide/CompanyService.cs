@@ -65,14 +65,12 @@ namespace KropkaNetApi.Y_Services.ClientSide
             var baseQuery = _context.Companies
                 .Include(c => c.Address)
                 .Include(c => c.Users)
-                .Where(
-                    (c => filter == null || (
-                    c.CompanyName.ToLower().Contains(filter) ||
-                    c.NIP.Contains(filter) ||
-                    c.KRS.Contains(filter) ||
-                    c.Id.ToString().Contains(filter)) &&
-                    c.Users.Any(u => u.Id == userId) // to fix
-                ));
+                .Where(c => (string.IsNullOrEmpty(filter) || (
+                       c.CompanyName.ToLower().Contains(filter.ToLower()) ||
+                       c.NIP.Contains(filter) ||
+                       c.KRS.Contains(filter) ||
+                       c.Id.ToString().Contains(filter))) &&
+                       c.Users.Any(u => u.Id == userId));
 
             if (!string.IsNullOrEmpty(sortBy))
             {
