@@ -16,6 +16,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
         ReturnResult<CompanyListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton);
         ReturnResult<CompanyListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
         CompanyDto GetDetails(int id);
+        int Update(int id, CreateCompanyDto dto);
         int Delete(int id);
     }
     public class CompanyService : ICompanyService
@@ -164,6 +165,33 @@ namespace KropkaNetApi.Y_Services.ClientSide
 
             var companyDto = _mapper.Map<CompanyDto>(company);
             return companyDto;
+        }
+
+
+        // PUT: update comany
+        public int Update(int id, CreateCompanyDto dto)
+        {
+            var company = _context.Companies
+                .Include(c => c.Address)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (company == null) throw new NotFoundException("Company not found");
+
+            company.NIP = dto.NIP;
+            company.KRS = dto.KRS;
+            company.CompanyName = dto.CompanyName;
+            company.Note = dto.Note;
+
+            company.Address.Country = dto.Country;
+            company.Address.City = dto.City;
+            company.Address.ZipCode = dto.ZipCode;
+            company.Address.Street = dto.Street;
+            company.Address.Building = dto.Building;
+            company.Address.Premises = dto.Premises;
+
+            _context.SaveChanges();
+
+            return company.Id;
         }
 
         // DELETE : delete comany with id

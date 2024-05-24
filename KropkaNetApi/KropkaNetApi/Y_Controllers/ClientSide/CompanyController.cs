@@ -72,6 +72,16 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             return Ok(companyDto);
         }
 
+        [Authorize]
+        // PUT api/kropkaNet/company/update/5
+        [HttpPut("update/{id}")]
+        public ActionResult Update([FromRoute] int id, [FromBody] CreateCompanyDto dto)
+        {
+            var orderId = _companyService.Update(id, dto);
+
+            return Ok($"{orderId}");
+        }
+
         // DELETE api/kropkaNet/company/delete{id}
         [HttpDelete("delete/{id}")]
         [Authorize]
