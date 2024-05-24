@@ -47,5 +47,18 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             var companyDtos = _companyService.GetListUser(userId, page, filters, sortBy, sortDireciton);
             return Ok(companyDtos);
         }
+
+        // GET api/kropkaNet/company/all
+        [HttpGet("all")]
+        public ActionResult<IEnumerable<CompanyDto>> GetList(
+            [FromQuery] int page,
+            [FromQuery] string? filters,
+            [FromQuery] string? sortBy,
+            [FromQuery] SortDirection sortDireciton
+            )
+        {
+            var companyDtos = _companyService.GetList(page, filters, sortBy, sortDireciton);
+            return Ok(companyDtos);
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
     {
         int Create(int userId, CreateCompanyDto dto);
         ReturnResult<CompanyListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton);
+        ReturnResult<CompanyListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
         int Delete(int id);
     }
     public class CompanyService : ICompanyService
@@ -25,6 +26,8 @@ namespace KropkaNetApi.Y_Services.ClientSide
             _context = context;
             _mapper = mapper;
         }
+
+
 
         // POST: create comany
         public int Create(int userId, CreateCompanyDto dto)
@@ -58,10 +61,9 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return company.Id;
         }
 
-        // GET: get list of comanies
+        // GET: get list of comanies of user
         public ReturnResult<CompanyListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton)
         {
-            Console.WriteLine($"\n\n{userId}\n\n");
             var baseQuery = _context.Companies
                 .Include(c => c.Address)
                 .Include(c => c.Users)
@@ -71,6 +73,52 @@ namespace KropkaNetApi.Y_Services.ClientSide
                        c.KRS.Contains(filter) ||
                        c.Id.ToString().Contains(filter))) &&
                        c.Users.Any(u => u.Id == userId));
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                var columnsSelector = new Dictionary<string, Expression<Func<Company, object>>>
+                {
+                    { "id", c => c.Id},
+                    { "CompanyName", c => c.CompanyName}
+                };
+
+                var selectedColumn = columnsSelector[sortBy];
+
+                baseQuery = sortDireciton == SortDirection.ASC
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
+
+            var items = baseQuery
+                .Skip(10 * (page - 1))
+                .Take(10)
+                .OrderBy(p => p.CompanyName)
+                .Select(p => new CompanyListDto
+                {
+                    Id = p.Id,
+                    CompanyName = p.CompanyName
+                })
+                .ToList();
+
+            var totalCount = baseQuery.Count();
+
+            var result = new ReturnResult<CompanyListDto>(items, totalCount);
+
+            return result;
+        }
+
+        // GET: get list of all users
+        public ReturnResult<CompanyListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton)
+        {
+            var baseQuery = _context.Companies
+                .Include(c => c.Address)
+                .Include(c => c.Users)
+                .Where(c => (string.IsNullOrEmpty(filter) || (
+                       c.CompanyName.ToLower().Contains(filter.ToLower()) ||
+                       c.NIP.Contains(filter) ||
+                       c.KRS.Contains(filter) ||
+                       c.Id.ToString().Contains(filter))
+                       ));
 
             if (!string.IsNullOrEmpty(sortBy))
             {
