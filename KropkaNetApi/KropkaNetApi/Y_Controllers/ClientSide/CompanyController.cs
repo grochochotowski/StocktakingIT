@@ -9,7 +9,6 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 {
     [Route("api/kropkaNet/company")]
     [ApiController]
-    [Authorize]
     public class CompanyController : ControllerBase
     {
         private readonly ICompanyService _companyService;
@@ -21,6 +20,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // PSOT api/kropkaNet/company/create/{id}
         [HttpPost("create/{userId}")]
+        [Authorize(Roles = "User")]
         public ActionResult Create([FromRoute] int userId, [FromBody] CreateCompanyDto dto)
         {
             var createdCompanyId = _companyService.Create(userId, dto);
@@ -36,6 +36,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // GET api/kropkaNet/company/user/{id}
         [HttpGet("user/{userId}")]
+        [Authorize]
         public ActionResult<IEnumerable<CompanyDto>> GetListUser(
             [FromRoute] int userId,
             [FromQuery] int page,
@@ -50,6 +51,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // GET api/kropkaNet/company/all
         [HttpGet("all")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<CompanyDto>> GetList(
             [FromQuery] int page,
             [FromQuery] string? filters,

@@ -112,7 +112,6 @@ namespace KropkaNetApi.Y_Services.ClientSide
         {
             var baseQuery = _context.Companies
                 .Include(c => c.Address)
-                .Include(c => c.Users)
                 .Where(c => (string.IsNullOrEmpty(filter) || (
                        c.CompanyName.ToLower().Contains(filter.ToLower()) ||
                        c.NIP.Contains(filter) ||
