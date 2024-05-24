@@ -2,13 +2,17 @@
 using KropkaNetApi.X_Entities.Objects.ClientSide;
 using KropkaNetApi.X_Entities;
 using KropkaNetApi.X_Models.ClientSide.Department;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using KropkaNetApi.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace KropkaNetApi.Y_Services.ClientSide
 {
     public interface IDepartmentService
     {
-        int Create(CreateDepartmentDto dto);
+        int Create(int? comapnyId, CreateDepartmentDto dto);
         IEnumerable<DepartmentListDto> GetList(string filter);
+        void RemoveOrder(int comapnyId, int departmentId);
         int Delete(int id);
     }
     public class DepartmentService : IDepartmentService
@@ -23,10 +27,12 @@ namespace KropkaNetApi.Y_Services.ClientSide
         }
 
         // POST: create department
-        public int Create(CreateDepartmentDto dto)
+        public int Create(int? comapnyId, CreateDepartmentDto dto)
         {
             var department = _mapper.Map<Department>(dto);
 
+            var company = _context.Companies.FirstOrDefault(c => c.Id == comapnyId);
+           
             _context.Departments.Add(department);
             _context.SaveChanges();
 
@@ -51,6 +57,23 @@ namespace KropkaNetApi.Y_Services.ClientSide
                 .ToList();
 
             return departmentList;
+        }
+
+        // PATCH: remove user
+        public void RemoveOrder(int comapnyId, int departmentId)
+        {
+            var department = _context.Departments
+                .Include(c => c.Companies)
+                .FirstOrDefault(c => c.Id == departmentId);
+            var company = _context.Companies
+                .FirstOrDefault(c => c.Id == comapnyId);
+
+            if (department == null) throw new NotFoundException("Company not found");
+            if (company == null) throw new NotFoundException("User not found");
+            if (!department.Companies.Any(u => u.Id == company.Id)) throw new BadRequestException("User is not in company");
+
+            department.Companies.Remove(company);
+            _context.SaveChanges();
         }
 
         // DELETE : delete department with id
