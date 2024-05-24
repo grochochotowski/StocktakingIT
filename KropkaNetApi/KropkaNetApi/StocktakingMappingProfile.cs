@@ -29,7 +29,10 @@ namespace KropkaNetApi
 
             CreateMap<Order, OrderDto>();
 
-            CreateMap<User, UserDto>();
+            CreateMap<CreateUserDto, User>();  // Tworzenie nowego użytkownika
+            CreateMap<UserDto, User>()         // Do aktualizacji
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));  // Tylko niepuste pola
+            CreateMap<User, UserDto>();        // Odczyt danych użytkownika
 
 
 
