@@ -18,6 +18,6 @@ namespace KropkaNetApi.X_Models.ClientSide.Company
 
 
         public virtual ICollection<DepartmentDto>? Departments { get; set; }
-        public virtual ICollection<UserDto> Users { get; set; }
+        public virtual ICollection<UserDto>? Users { get; set; }
     }
 }

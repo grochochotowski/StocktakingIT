@@ -63,7 +63,16 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             return Ok(companyDtos);
         }
 
-        // GET api/kropkaNet/company/delete{id}
+        // GET api/kropkaNet/company/{id}
+        [HttpGet("{id}")]
+        [Authorize]
+        public ActionResult<IEnumerable<CompanyDto>> GetDetails([FromRoute] int id)
+        {
+            var companyDto = _companyService.GetDetails(id);
+            return Ok(companyDto);
+        }
+
+        // DELETE api/kropkaNet/company/delete{id}
         [HttpDelete("delete/{id}")]
         [Authorize]
         public ActionResult<IEnumerable<CompanyDto>> Delete([FromRoute] int id)
