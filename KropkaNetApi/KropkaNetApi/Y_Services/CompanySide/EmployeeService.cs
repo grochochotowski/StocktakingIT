@@ -11,6 +11,7 @@ using System.Linq.Expressions;
 using System.Security.Cryptography;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using KropkaNetApi.X_Models.Shared.Account;
+using KropkaNetApi.X_Entities.Objects.ClientSide;
 
 namespace KropkaNetApi.Y_Services.CompanySide
 {
@@ -111,11 +112,12 @@ namespace KropkaNetApi.Y_Services.CompanySide
         public ReturnResult<EmployeeListDto> GetById(int employeeId, int page, string filter, string sortBy, SortDirection sortDireciton)
         {
             var baseQuery = _context.Employees
-                .Include(p => p.Position)
+                .Include( e => e.Position)
                 .Where(e => (string.IsNullOrEmpty(filter) || (
                        e.Name.ToLower().Contains(filter.ToLower()) ||
                        e.Surname.ToLower().Contains(filter.ToLower()) ||
-                       e.Id.ToString().Contains(filter))));
+                       e.Id.ToString().Contains(filter))&&
+                       e.Id.Any(e => e.Id == employeeId)));
 
             if (!string.IsNullOrEmpty(sortBy))
             {
