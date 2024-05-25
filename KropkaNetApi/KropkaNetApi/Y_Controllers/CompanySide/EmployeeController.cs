@@ -22,7 +22,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
         [HttpPost("create")]
         [Authorize(Roles = "Moderator, Admin")]
-        public ActionResult Create([FromBody] CreateDepartmentDto dto, RegisterEmployeeDto registerdto)
+        public ActionResult Create([FromBody] CreateEmployeeDto dto, RegisterEmployeeDto registerdto)
         {
             var createdEmployeeId = _employeeService.Create(dto, registerdto);
 
@@ -49,9 +49,9 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
             return Ok(employeeDtos);
         }
         // GET api/kropkaNet/employee/{id}
-        [HttpGet("user/{employeeId}")]
+        [HttpGet("{employeeId}")]
         [Authorize(Roles = "Employee, Moderator, Admin")]
-        public ActionResult<IEnumerable<DepartmentDto>> GetById(
+        public ActionResult<IEnumerable<EmployeeDto>> GetById(
             [FromRoute] int employeeId,
             [FromQuery] int page,
             [FromQuery] string? filters,

@@ -47,8 +47,8 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             var departmentDtos = _departmentService.GetList(page, filters, sortBy, sortDireciton);
             return Ok(departmentDtos);
         }
-        // GET api/kropkaNet/departemnt/order/{id}
-        [HttpGet("user/{orderId}")]
+        // GET api/kropkaNet/company/departemnt/order/{id}
+        [HttpGet("company/department/{orderId}")]
         [Authorize]
         public ActionResult<IEnumerable<DepartmentDto>> GetListOrder(
             [FromRoute] int orderId,
