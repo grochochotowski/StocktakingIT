@@ -20,6 +20,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
         int Update(int id, UpdateOrderDto dto);
         void AddUser(int userId, int orderId);
         void RemoveUser(int userId, int orderId);
+        void ChangeState(int id, int state);
         void Delete(int id);
     }
     public class OrderService : IOrderService
@@ -208,6 +209,19 @@ namespace KropkaNetApi.Y_Services.ClientSide
             if (!order.Users.Any(u => u.Id == user.Id)) throw new BadRequestException("User is not in order");
 
             order.Users.Remove(user);
+            _context.SaveChanges();
+        }
+
+        // PATCH: change state
+        public void ChangeState(int id, int state)
+        {
+            var order = _context.Orders
+               .FirstOrDefault(c => c.Id == id);
+
+            if (order == null) throw new NotFoundException("Order not found");
+
+            order.State = state;
+
             _context.SaveChanges();
         }
 

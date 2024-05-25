@@ -1,5 +1,6 @@
 ﻿using Azure;
 using KropkaNetApi.X_Entities.Enum;
+using KropkaNetApi.X_Entities.Objects.ClientSide;
 using KropkaNetApi.X_Models.ClientSide.Company;
 using KropkaNetApi.X_Models.ClientSide.Order;
 using KropkaNetApi.X_Models.ClientSide.User;
@@ -100,6 +101,16 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         public ActionResult RemoveUser([FromQuery] int userId, [FromQuery] int orderId)
         {
             _orderService.RemoveUser(userId, orderId);
+
+            return Ok();
+        }
+
+        // PATCH api/kropkaNet/order/state
+        [HttpPatch("removeUser")]
+        //[Authorize(Roles="Employee, Moderator, Admin")]
+        public ActionResult ChangeState([FromQuery] int id, [FromQuery] int state)
+        {
+            _orderService.ChangeState(id, state);
 
             return Ok();
         }
