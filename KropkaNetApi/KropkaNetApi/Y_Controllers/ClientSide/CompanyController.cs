@@ -106,9 +106,9 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         // DELETE api/kropkaNet/company/delete{id}
         [HttpDelete("delete/{id}")]
         [Authorize]
-        public ActionResult<IEnumerable<CompanyDto>> Delete([FromRoute] int id)
+        public ActionResult Delete([FromRoute] int id)
         {
-            var companyDtos = _companyService.Delete(id);
+            _companyService.Delete(id);
 
             return NoContent();
         }

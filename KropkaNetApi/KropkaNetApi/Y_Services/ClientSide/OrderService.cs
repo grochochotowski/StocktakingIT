@@ -17,6 +17,9 @@ namespace KropkaNetApi.Y_Services.ClientSide
         ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton);
         ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
         OrderDto GetDetails(int id);
+        int Update(int id, UpdateOrderDto dto);
+        void AddUser(int userId, int orderId);
+        void RemoveUser(int userId, int orderId);
         int Delete(int id);
     }
     public class OrderService : IOrderService
@@ -155,19 +158,35 @@ namespace KropkaNetApi.Y_Services.ClientSide
 
             if (order == null) throw new NotFoundException("Order not found");
 
-            var orderDto = _mapper.Map<CompanyDto>(order);
+            var orderDto = _mapper.Map<OrderDto>(order);
             return orderDto;
         }
 
+        // PUT: update comany
+        public int Update(int id, UpdateOrderDto dto)
+        {
+            var order = _context.Orders
+                .FirstOrDefault(c => c.Id == id);
+
+            if (order == null) throw new NotFoundException("Order not found");
+
+            order.DateOfOrderExecution = dto.DateOfOrderExecution;
+
+            _context.SaveChanges();
+
+            return order.Id;
+        }
+
+
+
         // DELETE : delete order with id
-        public int Delete(int id)
+        public void Delete(int id)
         {
             var order = _context.Orders.FirstOrDefault(p => p.Id == id);
-            if (order == null) return -1;
+            if (order == null) throw new NotFoundException("Order not found");
 
             _context.Remove(order);
-
-            return 0;
+            _context.SaveChanges();
         }
     }
 }

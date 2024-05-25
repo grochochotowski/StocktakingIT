@@ -67,11 +67,33 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // GET api/kropkaNet/order/{id}
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public ActionResult<OrderDto> GetDetails([FromRoute] int id)
         {
             var companyDto = _orderService.GetDetails(id);
             return Ok(companyDto);
+        }
+
+        // PUT api/kropkaNet/order/update/5
+        [HttpPut("update/{id}")]
+        //[Authorize]
+        public ActionResult Update([FromRoute] int id, [FromBody] UpdateOrderDto dto)
+        {
+            var orderId = _orderService.Update(id, dto);
+
+            return Ok($"{orderId}");
+        }
+
+        
+
+        // DELETE api/kropkaNet/company/delete{id}
+        [HttpDelete("delete/{id}")]
+        //[Authorize]
+        public ActionResult Delete([FromRoute] int id)
+        {
+            _orderService.Delete(id);
+
+            return NoContent();
         }
     }
 }
