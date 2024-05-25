@@ -9,6 +9,7 @@ namespace KropkaNetApi.X_Entities.Objects.ClientSide
         public int Id { get; set; }
         [Required(ErrorMessage = "Date of the order execution is required")]
         public DateTime DateOfOrderExecution { get; set; }
+        public int State { get; set; }
 
 
 
