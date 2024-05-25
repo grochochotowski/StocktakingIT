@@ -112,12 +112,16 @@ namespace KropkaNetApi.Y_Services.CompanySide
         public ReturnResult<EmployeeListDto> GetById(int employeeId, int page, string filter, string sortBy, SortDirection sortDireciton)
         {
             var baseQuery = _context.Employees
-                .Include( e => e.Position)
-                .Where(e => (string.IsNullOrEmpty(filter) || (
+               .Where(p => p.Id == employeeId);
+
+            if (!string.IsNullOrEmpty(filter))
+            {
+                filter = filter.ToLower();
+                baseQuery = baseQuery.Where(e =>
                        e.Name.ToLower().Contains(filter.ToLower()) ||
                        e.Surname.ToLower().Contains(filter.ToLower()) ||
-                       e.Id.ToString().Contains(filter))&&
-                       e.Id.Any(e => e.Id == employeeId)));
+                       e.Id.ToString().Contains(filter));
+            }
 
             if (!string.IsNullOrEmpty(sortBy))
             {
