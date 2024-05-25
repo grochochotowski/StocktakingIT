@@ -20,7 +20,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
         int Update(int id, UpdateOrderDto dto);
         void AddUser(int userId, int orderId);
         void RemoveUser(int userId, int orderId);
-        int Delete(int id);
+        void Delete(int id);
     }
     public class OrderService : IOrderService
     {
