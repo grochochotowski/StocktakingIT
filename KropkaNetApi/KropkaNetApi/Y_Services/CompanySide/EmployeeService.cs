@@ -22,5 +22,7 @@ namespace KropkaNetApi.Y_Services.CompanySide
             _context = context;
             _passwordHasher = passwordHasher;
         }
+
+        public int Create()
     }
 }
