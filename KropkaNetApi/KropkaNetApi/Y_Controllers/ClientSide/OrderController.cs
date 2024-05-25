@@ -51,7 +51,19 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             return Ok(companyDtos);
         }
 
-        
+        // GET api/kropkaNet/company/all
+        [HttpGet("all")]
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
+        public ActionResult<IEnumerable<OrderListDto>> GetList(
+            [FromQuery] int page,
+            [FromQuery] string? filters,
+            [FromQuery] string? sortBy,
+            [FromQuery] SortDirection sortDireciton
+            )
+        {
+            var companyDtos = _orderService.GetList(page, filters, sortBy, sortDireciton);
+            return Ok(companyDtos);
+        }
     }
 }
 

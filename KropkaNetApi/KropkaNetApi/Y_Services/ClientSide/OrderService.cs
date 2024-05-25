@@ -93,7 +93,54 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return result;
         }
 
-        
+        // GET: get list of all orders
+        public ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton)
+        {
+            var baseQuery = _context.Orders
+                .Include(c => c.Department)
+                .Include(c => c.Users)
+                .Where(c => (string.IsNullOrEmpty(filter) || (
+                       c.DateOfOrderExecution.ToString().Contains(filter) ||
+                       c.State.ToString().Contains(filter) ||
+                       c.Department.DepartmentName.Contains(filter) ||
+                       c.Id.ToString().Contains(filter))
+                ));
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                var columnsSelector = new Dictionary<string, Expression<Func<Order, object>>>
+                {
+                    { "id", c => c.Id},
+                    { "DateOfOrderExecution", c => c.DateOfOrderExecution},
+                    { "State", c => c.State},
+                    { "Name", c => c.Department.DepartmentName}
+                };
+
+                var selectedColumn = columnsSelector[sortBy];
+
+                baseQuery = sortDireciton == SortDirection.ASC
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
+
+            var items = baseQuery
+                .Skip(10 * (page - 1))
+                .Take(10)
+                .Select(p => new OrderListDto
+                {
+                    Id = p.Id,
+                    DateOfOrderExecution = p.DateOfOrderExecution,
+                    State = p.State,
+                    DepartmentName = p.Department.DepartmentName
+                })
+                .ToList();
+
+            var totalCount = baseQuery.Count();
+
+            var result = new ReturnResult<OrderListDto>(items, totalCount);
+
+            return result;
+        }
 
         // DELETE : delete order with id
         public int Delete(int id)
