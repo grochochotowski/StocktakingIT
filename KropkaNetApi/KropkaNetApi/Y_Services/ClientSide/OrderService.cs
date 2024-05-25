@@ -6,6 +6,8 @@ using KropkaNetApi.X_Entities.Enum;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using KropkaNetApi.Exceptions;
+using KropkaNetApi.X_Models.ClientSide.Company;
 
 namespace KropkaNetApi.Y_Services.ClientSide
 {
@@ -14,6 +16,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
         int Create(int? userId, CreateOrderDto dto);
         ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton);
         ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
+        OrderDto GetDetails(int id);
         int Delete(int id);
     }
     public class OrderService : IOrderService
@@ -140,6 +143,20 @@ namespace KropkaNetApi.Y_Services.ClientSide
             var result = new ReturnResult<OrderListDto>(items, totalCount);
 
             return result;
+        }
+
+        // GET: get details about company
+        public OrderDto GetDetails(int id)
+        {
+            var order = _context.Orders
+                .Include(c => c.Department)
+                .Include(c => c.Stocktaking)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (order == null) throw new NotFoundException("Order not found");
+
+            var orderDto = _mapper.Map<CompanyDto>(order);
+            return orderDto;
         }
 
         // DELETE : delete order with id

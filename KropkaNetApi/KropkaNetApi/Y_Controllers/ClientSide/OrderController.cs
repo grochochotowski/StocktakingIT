@@ -20,7 +20,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             _orderService = orderService;
         }
 
-        // POST api/kropkaNet/company/create
+        // POST api/kropkaNet/order/create
         [HttpPost("create")]
         //[Authorize]
         public ActionResult Create([FromQuery] int? userId, [FromBody] CreateOrderDto dto)
@@ -36,7 +36,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             return result;
         }
 
-        // GET api/kropkaNet/company/user/{id}
+        // GET api/kropkaNet/order/user/{id}
         [HttpGet("user/{userId}")]
         //[Authorize]
         public ActionResult<IEnumerable<OrderListDto>> GetListUser(
@@ -51,7 +51,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             return Ok(companyDtos);
         }
 
-        // GET api/kropkaNet/company/all
+        // GET api/kropkaNet/order/all
         [HttpGet("all")]
         //[Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<OrderListDto>> GetList(
@@ -63,6 +63,15 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         {
             var companyDtos = _orderService.GetList(page, filters, sortBy, sortDireciton);
             return Ok(companyDtos);
+        }
+
+        // GET api/kropkaNet/order/{id}
+        [HttpGet("{id}")]
+        [Authorize]
+        public ActionResult<OrderDto> GetDetails([FromRoute] int id)
+        {
+            var companyDto = _orderService.GetDetails(id);
+            return Ok(companyDto);
         }
     }
 }
