@@ -3,18 +3,24 @@ using KropkaNetApi.X_Entities;
 using KropkaNetApi.X_Entities.Objects.CompanySide;
 using KropkaNetApi.X_Entities.Objects.Shared;
 using KropkaNetApi.X_Models.CompanySide.Employee;
-using KropkaNetApi.X_Models.CompanySide.Product;
-using KropkaNetApi.X_Models.Shared.Account;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
+using KropkaNetApi.X_Entities.Enum;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using KropkaNetApi.X_Models.Shared.Account;
 
 namespace KropkaNetApi.Y_Services.CompanySide
 {
     public interface IEmployeeService
     {
-        public int Create(CreateEmployeeDto dto);
-
-
+        public int Create(CreateEmployeeDto dto, RegisterEmployeeDto registerdto);
+        public ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
+        public ReturnResult<EmployeeListDto> GetById(int employeeId, int page, string filter, string sortBy, SortDirection sortDireciton);
+        public int Update(int id, CreateEmployeeDto dto);
+        public int Delete(int id);
     }
     public class EmployeeService : IEmployeeService
     {
@@ -28,13 +34,19 @@ namespace KropkaNetApi.Y_Services.CompanySide
             _passwordHasher = passwordHasher;
         }
 
-        public int Create(CreateEmployeeDto dto)
+        public int Create(CreateEmployeeDto dto, RegisterEmployeeDto registerdto)
         {
             var employee = _mapper.Map<Employee>(dto);
 
             var position = new Position()
             {
                 Name = dto.Name
+            };
+
+            var account = new Account()
+            {
+                Login = registerdto.Login,
+                HashedPassword = registerdto.Password
             };
 
             _context.Positions.Add(position);
@@ -48,6 +60,131 @@ namespace KropkaNetApi.Y_Services.CompanySide
             return employee.Id;
         }
 
-        public ReturnResult<Employee>
+        public ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton)
+        {
+            var baseQuery = _context.Employees
+               .Include(e => e.Position)
+               .Where(e => (string.IsNullOrEmpty(filter) || (
+                      e.Name.ToLower().Contains(filter.ToLower()) ||
+                      e.Surname.ToLower().Contains(filter.ToLower()) ||
+                      e.Email.ToLower().Contains(filter.ToLower()) ||
+                      e.Id.ToString().Contains(filter))
+                      ));
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                var columnsSelector = new Dictionary<string, Expression<Func<Employee, object>>>
+                {
+                    { "id", e => e.Id},
+                    { "Name", e => e.Name},
+                    { "Surname", e => e.Surname},
+                    { "Position", e => e.Position}
+                };
+
+                var selectedColumn = columnsSelector[sortBy];
+
+                baseQuery = sortDireciton == SortDirection.ASC
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
+
+            var items = baseQuery
+                .Skip(10 * (page - 1))
+                .Take(10)
+                .OrderBy(p => p.Surname)
+                .Select(p => new EmployeeListDto
+                {
+                    Id = p.Id,
+                    Surname = p.Surname,
+                    Name=p.Name
+                })
+                .ToList();
+
+            var totalCount = baseQuery.Count();
+
+            var result = new ReturnResult<EmployeeListDto>(items, totalCount);
+
+            return result;
+        }
+        // GET: get list of employees by id
+        public ReturnResult<EmployeeListDto> GetById(int employeeId, int page, string filter, string sortBy, SortDirection sortDireciton)
+        {
+            var baseQuery = _context.Employees
+                .Include(p => p.Position)
+                .Where(e => (string.IsNullOrEmpty(filter) || (
+                       e.Name.ToLower().Contains(filter.ToLower()) ||
+                       e.Surname.ToLower().Contains(filter.ToLower()) ||
+                       e.Id.ToString().Contains(filter))));
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                var columnsSelector = new Dictionary<string, Expression<Func<Employee, object>>>
+                {
+                    { "id", c => c.Id},
+                    { "Surname", c => c.Surname},
+                    { "Name", c => c.Name},
+                    { "Position", c => c.Position}
+                };
+
+                var selectedColumn = columnsSelector[sortBy];
+
+                baseQuery = sortDireciton == SortDirection.ASC
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
+
+            var items = baseQuery
+                .Skip(10 * (page - 1))
+                .Take(10)
+                .OrderBy(p => p.Surname)
+                .Select(p => new EmployeeListDto
+                {
+                    Id = p.Id,
+                    Surname = p.Surname,
+                    Name = p.Name
+                })
+                .ToList();
+
+            var totalCount = baseQuery.Count();
+
+            var result = new ReturnResult<EmployeeListDto>(items, totalCount);
+
+            return result;
+        }
+
+        // PUT: update employee
+        public int Update(int id, CreateEmployeeDto dto)
+        {
+            var employee = _context.Employees
+                .Include(e => e.Position)
+                .Include(e => e.Account)
+                .FirstOrDefault(e => e.Id == id);
+
+            if (employee == null) throw new NotFoundException("Employee not found");
+
+            employee.Name = dto.Name;
+            employee.Surname = dto.Surname;
+            employee.PersonalNumber = dto.PersonalNumber;
+            employee.Email = dto.Email;
+            employee.PhoneNumber = dto.PhoneNumber;
+            employee.Note = dto.Note;
+            employee.Position.Name= dto.PositionName;
+
+            _context.SaveChanges();
+
+            return employee.Id;
+        }
+
+        // DELETE : delete employee with id
+        public int Delete(int id)
+        {
+            var employee = _context.Employees.FirstOrDefault(p => p.Id == id);
+            if (employee == null) throw new NotFoundException("Employee not found");
+
+            _context.Remove(employee);
+            _context.SaveChanges();
+
+            return 0;
+        }
     }
 }
