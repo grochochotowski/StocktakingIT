@@ -20,7 +20,8 @@ namespace KropkaNetApi.Y_Services.CompanySide
         public ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
         public ReturnResult<EmployeeListDto> GetById(int employeeId, int page, string filter, string sortBy, SortDirection sortDireciton);
         public int Update(int id, CreateEmployeeDto dto);
-        public int Delete(int id);
+        public void ChangePosition(int employeeId, int positionId);
+            public int Delete(int id);
     }
     public class EmployeeService : IEmployeeService
     {
@@ -173,6 +174,19 @@ namespace KropkaNetApi.Y_Services.CompanySide
             _context.SaveChanges();
 
             return employee.Id;
+        }
+
+        //PATCH : change position
+
+        public void ChangePosition(int employeeId, int positionId)
+        {
+            var employee = _context.Employees.FirstOrDefault(p => p.Id == employeeId);
+            if (employee == null) throw new NotFoundException("Employee not found");
+
+            employee.PositionId = positionId;
+
+            _context.SaveChanges();
+            
         }
 
         // DELETE : delete employee with id
