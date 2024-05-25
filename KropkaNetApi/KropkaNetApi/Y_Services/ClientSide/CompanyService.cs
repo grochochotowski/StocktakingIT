@@ -96,7 +96,6 @@ namespace KropkaNetApi.Y_Services.ClientSide
             var items = baseQuery
                 .Skip(10 * (page - 1))
                 .Take(10)
-                .OrderBy(p => p.CompanyName)
                 .Select(p => new CompanyListDto
                 {
                     Id = p.Id,
@@ -141,7 +140,6 @@ namespace KropkaNetApi.Y_Services.ClientSide
             var items = baseQuery
                 .Skip(10 * (page - 1))
                 .Take(10)
-                .OrderBy(p => p.CompanyName)
                 .Select(p => new CompanyListDto
                 {
                     Id = p.Id,
