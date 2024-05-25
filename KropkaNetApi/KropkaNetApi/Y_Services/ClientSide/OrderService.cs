@@ -177,7 +177,39 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return order.Id;
         }
 
+        // PATCH: add user
+        public void AddUser(int userId, int orderId)
+        {
+            var order = _context.Orders
+                .Include(c => c.Users)
+                .FirstOrDefault(c => c.Id == orderId);
+            var user = _context.Users
+                .FirstOrDefault(c => c.Id == userId);
 
+            if (order == null) throw new NotFoundException("Order not found");
+            if (user == null) throw new NotFoundException("User not found");
+            if (order.Users.Any(u => u.Id == user.Id)) throw new BadRequestException("User already in company");
+
+            order.Users.Add(user);
+            _context.SaveChanges();
+        }
+
+        // PATCH: remove user
+        public void RemoveUser(int userId, int orderId)
+        {
+            var order = _context.Orders
+                .Include(c => c.Users)
+                .FirstOrDefault(c => c.Id == orderId);
+            var user = _context.Users
+                .FirstOrDefault(c => c.Id == userId);
+
+            if (order == null) throw new NotFoundException("Order not found");
+            if (user == null) throw new NotFoundException("User not found");
+            if (!order.Users.Any(u => u.Id == user.Id)) throw new BadRequestException("User is not in order");
+
+            order.Users.Remove(user);
+            _context.SaveChanges();
+        }
 
         // DELETE : delete order with id
         public void Delete(int id)

@@ -84,7 +84,25 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             return Ok($"{orderId}");
         }
 
-        
+        // PATCH api/kropkaNet/order/addUser
+        [HttpPatch("addUser")]
+        //[Authorize]
+        public ActionResult AddUser([FromQuery] int userId, [FromQuery] int orderId)
+        {
+            _orderService.AddUser(userId, orderId);
+
+            return Ok();
+        }
+
+        // PATCH api/kropkaNet/order/removeUser
+        [HttpPatch("removeUser")]
+        //[Authorize]
+        public ActionResult RemoveUser([FromQuery] int userId, [FromQuery] int orderId)
+        {
+            _orderService.RemoveUser(userId, orderId);
+
+            return Ok();
+        }
 
         // DELETE api/kropkaNet/company/delete{id}
         [HttpDelete("delete/{id}")]
