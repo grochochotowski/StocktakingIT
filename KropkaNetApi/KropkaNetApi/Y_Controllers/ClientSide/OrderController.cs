@@ -1,5 +1,8 @@
 ﻿using Azure;
+using KropkaNetApi.X_Entities.Enum;
+using KropkaNetApi.X_Models.ClientSide.Company;
 using KropkaNetApi.X_Models.ClientSide.Order;
+using KropkaNetApi.X_Models.ClientSide.User;
 using KropkaNetApi.Y_Services.ClientSide;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +11,6 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 {
     [Route("api/kropkaNet/order")]
     [ApiController]
-    [Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
@@ -18,10 +20,12 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             _orderService = orderService;
         }
 
+        // POST api/kropkaNet/company/create
         [HttpPost("create")]
-        public ActionResult Create([FromBody] CreateOrderDto dto)
+        //[Authorize]
+        public ActionResult Create([FromQuery] int? userId, [FromBody] CreateOrderDto dto)
         {
-            var createdOrderId = _orderService.Create(dto);
+            var createdOrderId = _orderService.Create(userId, dto);
 
             var result = Created($"{createdOrderId}", null) as CreatedResult;
             if (result != null)
@@ -31,6 +35,8 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
             return result;
         }
+
+        
     }
 }
 

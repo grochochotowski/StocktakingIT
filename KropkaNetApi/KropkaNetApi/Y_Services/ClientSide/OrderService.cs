@@ -2,13 +2,18 @@
 using KropkaNetApi.X_Entities.Objects.ClientSide;
 using KropkaNetApi.X_Entities;
 using KropkaNetApi.X_Models.ClientSide.Order;
+using KropkaNetApi.X_Entities.Enum;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace KropkaNetApi.Y_Services.ClientSide
 {
     public interface IOrderService
     {
-        int Create(CreateOrderDto dto);
-        IEnumerable<OrderListDto> GetList(string filter);
+        int Create(int? userId, CreateOrderDto dto);
+        ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton);
+        ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
         int Delete(int id);
     }
     public class OrderService : IOrderService
@@ -23,9 +28,15 @@ namespace KropkaNetApi.Y_Services.ClientSide
         }
 
         // POST: create order
-        public int Create(CreateOrderDto dto)
+        public int Create(int? userId, CreateOrderDto dto)
         {
             var order = _mapper.Map<Order>(dto);
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            if (user != null)
+            {
+                order.Users = [user];
+            }
 
             _context.Orders.Add(order);
             _context.SaveChanges();
@@ -33,26 +44,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return order.Id;
         }
 
-        // GET: get list of orders
-        public IEnumerable<OrderListDto> GetList(string filter)
-        {
-            var orderList = _context.Orders
-                .Where(
-                    p => filter == null || (
-                    p.DateOfOrderExecution.ToString().Contains(filter) ||
-                    p.Id.ToString().Contains(filter)
-                ))
-                .OrderBy(p => p.DateOfOrderExecution)
-                .Select(p => new OrderListDto
-                {
-                    Id = p.Id,
-                    DateOfOrderExecution = p.DateOfOrderExecution
-                })
-                .ToList();
-
-            return orderList;
-        }
-
+        
 
         // DELETE : delete order with id
         public int Delete(int id)
