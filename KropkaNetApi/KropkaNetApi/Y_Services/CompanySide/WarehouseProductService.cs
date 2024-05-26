@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using AutoMapper;
 using KropkaNetApi.X_Entities.Objects.CompanySide;
+using KropkaNetApi.Exceptions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Xml;
 
 namespace KropkaNetApi.Y_Services.CompanySide
 {
@@ -28,6 +31,8 @@ namespace KropkaNetApi.Y_Services.CompanySide
             _mapper = mapper;
         }
 
+
+        // GET: get products from warehouse
         public ReturnResult<ProductListDto> GetFromWarehouse(int warehouseId, int page, string filter, string sortBy, SortDirection sortDireciton)
         {
             var baseQuery = _context.WarehouseProduct
@@ -70,6 +75,33 @@ namespace KropkaNetApi.Y_Services.CompanySide
             var result = new ReturnResult<ProductListDto>(items, totalCount);
 
             return result;
+        }
+
+
+        // PATCH: add user
+        public void AddProduct(int warehouseId, int productId, int quantity)
+        {
+            var warehouse = _context.Warehouses.FirstOrDefault(w => w.Id == warehouseId);
+            var product = _context.Products.FirstOrDefault(p => p.Id == productId);
+
+            if (warehouse == null) throw new NotFoundException("Warehouse not found");
+            if (product == null) throw new NotFoundException("Product not found");
+            if (quantity < 1) throw new BadRequestException("Quantity must be equal or greater than 1");
+
+            var warehouseProduct = _context.WarehouseProduct
+                .FirstOrDefault(w => w.WarehouseId == warehouseId && w.ProductId == productId);
+
+            if (warehouseProduct == null)
+            {
+                var warehouseProductDto = _mapper.Map<WarehouseProduct>(warehouseProduct);
+                _context.WarehouseProduct.Add(warehouseProductDto);
+            }
+            else
+            {
+                warehouseProduct.Quantity += quantity;
+            }
+
+            _context.SaveChanges();
         }
     }
 }
