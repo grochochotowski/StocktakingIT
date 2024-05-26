@@ -1,12 +1,8 @@
-﻿using Azure;
-using KropkaNetApi.X_Entities.Enum;
-using KropkaNetApi.X_Entities.Objects.ClientSide;
-using KropkaNetApi.X_Models.ClientSide.Company;
+﻿using KropkaNetApi.X_Entities.Enum;
 using KropkaNetApi.X_Models.ClientSide.Order;
-using KropkaNetApi.X_Models.ClientSide.User;
 using KropkaNetApi.Y_Services.ClientSide;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KropkaNetApi.Y_Controllers.ClientSide
 {

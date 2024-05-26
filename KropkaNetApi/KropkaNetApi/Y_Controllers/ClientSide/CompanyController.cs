@@ -3,7 +3,6 @@ using KropkaNetApi.X_Models.ClientSide.Company;
 using KropkaNetApi.Y_Services.ClientSide;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace KropkaNetApi.Y_Controllers.ClientSide
 {

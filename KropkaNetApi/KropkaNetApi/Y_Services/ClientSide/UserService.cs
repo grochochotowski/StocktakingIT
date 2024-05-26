@@ -1,11 +1,6 @@
 ﻿using KropkaNetApi.Exceptions;
-using KropkaNetApi.X_Entities.Objects.CompanySide;
 using KropkaNetApi.X_Entities;
-using KropkaNetApi.X_Models.CompanySide.Employee;
-using Microsoft.AspNetCore.Identity;
-using KropkaNetApi.X_Entities.Objects.Shared;
 using KropkaNetApi.X_Entities.Objects.ClientSide;
-using KropkaNetApi.X_Models.Shared.Account;
 using AutoMapper;
 using KropkaNetApi.X_Entities.Enum;
 using KropkaNetApi.X_Models.ClientSide.User;

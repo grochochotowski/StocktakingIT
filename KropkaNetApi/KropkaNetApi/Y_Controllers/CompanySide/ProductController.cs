@@ -1,14 +1,9 @@
 ﻿using KropkaNetApi.X_Entities.Enum;
-using KropkaNetApi.X_Entities.Objects.ClientSide;
-using KropkaNetApi.X_Entities.Objects.CompanySide;
 using KropkaNetApi.X_Models.ClientSide.Company;
-using KropkaNetApi.X_Models.ClientSide.Department;
 using KropkaNetApi.X_Models.CompanySide.Product;
 using KropkaNetApi.Y_Services.CompanySide;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 
 namespace KropkaNetApi.Y_Controllers.CompanySide
 {

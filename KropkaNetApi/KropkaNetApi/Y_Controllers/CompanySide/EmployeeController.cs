@@ -1,7 +1,6 @@
 ﻿using KropkaNetApi.X_Entities.Enum;
 using KropkaNetApi.X_Models.ClientSide.Department;
 using KropkaNetApi.X_Models.CompanySide.Employee;
-using KropkaNetApi.X_Models.CompanySide.Product;
 using KropkaNetApi.X_Models.Shared.Account;
 using KropkaNetApi.Y_Services.CompanySide;
 using Microsoft.AspNetCore.Authorization;

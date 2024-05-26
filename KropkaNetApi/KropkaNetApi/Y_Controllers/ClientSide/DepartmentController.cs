@@ -1,6 +1,4 @@
-﻿using Azure;
-using KropkaNetApi.X_Entities.Enum;
-using KropkaNetApi.X_Models.ClientSide.Company;
+﻿using KropkaNetApi.X_Entities.Enum;
 using KropkaNetApi.X_Models.ClientSide.Department;
 using KropkaNetApi.Y_Services.ClientSide;
 using Microsoft.AspNetCore.Authorization;

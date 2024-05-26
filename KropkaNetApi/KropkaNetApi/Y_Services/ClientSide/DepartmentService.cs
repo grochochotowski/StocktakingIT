@@ -2,11 +2,9 @@
 using KropkaNetApi.X_Entities.Objects.ClientSide;
 using KropkaNetApi.X_Entities;
 using KropkaNetApi.X_Models.ClientSide.Department;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using KropkaNetApi.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using KropkaNetApi.X_Entities.Enum;
-using KropkaNetApi.X_Models.ClientSide.Company;
 using System.Linq.Expressions;
 
 namespace KropkaNetApi.Y_Services.ClientSide

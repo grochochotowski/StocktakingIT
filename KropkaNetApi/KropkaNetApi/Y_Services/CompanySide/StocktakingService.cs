@@ -4,9 +4,6 @@ using KropkaNetApi.X_Entities;
 using KropkaNetApi.X_Entities.Enum;
 using KropkaNetApi.X_Entities.Objects.CompanySide;
 using KropkaNetApi.X_Models.CompanySide.Stocktaking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace KropkaNetApi.Y_Services.CompanySide

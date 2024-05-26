@@ -8,10 +8,7 @@ using AutoMapper;
 using KropkaNetApi.X_Entities.Enum;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Security.Cryptography;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using KropkaNetApi.X_Models.Shared.Account;
-using KropkaNetApi.X_Entities.Objects.ClientSide;
 
 namespace KropkaNetApi.Y_Services.CompanySide
 {
