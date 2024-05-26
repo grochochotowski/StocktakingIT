@@ -103,5 +103,25 @@ namespace KropkaNetApi.Y_Services.CompanySide
 
             _context.SaveChanges();
         }
+
+        // PATCH: remove user
+        public void RemoveProduct(int warehouseId, int productId, int quantity)
+        {
+            var warehouse = _context.Warehouses.FirstOrDefault(w => w.Id == warehouseId);
+            var product = _context.Products.FirstOrDefault(p => p.Id == productId);
+            var warehouseProduct = _context.WarehouseProduct
+                .FirstOrDefault(w => w.WarehouseId == warehouseId && w.ProductId == productId);
+
+            if (warehouse == null) throw new NotFoundException("Warehouse not found");
+            if (product == null) throw new NotFoundException("Product not found");
+            if (warehouseProduct == null) throw new NotFoundException("Product is not in warehouse");
+            if (quantity < 1) throw new BadRequestException("Quantity must be equal or greater than 1");
+            if (quantity > warehouseProduct.Quantity) throw new BadRequestException($"Quantity must be equal or less than current quantity {warehouseProduct.Quantity}");
+
+            if (warehouseProduct.Quantity == quantity) _context.WarehouseProduct.Remove(warehouseProduct);
+            else warehouseProduct.Quantity -= quantity;
+
+            _context.SaveChanges();
+        }
     }
 }
