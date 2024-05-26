@@ -18,7 +18,6 @@ namespace KropkaNetApi.Y_Services.CompanySide
         ReturnResult<ProductListDto> GetFromWarehouse(int warehouseId, int page, string filter, string sortBy, SortDirection sortDireciton);
         void AddProduct(int warehouseId, int productId, int quantity);
         void RemoveProduct(int warehouseId, int productId, int quantity);
-        void EditQuantity(int warehouseId, int productId, int quantity);
     }
     public class WarehouseProductService : IWarehouseProductService
     {
