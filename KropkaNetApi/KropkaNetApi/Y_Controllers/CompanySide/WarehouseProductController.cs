@@ -50,14 +50,5 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
             return Ok();
         }
-
-        // PATCH api/kropkaNet/warehouse/{warehouseId}/editQuantity/{productId}
-        [HttpPatch("editQuantity/{productId}")]
-        public ActionResult EditQuantity([FromRoute] int warehouseId, [FromRoute] int productId, [FromQuery] int quantity)
-        {
-            _warehouseProductService.EditQuantity(warehouseId, productId, quantity);
-
-            return Ok();
-        }
     }
 }
