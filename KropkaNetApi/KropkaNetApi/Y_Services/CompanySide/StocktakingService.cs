@@ -124,6 +124,15 @@ namespace KropkaNetApi.Y_Services.CompanySide
             if (stocktaking == null)
                 throw new NotFoundException("Stocktaking not found");
 
+            var warehouse = _context.Warehouses.FirstOrDefault(w => w.Id == stocktaking.WarehouseId);
+
+            var warehouseProducts = _context.WarehouseProduct.Where(w => w.WarehouseId == warehouse.Id).ToList();
+
+            foreach (var warehouseProduct in warehouseProducts)
+            {
+                _context.WarehouseProduct.Remove(warehouseProduct);
+            }
+            _context.Warehouses.Remove(warehouse);
             _context.Stocktakings.Remove(stocktaking);
             _context.SaveChanges();
             return 0;
