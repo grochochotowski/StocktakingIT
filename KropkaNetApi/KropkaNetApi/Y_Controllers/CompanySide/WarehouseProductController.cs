@@ -1,6 +1,5 @@
 ﻿using KropkaNetApi.X_Entities.Enum;
 using KropkaNetApi.X_Models.ClientSide.Company;
-using KropkaNetApi.Y_Services.ClientSide;
 using KropkaNetApi.Y_Services.CompanySide;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

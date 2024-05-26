@@ -1,7 +1,6 @@
 ﻿using KropkaNetApi.X_Entities.Enum;
 using KropkaNetApi.X_Models.ClientSide.Department;
 using KropkaNetApi.X_Models.CompanySide.Employee;
-using KropkaNetApi.X_Models.CompanySide.Product;
 using KropkaNetApi.X_Models.Shared.Account;
 using KropkaNetApi.Y_Services.CompanySide;
 using Microsoft.AspNetCore.Authorization;
@@ -21,10 +20,10 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         }
 
         [HttpPost("create")]
-        [Authorize(Roles = "Moderator, Admin")]
-        public ActionResult Create([FromBody] CreateEmployeeDto dto, RegisterEmployeeDto registerdto)
+        //[Authorize(Roles = "Moderator, Admin")]
+        public ActionResult Create([FromBody] RegisterEmployeeDto dto)
         {
-            var createdEmployeeId = _employeeService.Create(dto, registerdto);
+            var createdEmployeeId = _employeeService.Create(dto);
 
             var result = Created($"{createdEmployeeId}", null) as CreatedResult;
             if (result != null)
@@ -37,7 +36,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
         // GET api/kropkaNet/employee/all
         [HttpGet("all")]
-        [Authorize(Roles = "Employee, Moderator, Admin")]
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<DepartmentDto>> GetList(
             [FromQuery] int page,
             [FromQuery] string? filters,
@@ -50,7 +49,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         }
         // GET api/kropkaNet/employee/{id}
         [HttpGet("{employeeId}")]
-        [Authorize(Roles = "Employee, Moderator, Admin")]
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<EmployeeDto>> GetById(
             [FromRoute] int employeeId,
             [FromQuery] int page,
@@ -64,8 +63,8 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         }
         // PUT api/kropkaNet/employee/update/5
         [HttpPut("update/{id}")]
-        [Authorize(Roles = "Employee, Moderator, Admin")]
-        public ActionResult Update([FromRoute] int id, [FromBody] CreateEmployeeDto dto)
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
+        public ActionResult Update([FromRoute] int id, [FromBody] UpdateEmployeeDto dto)
         {
             var employeeDtos = _employeeService.Update(id, dto);
 
@@ -74,7 +73,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
         // PATCH api/kropkaNet/employee/changeposition/{id}
         [HttpPut("changeposition/{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public ActionResult ChangePosition([FromRoute] int employeeId, [FromBody] int positionId)
         {
             _employeeService.ChangePosition(employeeId, positionId);
@@ -83,7 +82,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         }
         // DELETE api/kropkaNet/department/delete{id}
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Moderator, Admin")]
+        //[Authorize(Roles = "Moderator, Admin")]
         public ActionResult<IEnumerable<EmployeeDto>> Delete([FromRoute] int id)
         {
             var employeeDtos = _employeeService.Delete(id);

@@ -5,9 +5,7 @@ using KropkaNetApi.X_Models.ClientSide.Order;
 using KropkaNetApi.X_Entities.Enum;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using KropkaNetApi.Exceptions;
-using KropkaNetApi.X_Models.ClientSide.Company;
 
 namespace KropkaNetApi.Y_Services.ClientSide
 {

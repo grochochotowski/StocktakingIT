@@ -1,15 +1,11 @@
 ﻿using KropkaNetApi.X_Entities.Enum;
 using KropkaNetApi.X_Entities;
-using KropkaNetApi.X_Models.ClientSide.Company;
 using KropkaNetApi.X_Models.CompanySide.Product;
-using KropkaNetApi.X_Entities.Objects.ClientSide;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using AutoMapper;
 using KropkaNetApi.X_Entities.Objects.CompanySide;
 using KropkaNetApi.Exceptions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using System.Xml;
 
 namespace KropkaNetApi.Y_Services.CompanySide
 {

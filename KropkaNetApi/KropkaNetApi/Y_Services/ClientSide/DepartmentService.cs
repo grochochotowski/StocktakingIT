@@ -2,18 +2,16 @@
 using KropkaNetApi.X_Entities.Objects.ClientSide;
 using KropkaNetApi.X_Entities;
 using KropkaNetApi.X_Models.ClientSide.Department;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using KropkaNetApi.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using KropkaNetApi.X_Entities.Enum;
-using KropkaNetApi.X_Models.ClientSide.Company;
 using System.Linq.Expressions;
 
 namespace KropkaNetApi.Y_Services.ClientSide
 {
     public interface IDepartmentService
     {
-        int Create(int? comapnyId, CreateDepartmentDto dto);
+        int Create(CreateDepartmentDto dto);
         public ReturnResult<DepartmentListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
         ReturnResult<DepartmentListDto> GetListOrder(int orderId, int page, string filter, string sortBy, SortDirection sortDireciton);
         public int Update(int id, CreateDepartmentDto dto);
@@ -31,11 +29,12 @@ namespace KropkaNetApi.Y_Services.ClientSide
         }
 
         // POST: create department
-        public int Create(int? comapnyId, CreateDepartmentDto dto)
+        public int Create(CreateDepartmentDto dto)
         {
-            var department = _mapper.Map<Department>(dto);
+            var company = _context.Companies.FirstOrDefault(c => c.Id == dto.CompanyId);
+            if (company == null) throw new NotFoundException("Company not found");
 
-            var company = _context.Companies.FirstOrDefault(c => c.Id == comapnyId);
+            var department = _mapper.Map<Department>(dto);
            
             _context.Departments.Add(department);
             _context.SaveChanges();

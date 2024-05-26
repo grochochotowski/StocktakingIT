@@ -3,7 +3,6 @@ using KropkaNetApi.X_Models.ClientSide.Company;
 using KropkaNetApi.Y_Services.ClientSide;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace KropkaNetApi.Y_Controllers.ClientSide
 {
@@ -20,7 +19,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // POST api/kropkaNet/company/create
         [HttpPost("create")]
-        [Authorize]
+        //[Authorize]
         public ActionResult Create([FromQuery] int? userId, [FromBody] CreateCompanyDto dto)
         {
             var createdCompanyId = _companyService.Create(userId, dto);
@@ -36,7 +35,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // GET api/kropkaNet/company/user/{id}
         [HttpGet("user/{userId}")]
-        [Authorize]
+        //[Authorize]
         public ActionResult<IEnumerable<CompanyDto>> GetListUser(
             [FromRoute] int userId,
             [FromQuery] int page,
@@ -51,7 +50,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // GET api/kropkaNet/company/all
         [HttpGet("all")]
-        [Authorize(Roles = "Employee, Moderator, Admin")]
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<CompanyDto>> GetList(
             [FromQuery] int page,
             [FromQuery] string? filters,
@@ -65,7 +64,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // GET api/kropkaNet/company/{id}
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public ActionResult<CompanyDto> GetDetails([FromRoute] int id)
         {
             var companyDto = _companyService.GetDetails(id);
@@ -74,7 +73,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // PUT api/kropkaNet/company/update/5
         [HttpPut("update/{id}")]
-        [Authorize]
+        //[Authorize]
         public ActionResult Update([FromRoute] int id, [FromBody] CreateCompanyDto dto)
         {
             var orderId = _companyService.Update(id, dto);
@@ -84,7 +83,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // PATCH api/kropkaNet/company/addUser
         [HttpPatch("addUser")]
-        [Authorize]
+        //[Authorize]
         public ActionResult AddUser([FromQuery] int userId, [FromQuery] int companyId)
         {
             _companyService.AddUser(userId, companyId);
@@ -94,7 +93,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // PATCH api/kropkaNet/company/removeUser
         [HttpPatch("removeUser")]
-        [Authorize]
+        //[Authorize]
         public ActionResult RemoveUser([FromQuery] int userId, [FromQuery] int companyId)
         {
             _companyService.RemoveUser(userId, companyId);
@@ -105,7 +104,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // DELETE api/kropkaNet/company/delete{id}
         [HttpDelete("delete/{id}")]
-        [Authorize]
+        //[Authorize]
         public ActionResult Delete([FromRoute] int id)
         {
             _companyService.Delete(id);

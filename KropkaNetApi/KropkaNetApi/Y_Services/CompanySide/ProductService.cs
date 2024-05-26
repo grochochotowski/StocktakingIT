@@ -3,9 +3,7 @@ using KropkaNetApi.Exceptions;
 using KropkaNetApi.X_Entities;
 using KropkaNetApi.X_Entities.Enum;
 using KropkaNetApi.X_Entities.Objects.CompanySide;
-using KropkaNetApi.X_Models.ClientSide.Company;
 using KropkaNetApi.X_Models.CompanySide.Product;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace KropkaNetApi.Y_Services.CompanySide

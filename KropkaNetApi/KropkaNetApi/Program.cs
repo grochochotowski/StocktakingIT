@@ -1,7 +1,6 @@
 using KropkaNetApi.Middleware;
 using KropkaNetApi.X_Entities;
 using KropkaNetApi.X_Entities.Objects.Shared;
-using KropkaNetApi.Y_Controllers.CompanySide;
 using KropkaNetApi.Y_Services.ClientSide;
 using KropkaNetApi.Y_Services.CompanySide;
 using KropkaNetApi.Y_Services.Shared;
@@ -80,14 +79,17 @@ namespace KropkaNetApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<IWarehouseProductService, WarehouseProductService>();
-            builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddScoped<ICompanyService, CompanyService>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
             builder.Services.AddScoped<IPositionService, PositionService>();
             builder.Services.AddScoped<IProductService, ProductService>();
-            builder.Services.AddScoped<ICompanyService, CompanyService>();
-            builder.Services.AddScoped<IOrderService, OrderService>();
-            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<IStocktakingService, StocktakingService>();
+            builder.Services.AddScoped<IWarehouseProductService, WarehouseProductService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
 
             var app = builder.Build();
             var scope = app.Services.CreateScope();

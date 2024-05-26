@@ -3,7 +3,7 @@ using KropkaNetApi.X_Models.CompanySide.Position;
 
 namespace KropkaNetApi.X_Models.CompanySide.Employee
 {
-    public class CreateEmployeeDto
+    public class UpdateEmployeeDto
     {
         public string Name { get; set; }
         public string Surname { get; set; }
@@ -11,8 +11,6 @@ namespace KropkaNetApi.X_Models.CompanySide.Employee
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string? Note { get; set; }
-        public string PositionName  { get; set; }
-        public int AccountId { get; set; }
 
     }
 }

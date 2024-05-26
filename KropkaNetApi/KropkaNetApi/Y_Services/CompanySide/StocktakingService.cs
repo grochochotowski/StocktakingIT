@@ -4,9 +4,6 @@ using KropkaNetApi.X_Entities;
 using KropkaNetApi.X_Entities.Enum;
 using KropkaNetApi.X_Entities.Objects.CompanySide;
 using KropkaNetApi.X_Models.CompanySide.Stocktaking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace KropkaNetApi.Y_Services.CompanySide
@@ -36,8 +33,16 @@ namespace KropkaNetApi.Y_Services.CompanySide
         public int Create(CreateStocktakingDto dto)
         {
             var stocktaking = _mapper.Map<Stocktaking>(dto);
+
+            var warehouse = new Warehouse();
+            _context.Warehouses.Add(warehouse);
+            _context.SaveChanges();
+
+            stocktaking.WarehouseId = warehouse.Id;
+
             _context.Stocktakings.Add(stocktaking);
             _context.SaveChanges();
+
             return stocktaking.Id;
         }
 
@@ -119,6 +124,15 @@ namespace KropkaNetApi.Y_Services.CompanySide
             if (stocktaking == null)
                 throw new NotFoundException("Stocktaking not found");
 
+            var warehouse = _context.Warehouses.FirstOrDefault(w => w.Id == stocktaking.WarehouseId);
+
+            var warehouseProducts = _context.WarehouseProduct.Where(w => w.WarehouseId == warehouse.Id).ToList();
+
+            foreach (var warehouseProduct in warehouseProducts)
+            {
+                _context.WarehouseProduct.Remove(warehouseProduct);
+            }
+            _context.Warehouses.Remove(warehouse);
             _context.Stocktakings.Remove(stocktaking);
             _context.SaveChanges();
             return 0;

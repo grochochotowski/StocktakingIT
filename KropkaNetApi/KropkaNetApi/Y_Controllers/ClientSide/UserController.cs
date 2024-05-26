@@ -20,7 +20,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // POST: api/kropkaNet/user/create
         [HttpPost("create")]
-        [Authorize]  // Zakładając, że każdy może tworzyć nowego użytkownika
+        //[Authorize]  // Zakładając, że każdy może tworzyć nowego użytkownika
         public ActionResult<int> Create([FromBody] CreateUserDto dto)
         {
             try
@@ -36,7 +36,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // GET: api/kropkaNet/user/getAll
         [HttpGet("getAll")]
-        [Authorize(Roles = "Employee, Moderator, Admin")] // Dostępne dla wybranych ról
+        //[Authorize(Roles = "Employee, Moderator, Admin")] // Dostępne dla wybranych ról
         public ActionResult<ReturnResult<UserDto>> GetAll([FromQuery] int page = 1, [FromQuery] string filter = "", [FromQuery] string sortBy = "Name", [FromQuery] SortDirection sortDirection = SortDirection.ASC)
         {
             var result = _userService.GetAll(page, filter, sortBy, sortDirection);
@@ -46,7 +46,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // GET: api/kropkaNet/user/{id}
         [HttpGet("{id}")]
-        [Authorize]  // Zakładając, że każdy może uzyskać szczegóły o użytkowniku
+        //[Authorize]  // Zakładając, że każdy może uzyskać szczegóły o użytkowniku
         public ActionResult<UserDto> GetDetails(int id)
         {
             try
@@ -63,7 +63,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // PUT: api/kropkaNet/user/update/{id}
         [HttpPut("update/{id}")]
-        [Authorize]  // Zakładając, że każdy może aktualizować użytkownika
+        //[Authorize]  // Zakładając, że każdy może aktualizować użytkownika
         public IActionResult Update(int id, [FromBody] UserDto dto)
         {
             try
@@ -79,7 +79,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // DELETE: api/kropkaNet/user/delete/{id}
         [HttpDelete("delete/{id}")]
-        [Authorize]  // Zakładając, że każdy może usunąć użytkownika
+        //[Authorize]  // Zakładając, że każdy może usunąć użytkownika
         public IActionResult Delete(int id)
         {
             try

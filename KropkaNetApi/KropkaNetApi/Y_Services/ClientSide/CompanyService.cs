@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using KropkaNetApi.X_Entities.Enum;
 using System.Linq.Expressions;
 using KropkaNetApi.Exceptions;
-using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNetApi.Y_Services.ClientSide
 {
