@@ -3,6 +3,7 @@ using KropkaNetApi.Y_Services.ClientSide;
 using KropkaNetApi.X_Models.ClientSide.User;
 using Microsoft.AspNetCore.Authorization;
 using KropkaNetApi.X_Entities.Enum;
+using KropkaNetApi.X_Entities;
 
 namespace KropkaNetApi.Y_Controllers.ClientSide
 {
@@ -36,11 +37,12 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         // GET: api/kropkaNet/user/getAll
         [HttpGet("getAll")]
         [Authorize(Roles = "Employee, Moderator, Admin")] // Dostępne dla wybranych ról
-        public ActionResult<IEnumerable<UserDto>> GetAll([FromQuery] int page = 1, [FromQuery] string filter = "", [FromQuery] string sortBy = "Name", [FromQuery] SortDirection sortDirection = SortDirection.ASC)
+        public ActionResult<ReturnResult<UserDto>> GetAll([FromQuery] int page = 1, [FromQuery] string filter = "", [FromQuery] string sortBy = "Name", [FromQuery] SortDirection sortDirection = SortDirection.ASC)
         {
-            var users = _userService.GetAll(page, filter, sortBy, sortDirection);
-            return Ok(users);
+            var result = _userService.GetAll(page, filter, sortBy, sortDirection);
+            return Ok(result);
         }
+
 
         // GET: api/kropkaNet/user/{id}
         [HttpGet("{id}")]
