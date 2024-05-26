@@ -14,12 +14,12 @@ namespace KropkaNetApi.Y_Services.CompanySide
 {
     public interface IEmployeeService
     {
-        public int Create(CreateEmployeeDto dto, RegisterEmployeeDto registerdto);
+        public int Create(RegisterEmployeeDto dto);
         public ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
         public ReturnResult<EmployeeListDto> GetById(int employeeId, int page, string filter, string sortBy, SortDirection sortDireciton);
-        public int Update(int id, CreateEmployeeDto dto);
+        public int Update(int id, UpdateEmployeeDto dto);
         public void ChangePosition(int employeeId, int positionId);
-            public int Delete(int id);
+        public int Delete(int id);
     }
     public class EmployeeService : IEmployeeService
     {
@@ -33,7 +33,7 @@ namespace KropkaNetApi.Y_Services.CompanySide
             _passwordHasher = passwordHasher;
         }
 
-        public int Create(CreateEmployeeDto dto, RegisterEmployeeDto registerdto)
+        public int Create(RegisterEmployeeDto dto)
         {
             var employee = _mapper.Map<Employee>(dto);
 
@@ -44,8 +44,8 @@ namespace KropkaNetApi.Y_Services.CompanySide
 
             var account = new Account()
             {
-                Login = registerdto.Login,
-                HashedPassword = registerdto.Password
+                Login = dto.Login,
+                HashedPassword = dto.Password
             };
 
             _context.Positions.Add(position);
@@ -157,7 +157,7 @@ namespace KropkaNetApi.Y_Services.CompanySide
         }
 
         // PUT: update employee
-        public int Update(int id, CreateEmployeeDto dto)
+        public int Update(int id, UpdateEmployeeDto dto)
         {
             var employee = _context.Employees
                 .Include(e => e.Position)
@@ -172,7 +172,6 @@ namespace KropkaNetApi.Y_Services.CompanySide
             employee.Email = dto.Email;
             employee.PhoneNumber = dto.PhoneNumber;
             employee.Note = dto.Note;
-            employee.Position.Name= dto.PositionName;
 
             _context.SaveChanges();
 
@@ -180,7 +179,6 @@ namespace KropkaNetApi.Y_Services.CompanySide
         }
 
         //PATCH : change position
-
         public void ChangePosition(int employeeId, int positionId)
         {
             var employee = _context.Employees.FirstOrDefault(p => p.Id == employeeId);

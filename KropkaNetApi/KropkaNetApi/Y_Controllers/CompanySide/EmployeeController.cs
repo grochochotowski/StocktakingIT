@@ -21,9 +21,9 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
         [HttpPost("create")]
         //[Authorize(Roles = "Moderator, Admin")]
-        public ActionResult Create([FromBody] CreateEmployeeDto dto, RegisterEmployeeDto registerdto)
+        public ActionResult Create([FromBody] RegisterEmployeeDto dto)
         {
-            var createdEmployeeId = _employeeService.Create(dto, registerdto);
+            var createdEmployeeId = _employeeService.Create(dto);
 
             var result = Created($"{createdEmployeeId}", null) as CreatedResult;
             if (result != null)
@@ -64,7 +64,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         // PUT api/kropkaNet/employee/update/5
         [HttpPut("update/{id}")]
         //[Authorize(Roles = "Employee, Moderator, Admin")]
-        public ActionResult Update([FromRoute] int id, [FromBody] CreateEmployeeDto dto)
+        public ActionResult Update([FromRoute] int id, [FromBody] UpdateEmployeeDto dto)
         {
             var employeeDtos = _employeeService.Update(id, dto);
 
