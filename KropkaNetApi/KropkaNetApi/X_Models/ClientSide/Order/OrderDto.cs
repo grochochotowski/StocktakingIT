@@ -8,13 +8,14 @@ namespace KropkaNetApi.X_Models.ClientSide.Order
     {
         public int Id { get; set; }
         public DateTime DateOfOrderExecution { get; set; }
+        public int State { get; set; }
 
 
         public int DepartmentId { get; set; }
         public virtual DepartmentDto Department { get; set; }
 
 
-        public int StocktakingId { get; set; }
+        public int? StocktakingId { get; set; }
         public virtual StocktakingDto Stocktaking { get; set; }
 
 

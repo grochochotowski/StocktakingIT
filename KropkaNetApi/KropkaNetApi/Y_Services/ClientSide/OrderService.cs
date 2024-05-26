@@ -2,14 +2,26 @@
 using KropkaNetApi.X_Entities.Objects.ClientSide;
 using KropkaNetApi.X_Entities;
 using KropkaNetApi.X_Models.ClientSide.Order;
+using KropkaNetApi.X_Entities.Enum;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using KropkaNetApi.Exceptions;
+using KropkaNetApi.X_Models.ClientSide.Company;
 
 namespace KropkaNetApi.Y_Services.ClientSide
 {
     public interface IOrderService
     {
-        int Create(CreateOrderDto dto);
-        IEnumerable<OrderListDto> GetList(string filter);
-        int Delete(int id);
+        int Create(int? userId, CreateOrderDto dto);
+        ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton);
+        ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
+        OrderDto GetDetails(int id);
+        int Update(int id, UpdateOrderDto dto);
+        void AddUser(int userId, int orderId);
+        void RemoveUser(int userId, int orderId);
+        void ChangeState(int id, int state);
+        void Delete(int id);
     }
     public class OrderService : IOrderService
     {
@@ -23,9 +35,15 @@ namespace KropkaNetApi.Y_Services.ClientSide
         }
 
         // POST: create order
-        public int Create(CreateOrderDto dto)
+        public int Create(int? userId, CreateOrderDto dto)
         {
             var order = _mapper.Map<Order>(dto);
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            if (user != null)
+            {
+                order.Users = [user];
+            }
 
             _context.Orders.Add(order);
             _context.SaveChanges();
@@ -33,36 +51,188 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return order.Id;
         }
 
-        // GET: get list of orders
-        public IEnumerable<OrderListDto> GetList(string filter)
+        // GET: get list of orders of user
+        public ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton)
         {
-            var orderList = _context.Orders
-                .Where(
-                    p => filter == null || (
-                    p.DateOfOrderExecution.ToString().Contains(filter) ||
-                    p.Id.ToString().Contains(filter)
-                ))
-                .OrderBy(p => p.DateOfOrderExecution)
+            var baseQuery = _context.Orders
+                .Include(c => c.Department)
+                .Include(c => c.Users)
+                .Where(c => (string.IsNullOrEmpty(filter) || (
+                       c.DateOfOrderExecution.ToString().Contains(filter) ||
+                       c.State.ToString().Contains(filter) ||
+                       c.Department.DepartmentName.Contains(filter) ||
+                       c.Id.ToString().Contains(filter))) &&
+                       c.Users.Any(u => u.Id == userId));
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                var columnsSelector = new Dictionary<string, Expression<Func<Order, object>>>
+                {
+                    { "id", c => c.Id},
+                    { "DateOfOrderExecution", c => c.DateOfOrderExecution},
+                    { "State", c => c.State},
+                    { "Name", c => c.Department.DepartmentName}
+                };
+
+                var selectedColumn = columnsSelector[sortBy];
+
+                baseQuery = sortDireciton == SortDirection.ASC
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
+
+            var items = baseQuery
+                .Skip(10 * (page - 1))
+                .Take(10)
                 .Select(p => new OrderListDto
                 {
                     Id = p.Id,
-                    DateOfOrderExecution = p.DateOfOrderExecution
+                    DateOfOrderExecution = p.DateOfOrderExecution,
+                    State = p.State,
+                    DepartmentName = p.Department.DepartmentName
                 })
                 .ToList();
 
-            return orderList;
+            var totalCount = baseQuery.Count();
+
+            var result = new ReturnResult<OrderListDto>(items, totalCount);
+
+            return result;
         }
 
+        // GET: get list of all orders
+        public ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton)
+        {
+            var baseQuery = _context.Orders
+                .Include(c => c.Department)
+                .Include(c => c.Users)
+                .Where(c => (string.IsNullOrEmpty(filter) || (
+                       c.DateOfOrderExecution.ToString().Contains(filter) ||
+                       c.State.ToString().Contains(filter) ||
+                       c.Department.DepartmentName.Contains(filter) ||
+                       c.Id.ToString().Contains(filter))
+                ));
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                var columnsSelector = new Dictionary<string, Expression<Func<Order, object>>>
+                {
+                    { "id", c => c.Id},
+                    { "DateOfOrderExecution", c => c.DateOfOrderExecution},
+                    { "State", c => c.State},
+                    { "Name", c => c.Department.DepartmentName}
+                };
+
+                var selectedColumn = columnsSelector[sortBy];
+
+                baseQuery = sortDireciton == SortDirection.ASC
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
+
+            var items = baseQuery
+                .Skip(10 * (page - 1))
+                .Take(10)
+                .Select(p => new OrderListDto
+                {
+                    Id = p.Id,
+                    DateOfOrderExecution = p.DateOfOrderExecution,
+                    State = p.State,
+                    DepartmentName = p.Department.DepartmentName
+                })
+                .ToList();
+
+            var totalCount = baseQuery.Count();
+
+            var result = new ReturnResult<OrderListDto>(items, totalCount);
+
+            return result;
+        }
+
+        // GET: get details about company
+        public OrderDto GetDetails(int id)
+        {
+            var order = _context.Orders
+                .Include(c => c.Department)
+                .Include(c => c.Stocktaking)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (order == null) throw new NotFoundException("Order not found");
+
+            var orderDto = _mapper.Map<OrderDto>(order);
+            return orderDto;
+        }
+
+        // PUT: update comany
+        public int Update(int id, UpdateOrderDto dto)
+        {
+            var order = _context.Orders
+                .FirstOrDefault(c => c.Id == id);
+
+            if (order == null) throw new NotFoundException("Order not found");
+
+            order.DateOfOrderExecution = dto.DateOfOrderExecution;
+
+            _context.SaveChanges();
+
+            return order.Id;
+        }
+
+        // PATCH: add user
+        public void AddUser(int userId, int orderId)
+        {
+            var order = _context.Orders
+                .Include(c => c.Users)
+                .FirstOrDefault(c => c.Id == orderId);
+            var user = _context.Users
+                .FirstOrDefault(c => c.Id == userId);
+
+            if (order == null) throw new NotFoundException("Order not found");
+            if (user == null) throw new NotFoundException("User not found");
+            if (order.Users.Any(u => u.Id == user.Id)) throw new BadRequestException("User already in company");
+
+            order.Users.Add(user);
+            _context.SaveChanges();
+        }
+
+        // PATCH: remove user
+        public void RemoveUser(int userId, int orderId)
+        {
+            var order = _context.Orders
+                .Include(c => c.Users)
+                .FirstOrDefault(c => c.Id == orderId);
+            var user = _context.Users
+                .FirstOrDefault(c => c.Id == userId);
+
+            if (order == null) throw new NotFoundException("Order not found");
+            if (user == null) throw new NotFoundException("User not found");
+            if (!order.Users.Any(u => u.Id == user.Id)) throw new BadRequestException("User is not in order");
+
+            order.Users.Remove(user);
+            _context.SaveChanges();
+        }
+
+        // PATCH: change state
+        public void ChangeState(int id, int state)
+        {
+            var order = _context.Orders
+               .FirstOrDefault(c => c.Id == id);
+
+            if (order == null) throw new NotFoundException("Order not found");
+
+            order.State = state;
+
+            _context.SaveChanges();
+        }
 
         // DELETE : delete order with id
-        public int Delete(int id)
+        public void Delete(int id)
         {
             var order = _context.Orders.FirstOrDefault(p => p.Id == id);
-            if (order == null) return -1;
+            if (order == null) throw new NotFoundException("Order not found");
 
             _context.Remove(order);
-
-            return 0;
+            _context.SaveChanges();
         }
     }
 }

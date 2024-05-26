@@ -19,7 +19,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
         int Update(int id, CreateCompanyDto dto);
         void AddUser(int userId, int companyId);
         void RemoveUser(int userId, int companyId);
-        int Delete(int id);
+        void Delete(int id);
     }
     public class CompanyService : ICompanyService
     {
@@ -96,7 +96,6 @@ namespace KropkaNetApi.Y_Services.ClientSide
             var items = baseQuery
                 .Skip(10 * (page - 1))
                 .Take(10)
-                .OrderBy(p => p.CompanyName)
                 .Select(p => new CompanyListDto
                 {
                     Id = p.Id,
@@ -141,7 +140,6 @@ namespace KropkaNetApi.Y_Services.ClientSide
             var items = baseQuery
                 .Skip(10 * (page - 1))
                 .Take(10)
-                .OrderBy(p => p.CompanyName)
                 .Select(p => new CompanyListDto
                 {
                     Id = p.Id,
@@ -230,15 +228,13 @@ namespace KropkaNetApi.Y_Services.ClientSide
         }
 
         // DELETE : delete comany with id
-        public int Delete(int id)
+        public void Delete(int id)
         {
             var company = _context.Companies.FirstOrDefault(p => p.Id == id);
             if (company == null) throw new NotFoundException("Company not found");
 
             _context.Remove(company);
             _context.SaveChanges();
-
-            return 0;
         }
     }
 }
