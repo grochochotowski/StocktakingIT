@@ -41,7 +41,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return user.Id;
         }
 
-        public IEnumerable<UserDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection)
+        public ReturnResult<UserDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection)
         {
             var query = _context.Users.AsQueryable();
 
@@ -60,9 +60,13 @@ namespace KropkaNetApi.Y_Services.ClientSide
                                                             : query.OrderByDescending(sortExpression);
             }
 
-            return query.Skip((page - 1) * 10).Take(10)
-                        .Select(u => _mapper.Map<UserDto>(u)).ToList();
+            var list = query.Skip((page - 1) * 10).Take(10)
+                            .Select(u => _mapper.Map<UserDto>(u)).ToList();
+
+            var totalCount = query.Count();
+            return new ReturnResult<UserDto>(list, totalCount);
         }
+    
 
         public UserDto GetDetails(int id)
         {
