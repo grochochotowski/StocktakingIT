@@ -33,8 +33,16 @@ namespace KropkaNetApi.Y_Services.CompanySide
         public int Create(CreateStocktakingDto dto)
         {
             var stocktaking = _mapper.Map<Stocktaking>(dto);
+
+            var warehouse = new Warehouse();
+            _context.Warehouses.Add(warehouse);
+            _context.SaveChanges();
+
+            stocktaking.WarehouseId = warehouse.Id;
+
             _context.Stocktakings.Add(stocktaking);
             _context.SaveChanges();
+
             return stocktaking.Id;
         }
 
