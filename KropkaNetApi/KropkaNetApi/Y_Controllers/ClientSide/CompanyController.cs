@@ -18,7 +18,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             _companyService = companyService;
         }
 
-        // PSOT api/kropkaNet/company/create
+        // POST api/kropkaNet/company/create
         [HttpPost("create")]
         [Authorize]
         public ActionResult Create([FromQuery] int? userId, [FromBody] CreateCompanyDto dto)
