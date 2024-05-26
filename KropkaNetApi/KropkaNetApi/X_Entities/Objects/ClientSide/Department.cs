@@ -18,6 +18,5 @@ namespace KropkaNetApi.X_Entities.Objects.ClientSide
 
 
         public virtual ICollection<Order>? Orders { get; set; }
-        public object Companies { get; internal set; }
     }
 }

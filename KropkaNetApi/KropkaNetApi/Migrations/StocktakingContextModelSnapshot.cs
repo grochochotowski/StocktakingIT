@@ -34,7 +34,7 @@ namespace KropkaNet.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("CompanyUser");
+                    b.ToTable("CompanyUser", (string)null);
                 });
 
             modelBuilder.Entity("EmployeeStocktaking", b =>
@@ -49,7 +49,7 @@ namespace KropkaNet.Migrations
 
                     b.HasIndex("StocktakingsId");
 
-                    b.ToTable("EmployeeStocktaking");
+                    b.ToTable("EmployeeStocktaking", (string)null);
                 });
 
             modelBuilder.Entity("KropkaNetApi.X_Entities.Objects.ClientSide.Address", b =>
@@ -85,7 +85,7 @@ namespace KropkaNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("KropkaNetApi.X_Entities.Objects.ClientSide.Company", b =>
@@ -118,7 +118,7 @@ namespace KropkaNet.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("KropkaNetApi.X_Entities.Objects.ClientSide.Department", b =>
@@ -140,7 +140,7 @@ namespace KropkaNet.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("KropkaNetApi.X_Entities.Objects.ClientSide.Order", b =>
@@ -167,7 +167,7 @@ namespace KropkaNet.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("KropkaNetApi.X_Entities.Objects.ClientSide.User", b =>
@@ -208,7 +208,7 @@ namespace KropkaNet.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("KropkaNetApi.X_Entities.Objects.CompanySide.Employee", b =>
@@ -254,7 +254,7 @@ namespace KropkaNet.Migrations
 
                     b.HasIndex("PositionId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("KropkaNetApi.X_Entities.Objects.CompanySide.Position", b =>
@@ -271,7 +271,7 @@ namespace KropkaNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Positions");
+                    b.ToTable("Positions", (string)null);
                 });
 
             modelBuilder.Entity("KropkaNetApi.X_Entities.Objects.CompanySide.Product", b =>
@@ -295,7 +295,7 @@ namespace KropkaNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("KropkaNetApi.X_Entities.Objects.CompanySide.Stocktaking", b =>
@@ -323,7 +323,7 @@ namespace KropkaNet.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Stocktakings");
+                    b.ToTable("Stocktakings", (string)null);
                 });
 
             modelBuilder.Entity("KropkaNetApi.X_Entities.Objects.CompanySide.Warehouse", b =>
@@ -345,7 +345,7 @@ namespace KropkaNet.Migrations
                     b.HasIndex("StocktakingId")
                         .IsUnique();
 
-                    b.ToTable("Warehouses");
+                    b.ToTable("Warehouses", (string)null);
                 });
 
             modelBuilder.Entity("KropkaNetApi.X_Entities.Objects.CompanySide.WarehouseProduct", b =>
@@ -365,7 +365,7 @@ namespace KropkaNet.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("WarehouseProduct");
+                    b.ToTable("WarehouseProduct", (string)null);
                 });
 
             modelBuilder.Entity("KropkaNetApi.X_Entities.Objects.Shared.Account", b =>
@@ -392,7 +392,7 @@ namespace KropkaNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Accounts", (string)null);
                 });
 
             modelBuilder.Entity("OrderUser", b =>
@@ -407,7 +407,7 @@ namespace KropkaNet.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("OrderUser");
+                    b.ToTable("OrderUser", (string)null);
                 });
 
             modelBuilder.Entity("CompanyUser", b =>
