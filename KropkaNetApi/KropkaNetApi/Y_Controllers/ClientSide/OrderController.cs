@@ -106,7 +106,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         }
 
         // PATCH api/kropkaNet/order/state
-        [HttpPatch("removeUser")]
+        [HttpPatch("state")]
         //[Authorize(Roles="Employee, Moderator, Admin")]
         public ActionResult ChangeState([FromQuery] int id, [FromQuery] int state)
         {
