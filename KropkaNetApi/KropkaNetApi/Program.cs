@@ -80,6 +80,7 @@ namespace KropkaNetApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddScoped<IWarehouseProductService, WarehouseProductService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IPositionService, PositionService>();
             builder.Services.AddScoped<IProductService, ProductService>();
