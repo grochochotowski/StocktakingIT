@@ -20,7 +20,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
         // GET: /api/kropkaNet/position/all
         [HttpGet("all")]
-        [Authorize(Roles = "Employee, Moderator, Admin")]
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<PositionDto>> GetAll()
         {
             var positionDtos = _positionService.GetAll();

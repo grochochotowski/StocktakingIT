@@ -8,7 +8,6 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 {
     [Route("api/kropkaNet/department")]
     [ApiController]
-    [Authorize]
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
@@ -19,7 +18,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         }
 
         [HttpPost("create")]
-        [Authorize]
+        //[Authorize]
         public ActionResult Create([FromBody] int? comapnyId, CreateDepartmentDto dto)
         {
             var createdDepartmentId = _departmentService.Create(comapnyId, dto);
@@ -34,7 +33,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         }
         // GET api/kropkaNet/departemnt/all
         [HttpGet("all")]
-        [Authorize(Roles = "Employee, Moderator, Admin")]
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<DepartmentDto>> GetList(
             [FromQuery] int page,
             [FromQuery] string? filters,
@@ -47,7 +46,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         }
         // GET api/kropkaNet/company/departemnt/order/{id}
         [HttpGet("company/department/{orderId}")]
-        [Authorize]
+        //[Authorize]
         public ActionResult<IEnumerable<DepartmentDto>> GetListOrder(
             [FromRoute] int orderId,
             [FromQuery] int page,
@@ -61,7 +60,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         }
         // PUT api/kropkaNet/department/update/5
         [HttpPut("update/{id}")]
-        [Authorize]
+        //[Authorize]
         public ActionResult Update([FromRoute] int id, [FromBody] CreateDepartmentDto dto)
         {
             var departmentId = _departmentService.Update(id, dto);
@@ -70,7 +69,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         }
         // DELETE api/kropkaNet/department/delete{id}
         [HttpDelete("delete/{id}")]
-        [Authorize]
+        //[Authorize]
         public ActionResult<IEnumerable<DepartmentDto>> Delete([FromRoute] int id)
         {
             var departmentDtos = _departmentService.Delete(id);

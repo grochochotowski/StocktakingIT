@@ -20,7 +20,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         }
 
         [HttpPost("create")]
-        [Authorize(Roles = "Moderator, Admin")]
+        //[Authorize(Roles = "Moderator, Admin")]
         public ActionResult Create([FromBody] CreateEmployeeDto dto, RegisterEmployeeDto registerdto)
         {
             var createdEmployeeId = _employeeService.Create(dto, registerdto);
@@ -36,7 +36,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
         // GET api/kropkaNet/employee/all
         [HttpGet("all")]
-        [Authorize(Roles = "Employee, Moderator, Admin")]
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<DepartmentDto>> GetList(
             [FromQuery] int page,
             [FromQuery] string? filters,
@@ -49,7 +49,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         }
         // GET api/kropkaNet/employee/{id}
         [HttpGet("{employeeId}")]
-        [Authorize(Roles = "Employee, Moderator, Admin")]
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<EmployeeDto>> GetById(
             [FromRoute] int employeeId,
             [FromQuery] int page,
@@ -63,7 +63,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         }
         // PUT api/kropkaNet/employee/update/5
         [HttpPut("update/{id}")]
-        [Authorize(Roles = "Employee, Moderator, Admin")]
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult Update([FromRoute] int id, [FromBody] CreateEmployeeDto dto)
         {
             var employeeDtos = _employeeService.Update(id, dto);
@@ -73,7 +73,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
         // PATCH api/kropkaNet/employee/changeposition/{id}
         [HttpPut("changeposition/{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public ActionResult ChangePosition([FromRoute] int employeeId, [FromBody] int positionId)
         {
             _employeeService.ChangePosition(employeeId, positionId);
@@ -82,7 +82,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         }
         // DELETE api/kropkaNet/department/delete{id}
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Moderator, Admin")]
+        //[Authorize(Roles = "Moderator, Admin")]
         public ActionResult<IEnumerable<EmployeeDto>> Delete([FromRoute] int id)
         {
             var employeeDtos = _employeeService.Delete(id);

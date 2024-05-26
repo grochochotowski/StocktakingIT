@@ -9,7 +9,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 {
     [Route("api/kropkaNet/stocktaking")]
     [ApiController]
-    [Authorize(Roles = "Employee, Moderator, Admin")]
+    //[Authorize(Roles = "Employee, Moderator, Admin")]
     public class StocktakingController : ControllerBase
     {
         private readonly IStocktakingService _stocktakingService;
