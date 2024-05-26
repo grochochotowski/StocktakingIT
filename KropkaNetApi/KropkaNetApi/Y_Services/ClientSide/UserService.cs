@@ -16,10 +16,9 @@ namespace KropkaNetApi.Y_Services.ClientSide
     public interface IUserService
     {
         int Create(CreateUserDto dto);
-        IEnumerable<UserDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection);
+        ReturnResult<UserDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection);
         UserDto GetDetails(int id);
         void Update(int id, UserDto dto);
-
         void Delete(int id);
     }
 
