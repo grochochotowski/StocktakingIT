@@ -19,9 +19,9 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         [HttpPost("create")]
         //[Authorize]
-        public ActionResult Create([FromBody] int? comapnyId, CreateDepartmentDto dto)
+        public ActionResult Create([FromBody] CreateDepartmentDto dto)
         {
-            var createdDepartmentId = _departmentService.Create(comapnyId, dto);
+            var createdDepartmentId = _departmentService.Create(dto);
 
             var result = Created($"{createdDepartmentId}", null) as CreatedResult;
             if (result != null)
