@@ -1,13 +1,15 @@
-﻿using KropkaNetApi.X_Models.CompanySide.Stocktaking;
-using KropkaNetApi.Y_Services.CompanySide;
+﻿using KropkaNetApi.Y_Services.CompanySide;
+using KropkaNetApi.X_Models.CompanySide.Stocktaking;
+using KropkaNetApi.X_Entities.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using KropkaNetApi.X_Entities;
 
 namespace KropkaNetApi.Y_Controllers.CompanySide
 {
     [Route("api/kropkaNet/stocktaking")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Employee, Moderator, Admin")]
     public class StocktakingController : ControllerBase
     {
         private readonly IStocktakingService _stocktakingService;
@@ -19,31 +21,81 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
         // POST: /api/kropkaNet/stocktaking/create
         [HttpPost("create")]
-        public ActionResult Create([FromBody] CreateStocktakingDto dto)
+        public ActionResult<int> Create([FromBody] CreateStocktakingDto dto)
         {
             var createdStocktakingId = _stocktakingService.Create(dto);
-            if (createdStocktakingId <= 0) return BadRequest("Failed to create stocktaking");
-
-            var result = CreatedAtAction("GetById", new { id = createdStocktakingId }, dto); // Assuming GetById method exists or needs to be implemented
-            return result;
+            return createdStocktakingId > 0
+                ? CreatedAtAction(nameof(GetById), new { id = createdStocktakingId }, dto)
+                : BadRequest("Failed to create stocktaking");
         }
 
         // GET: /api/kropkaNet/stocktaking/all
         [HttpGet("all")]
-        public ActionResult<IEnumerable<StocktakingListDto>> GetAll()
+        public ActionResult<ReturnResult<StocktakingListDto>> GetAll([FromQuery] int page = 1, [FromQuery] string filter = "", [FromQuery] string sortBy = "Id", [FromQuery] SortDirection sortDirection = SortDirection.ASC)
         {
-            var stocktakings = _stocktakingService.GetAll();
-            return Ok(stocktakings);
+            var result = _stocktakingService.GetAll(page, filter, sortBy, sortDirection);
+            return Ok(result);
+        }
+
+        // GET: /api/kropkaNet/stocktaking/{id}
+        [HttpGet("{id}")]
+        public ActionResult<StocktakingDto> GetById(int id)
+        {
+            var stocktaking = _stocktakingService.GetDetails(id);
+            return stocktaking != null ? Ok(stocktaking) : NotFound("Stocktaking not found");
+        }
+
+        // PUT: /api/kropkaNet/stocktaking/update/{id}
+        [HttpPut("update/{id}")]
+        public IActionResult Update(int id, [FromBody] StocktakingDto dto)
+        {
+            try
+            {
+                _stocktakingService.Update(id, dto);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // PATCH: /api/kropkaNet/stocktaking/addEmployee/{stocktakingId}/{employeeId}
+        [HttpPatch("addEmployee/{stocktakingId}/{employeeId}")]
+        public IActionResult AddEmployee(int stocktakingId, int employeeId)
+        {
+            try
+            {
+                _stocktakingService.AddEmployee(stocktakingId, employeeId);
+                return Ok("Employee added successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // PATCH: /api/kropkaNet/stocktaking/removeEmployee/{stocktakingId}/{employeeId}
+        [HttpPatch("removeEmployee/{stocktakingId}/{employeeId}")]
+        public IActionResult RemoveEmployee(int stocktakingId, int employeeId)
+        {
+            try
+            {
+                _stocktakingService.RemoveEmployee(stocktakingId, employeeId);
+                return Ok("Employee removed successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE: /api/kropkaNet/stocktaking/delete/{id}
         [HttpDelete("delete/{id}")]
-        public ActionResult Delete([FromRoute] int id)
+        public IActionResult Delete(int id)
         {
-            var result = _stocktakingService.Delete(id);
-            if (result == -1) return NotFound("Stocktaking does not exist");
-
-            return NoContent();
+            int result = _stocktakingService.Delete(id);
+            return result != -1 ? NoContent() : NotFound("Stocktaking not found");
         }
     }
 }
