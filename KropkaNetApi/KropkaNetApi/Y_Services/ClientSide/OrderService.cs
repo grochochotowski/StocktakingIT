@@ -43,6 +43,8 @@ namespace KropkaNetApi.Y_Services.ClientSide
                 order.Users = [user];
             }
 
+            order.State = -1;
+
             _context.Orders.Add(order);
             _context.SaveChanges();
 
