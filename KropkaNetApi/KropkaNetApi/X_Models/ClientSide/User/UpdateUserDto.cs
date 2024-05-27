@@ -2,7 +2,7 @@
 
 namespace KropkaNetApi.X_Models.ClientSide.User
 {
-    public class CreateUserDto
+    public class UpdateUserDto
     {
         [Required]
         public string Name { get; set; }

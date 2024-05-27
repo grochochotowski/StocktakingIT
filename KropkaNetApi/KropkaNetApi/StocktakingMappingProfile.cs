@@ -30,7 +30,7 @@ namespace KropkaNetApi
 
             CreateMap<Order, OrderDto>(); 
 
-            CreateMap<CreateUserDto, User>();
+            CreateMap<UpdateUserDto, User>();
             CreateMap<User, UserDto>();
 
 

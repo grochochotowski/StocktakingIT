@@ -70,9 +70,6 @@ namespace KropkaNetApi.Y_Services.CompanySide
                     Id = p.Id,
                     Surname = p.Surname,
                     Name = p.Name,
-                    Email = p.Email,
-                    PhoneNumber = p.PhoneNumber,
-                    Note = p.Note,
                     PositionName = p.Position.Name
                 })
                 .ToList();
