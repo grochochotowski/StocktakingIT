@@ -37,7 +37,7 @@ namespace KropkaNetApi
 
             CreateMap<Employee, EmployeeDto>();
 
-            CreateMap<Position, PositionDto>();
+            CreateMap<Position, PositionDto>(); 
 
             CreateMap<Product, ProductDto>();
             CreateMap<CreateProductDto, Product>();

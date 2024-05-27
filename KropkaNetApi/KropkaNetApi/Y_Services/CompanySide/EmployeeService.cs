@@ -9,27 +9,27 @@ using KropkaNetApi.X_Entities.Enum;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using KropkaNetApi.X_Models.Shared.Account;
+using KropkaNetApi.X_Models.ClientSide.Company;
 
 namespace KropkaNetApi.Y_Services.CompanySide
 {
     public interface IEmployeeService
     {
-        public ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
-        public ReturnResult<EmployeeListDto> GetById(int employeeId, int page, string filter, string sortBy, SortDirection sortDireciton);
-        public int Update(int id, UpdateEmployeeDto dto);
-        public void ChangePosition(int employeeId, int positionId);
-        public int Delete(int id);
+        ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
+        EmployeeDto GetById(int employeeId);
+        int Update(int id, UpdateEmployeeDto dto);
+        void ChangePosition(int employeeId, int positionId);
+        int Delete(int id);
     }
     public class EmployeeService : IEmployeeService
     {
         private readonly StocktakingContext _context;
-        private readonly IPasswordHasher<Account> _passwordHasher;
         private readonly IMapper _mapper;
 
-        public EmployeeService(StocktakingContext context, IPasswordHasher<Account> passwordHasher, AuthenticationSettings authenticationSettings)
+        public EmployeeService(StocktakingContext context, IMapper mapper)
         {
             _context = context;
-            _passwordHasher = passwordHasher;
+            _mapper = mapper;
         }
 
         public ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton)
@@ -40,7 +40,8 @@ namespace KropkaNetApi.Y_Services.CompanySide
                       e.Name.ToLower().Contains(filter.ToLower()) ||
                       e.Surname.ToLower().Contains(filter.ToLower()) ||
                       e.Email.ToLower().Contains(filter.ToLower()) ||
-                      e.Id.ToString().Contains(filter))
+                      e.Id.ToString().Contains(filter) ||
+                      e.Position.Name.ToString().Contains(filter.ToLower()))
                       ));
 
             if (!string.IsNullOrEmpty(sortBy))
@@ -50,7 +51,7 @@ namespace KropkaNetApi.Y_Services.CompanySide
                     { "id", e => e.Id},
                     { "Name", e => e.Name},
                     { "Surname", e => e.Surname},
-                    { "Position", e => e.Position}
+                    { "Position", e => e.PositionId}
                 };
 
                 var selectedColumn = columnsSelector[sortBy];
@@ -68,7 +69,11 @@ namespace KropkaNetApi.Y_Services.CompanySide
                 {
                     Id = p.Id,
                     Surname = p.Surname,
-                    Name=p.Name
+                    Name = p.Name,
+                    Email = p.Email,
+                    PhoneNumber = p.PhoneNumber,
+                    Note = p.Note,
+                    PositionName = p.Position.Name
                 })
                 .ToList();
 
@@ -78,55 +83,18 @@ namespace KropkaNetApi.Y_Services.CompanySide
 
             return result;
         }
-        // GET: get list of employees by id
-        public ReturnResult<EmployeeListDto> GetById(int employeeId, int page, string filter, string sortBy, SortDirection sortDireciton)
+        // GET: get list of employees by id - to fix
+        public EmployeeDto GetById(int employeeId)
         {
-            var baseQuery = _context.Employees
-               .Where(p => p.Id == employeeId);
+            var employee = _context.Employees
+                .Include(e => e.Position)
+                .FirstOrDefault(e => e.Id == employeeId);
 
-            if (!string.IsNullOrEmpty(filter))
-            {
-                filter = filter.ToLower();
-                baseQuery = baseQuery.Where(e =>
-                       e.Name.ToLower().Contains(filter.ToLower()) ||
-                       e.Surname.ToLower().Contains(filter.ToLower()) ||
-                       e.Id.ToString().Contains(filter));
-            }
+            if (employee == null) throw new NotFoundException("Employee not found");
 
-            if (!string.IsNullOrEmpty(sortBy))
-            {
-                var columnsSelector = new Dictionary<string, Expression<Func<Employee, object>>>
-                {
-                    { "id", c => c.Id},
-                    { "Surname", c => c.Surname},
-                    { "Name", c => c.Name},
-                    { "Position", c => c.Position}
-                };
+            var employeeDto = _mapper.Map<EmployeeDto>(employee);
 
-                var selectedColumn = columnsSelector[sortBy];
-
-                baseQuery = sortDireciton == SortDirection.ASC
-                    ? baseQuery.OrderBy(selectedColumn)
-                    : baseQuery.OrderByDescending(selectedColumn);
-            }
-
-            var items = baseQuery
-                .Skip(10 * (page - 1))
-                .Take(10)
-                .OrderBy(p => p.Surname)
-                .Select(p => new EmployeeListDto
-                {
-                    Id = p.Id,
-                    Surname = p.Surname,
-                    Name = p.Name
-                })
-                .ToList();
-
-            var totalCount = baseQuery.Count();
-
-            var result = new ReturnResult<EmployeeListDto>(items, totalCount);
-
-            return result;
+            return employeeDto;
         }
 
         // PUT: update employee

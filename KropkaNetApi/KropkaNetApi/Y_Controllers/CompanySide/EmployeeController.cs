@@ -36,16 +36,10 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         // GET api/kropkaNet/employee/{id}
         [HttpGet("{employeeId}")]
         //[Authorize(Roles = "Employee, Moderator, Admin")]
-        public ActionResult<IEnumerable<EmployeeDto>> GetById(
-            [FromRoute] int employeeId,
-            [FromQuery] int page,
-            [FromQuery] string? filters,
-            [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
-            )
+        public ActionResult<EmployeeDto> GetById([FromRoute] int employeeId)
         {
-            var employeeDtos = _employeeService.GetById(employeeId, page, filters, sortBy, sortDireciton);
-            return Ok(employeeDtos);
+            var employeeDto = _employeeService.GetById(employeeId);
+            return Ok(employeeDto);
         }
         // PUT api/kropkaNet/employee/update/5
         [HttpPut("update/{id}")]
@@ -57,10 +51,10 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
             return Ok($"{employeeDtos}");
         }
 
-        // PATCH api/kropkaNet/employee/changeposition/{id}
-        [HttpPut("changeposition/{id}")]
+        // PATCH api/kropkaNet/employee/changeposition/{employeeId}
+        [HttpPut("changeposition/{employeeId}")]
         //[Authorize(Roles = "Admin")]
-        public ActionResult ChangePosition([FromRoute] int employeeId, [FromBody] int positionId)
+        public ActionResult ChangePosition([FromRoute] int employeeId, [FromQuery] int positionId)
         {
             _employeeService.ChangePosition(employeeId, positionId);
 
