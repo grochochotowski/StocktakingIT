@@ -19,20 +19,6 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
             _employeeService = employeeService;
         }
 
-        [HttpPost("create")]
-        //[Authorize(Roles = "Moderator, Admin")]
-        public ActionResult Create([FromBody] RegisterEmployeeDto dto)
-        {
-            var createdEmployeeId = _employeeService.Create(dto);
-
-            var result = Created($"{createdEmployeeId}", null) as CreatedResult;
-            if (result != null)
-            {
-                Response.Headers.Add("Access-Control-Expose-Headers", "Location");
-            }
-
-            return result;
-        }
 
         // GET api/kropkaNet/employee/all
         [HttpGet("all")]

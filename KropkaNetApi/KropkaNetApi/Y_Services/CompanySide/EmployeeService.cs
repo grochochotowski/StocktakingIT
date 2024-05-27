@@ -14,7 +14,6 @@ namespace KropkaNetApi.Y_Services.CompanySide
 {
     public interface IEmployeeService
     {
-        public int Create(RegisterEmployeeDto dto);
         public ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
         public ReturnResult<EmployeeListDto> GetById(int employeeId, int page, string filter, string sortBy, SortDirection sortDireciton);
         public int Update(int id, UpdateEmployeeDto dto);
@@ -31,32 +30,6 @@ namespace KropkaNetApi.Y_Services.CompanySide
         {
             _context = context;
             _passwordHasher = passwordHasher;
-        }
-
-        public int Create(RegisterEmployeeDto dto)
-        {
-            var employee = _mapper.Map<Employee>(dto);
-
-            var position = new Position()
-            {
-                Name = dto.Name
-            };
-
-            var account = new Account()
-            {
-                Login = dto.Login,
-                HashedPassword = dto.Password
-            };
-
-            _context.Positions.Add(position);
-            _context.SaveChanges();
-
-            employee.PositionId=position.Id;
-
-            _context.Employees.Add(employee);
-            _context.SaveChanges();
-
-            return employee.Id;
         }
 
         public ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton)
