@@ -23,7 +23,7 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
         // GET api/kropkaNet/employee/all
         [HttpGet("all")]
         //[Authorize(Roles = "Employee, Moderator, Admin")]
-        public ActionResult<IEnumerable<DepartmentDto>> GetList(
+        public ActionResult<IEnumerable<EmployeeDto>> GetList(
             [FromQuery] int page,
             [FromQuery] string? filters,
             [FromQuery] string? sortBy,

@@ -169,6 +169,9 @@ namespace KropkaNetApi.Y_Services.CompanySide
             var employee = _context.Employees.FirstOrDefault(p => p.Id == id);
             if (employee == null) throw new NotFoundException("Employee not found");
 
+            var account = _context.Accounts.FirstOrDefault(a => a.Id == employee.AccountId);
+            
+            _context.Remove(account!);
             _context.Remove(employee);
             _context.SaveChanges();
 
