@@ -44,18 +44,18 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             var departmentDtos = _departmentService.GetList(page, filters, sortBy, sortDireciton);
             return Ok(departmentDtos);
         }
-        // GET api/kropkaNet/company/departemnt/order/{id}
-        [HttpGet("company/department/{orderId}")]
+        // GET api/kropkaNet/company/departemnt/{companyId}
+        [HttpGet("company/department/{companyId}")]
         //[Authorize]
         public ActionResult<IEnumerable<DepartmentDto>> GetListOrder(
-            [FromRoute] int orderId,
+            [FromRoute] int companyId,
             [FromQuery] int page,
             [FromQuery] string? filters,
             [FromQuery] string? sortBy,
             [FromQuery] SortDirection sortDireciton
             )
         {
-            var departmentDtos = _departmentService.GetListOrder(orderId, page, filters, sortBy, sortDireciton);
+            var departmentDtos = _departmentService.GetListCompany(companyId, page, filters, sortBy, sortDireciton);
             return Ok(departmentDtos);
         }
         // PUT api/kropkaNet/department/update/5

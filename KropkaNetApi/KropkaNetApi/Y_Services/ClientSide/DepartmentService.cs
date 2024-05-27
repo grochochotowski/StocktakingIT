@@ -13,7 +13,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
     {
         int Create(CreateDepartmentDto dto);
         public ReturnResult<DepartmentListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
-        ReturnResult<DepartmentListDto> GetListOrder(int orderId, int page, string filter, string sortBy, SortDirection sortDireciton);
+        ReturnResult<DepartmentListDto> GetListCompany(int companyId, int page, string filter, string sortBy, SortDirection sortDireciton);
         public int Update(int id, CreateDepartmentDto dto);
         int Delete(int id);
     }
@@ -86,14 +86,13 @@ namespace KropkaNetApi.Y_Services.ClientSide
 
         //GET : get list of orders
 
-        public ReturnResult<DepartmentListDto> GetListOrder(int orderId, int page, string filter, string sortBy, SortDirection sortDireciton)
+        public ReturnResult<DepartmentListDto> GetListCompany(int companyId, int page, string filter, string sortBy, SortDirection sortDireciton)
         {
             var baseQuery = _context.Departments
-                .Include(c => c.Orders)
                 .Where(c => (string.IsNullOrEmpty(filter) || (
                        c.DepartmentName.ToLower().Contains(filter.ToLower()) ||
                        c.Id.ToString().Contains(filter))) &&
-                       c.Orders.Any(u => u.Id == orderId));
+                       c.CompanyId == companyId);
 
             if (!string.IsNullOrEmpty(sortBy))
             {
