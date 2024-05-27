@@ -15,7 +15,7 @@ function DashboardPage() {
     const [result, setResult] = useState([])
 
     async function fetchData() {
-        let apiCall = `kropkaNet/product/list`
+        let apiCall = `kropkaNet/product/list?page=1&sortDireciton=ASC`
 
         try {
             const token = await refreshToken();
