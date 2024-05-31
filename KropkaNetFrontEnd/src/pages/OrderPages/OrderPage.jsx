@@ -121,7 +121,7 @@ function OrderPage() {
                                 : <i className="fa-solid fa-arrow-up-a-z"></i>
                             )
                         }
-                        Data of execution
+                        Date of execution
                     </th>
                 </tr>
             </thead>

@@ -45,6 +45,11 @@ namespace KropkaNetApi.X_Entities
 
 
             modelBuilder.Entity<Order>()
+               .HasOne(o => o.Department)
+               .WithMany(o => o.Orders);
+
+
+            modelBuilder.Entity<Order>()
                .HasOne(o => o.Stocktaking)
                .WithOne(s => s.Order)
                .HasForeignKey<Stocktaking>(s => s.OrderId);

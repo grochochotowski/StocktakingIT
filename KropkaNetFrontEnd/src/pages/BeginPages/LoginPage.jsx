@@ -18,7 +18,8 @@ function LoginPage() {
     
     const [inputs, setInputs] = useState({
         "login" : "",
-        "password" : ""
+        "password" : "",
+        "isUser" : true
     })
 
     function handleInputChange(inputId) {

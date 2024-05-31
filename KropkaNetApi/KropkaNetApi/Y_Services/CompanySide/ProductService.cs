@@ -12,9 +12,9 @@ namespace KropkaNetApi.Y_Services.CompanySide
     {
         int Create(CreateProductDto dto);
         ReturnResult<ProductListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDireciton);
-        ReturnResult<ProductListDto> GetById(int productId, int page, string filter, string sortBy, SortDirection sortDireciton);
+        ProductDto GetById(int productId);
         int Update(int id, CreateProductDto dto);
-        int Delete(int id);
+        void Delete(int productId);
     }
 
     public class ProductService : IProductService
@@ -89,59 +89,18 @@ namespace KropkaNetApi.Y_Services.CompanySide
             return result;
         }
 
-        //GET : get product by id
-        public ReturnResult<ProductListDto> GetById(int productId, int page, string filter, string sortBy, SortDirection sortDireciton)
+        // GET : get product by id
+        public ProductDto GetById(int productId)
         {
-            var baseQuery = _context.Products
-                .Where(p => p.Id == productId);
+            var product = _context.Products
+                .FirstOrDefault(p => p.Id == productId);
 
-            if (!string.IsNullOrEmpty(filter))
-            {
-                filter = filter.ToLower();
-                baseQuery = baseQuery.Where(p =>
-                    p.Name.ToLower().Contains(filter) ||
-                    p.Category.ToLower().Contains(filter) ||
-                    p.Note.ToLower().Contains(filter) ||
-                    p.Id.ToString().Contains(filter));
-            }
+            var productDto = _mapper.Map<ProductDto>(product);
 
-
-            if (!string.IsNullOrEmpty(sortBy))
-            {
-                var columnsSelector = new Dictionary<string, Expression<Func<Product, object>>>
-                {
-                    { "id", p => p.Id},
-                    { "Name", p => p.Name},
-                    { "Category", p => p.Category}
-                };
-
-                var selectedColumn = columnsSelector[sortBy];
-
-                baseQuery = sortDireciton == SortDirection.ASC
-                    ? baseQuery.OrderBy(selectedColumn)
-                    : baseQuery.OrderByDescending(selectedColumn);
-            }
-
-            var items = baseQuery
-               .Skip(10 * (page - 1))
-               .Take(10)
-               .OrderBy(p => p.Name)
-                .Select(p => new ProductListDto
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Category = p.Category
-                })
-                .ToList();
-
-            var totalCount = baseQuery.Count();
-
-            var result = new ReturnResult<ProductListDto>(items, totalCount);
-
-            return result;
+            return productDto;
         }
 
-        //PUT : update product
+        // PUT : update product
 
         public int Update(int id, CreateProductDto dto)
         {
@@ -161,15 +120,13 @@ namespace KropkaNetApi.Y_Services.CompanySide
 
 
         // DELETE : delete product with id
-        public int Delete(int id)
+        public void Delete(int productId)
         {
-            var product = _context.Products.FirstOrDefault( p => p.Id == id);
-            if (product == null) return -1;
+            var product = _context.Products.FirstOrDefault(p => p.Id == productId);
+            if (product == null) throw new NotFoundException("Product not found");
 
             _context.Remove(product);
             _context.SaveChanges();
-
-            return 0;
         }
     }
 }

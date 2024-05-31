@@ -26,30 +26,29 @@ namespace KropkaNetApi
             CreateMap<CreateCompanyDto, Company>();
 
             CreateMap<Department, DepartmentDto>();
+            CreateMap<CreateDepartmentDto, Department>();
 
             CreateMap<Order, OrderDto>();
+            CreateMap<CreateOrderDto, Order>();
 
-            CreateMap<CreateUserDto, User>();  // Tworzenie nowego użytkownika
-            CreateMap<UserDto, User>()         // Do aktualizacji
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));  // Tylko niepuste pola
-            CreateMap<User, UserDto>();        // Odczyt danych użytkownika
+            CreateMap<UpdateUserDto, User>();
+            CreateMap<User, UserDto>();
 
 
 
             CreateMap<Employee, EmployeeDto>();
 
-            CreateMap<Position, PositionDto>();
+            CreateMap<Position, PositionDto>(); 
 
             CreateMap<Product, ProductDto>();
             CreateMap<CreateProductDto, Product>();
 
             CreateMap<Stocktaking, StocktakingDto>();
+            CreateMap<CreateStocktakingDto, Stocktaking>();
 
             CreateMap<Warehouse, WarehouseDto>();
 
             CreateMap<WarehouseProduct, WarehouseProductDto>();
-
-            CreateMap<CreateCompanyDto, Company>();
         }
     }
 }

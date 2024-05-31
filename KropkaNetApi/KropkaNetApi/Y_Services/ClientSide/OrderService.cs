@@ -35,6 +35,9 @@ namespace KropkaNetApi.Y_Services.ClientSide
         // POST: create order
         public int Create(int? userId, CreateOrderDto dto)
         {
+            var department = _context.Departments.FirstOrDefault(d => d.Id == dto.DepartmentId);
+            if (department == null) throw new NotFoundException("Department not found");
+
             var order = _mapper.Map<Order>(dto);
 
             var user = _context.Users.FirstOrDefault(u => u.Id == userId);
@@ -42,6 +45,8 @@ namespace KropkaNetApi.Y_Services.ClientSide
             {
                 order.Users = [user];
             }
+
+            order.State = -1;
 
             _context.Orders.Add(order);
             _context.SaveChanges();
@@ -157,7 +162,14 @@ namespace KropkaNetApi.Y_Services.ClientSide
 
             if (order == null) throw new NotFoundException("Order not found");
 
+
             var orderDto = _mapper.Map<OrderDto>(order);
+
+            Console.WriteLine("\n\n");
+            Console.WriteLine(orderDto.DateOfOrderExecution);
+            Console.WriteLine(orderDto.Department.Id);
+            Console.WriteLine("\n\n");
+
             return orderDto;
         }
 

@@ -5,15 +5,17 @@ using AutoMapper;
 using KropkaNetApi.X_Entities.Enum;
 using KropkaNetApi.X_Models.ClientSide.User;
 using System.Linq.Expressions;
+using KropkaNetApi.X_Entities.Objects.CompanySide;
+using KropkaNetApi.X_Models.CompanySide.Employee;
+using Microsoft.EntityFrameworkCore;
 
 namespace KropkaNetApi.Y_Services.ClientSide
 {
     public interface IUserService
     {
-        int Create(CreateUserDto dto);
-        ReturnResult<UserDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection);
+        ReturnResult<UserListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection);
         UserDto GetDetails(int id);
-        void Update(int id, UserDto dto);
+        void Update(int id, UpdateUserDto dto);
         void Delete(int id);
     }
 
@@ -28,38 +30,50 @@ namespace KropkaNetApi.Y_Services.ClientSide
             _mapper = mapper;
         }
 
-        public int Create(CreateUserDto dto)
-        {
-            var user = _mapper.Map<User>(dto);
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            return user.Id;
-        }
 
-        public ReturnResult<UserDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection)
+        public ReturnResult<UserListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection)
         {
-            var query = _context.Users.AsQueryable();
-
-            if (!string.IsNullOrEmpty(filter))
-            {
-                query = query.Where(u => u.Name.Contains(filter) || u.Email.Contains(filter));
-            }
+            var baseQuery = _context.Users
+               .Where(e => (string.IsNullOrEmpty(filter) || (
+                      e.Name.ToLower().Contains(filter.ToLower()) ||
+                      e.Surname.ToLower().Contains(filter.ToLower()) ||
+                      e.Email.ToLower().Contains(filter.ToLower()) ||
+                      e.Id.ToString().Contains(filter))
+                      ));
 
             if (!string.IsNullOrEmpty(sortBy))
             {
-                var param = Expression.Parameter(typeof(User), "u");
-                var sortExpression = Expression.Lambda<Func<User, object>>(
-                    Expression.Convert(Expression.Property(param, sortBy), typeof(object)), param);
+                var columnsSelector = new Dictionary<string, Expression<Func<User, object>>>
+                {
+                    { "id", e => e.Id},
+                    { "Name", e => e.Name},
+                    { "Surname", e => e.Surname}
+                };
 
-                query = sortDirection == SortDirection.ASC ? query.OrderBy(sortExpression)
-                                                            : query.OrderByDescending(sortExpression);
+                var selectedColumn = columnsSelector[sortBy];
+
+                baseQuery = sortDirection == SortDirection.ASC
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
             }
 
-            var list = query.Skip((page - 1) * 10).Take(10)
-                            .Select(u => _mapper.Map<UserDto>(u)).ToList();
+            var items = baseQuery
+                .Skip(10 * (page - 1))
+                .Take(10)
+                .OrderBy(p => p.Surname)
+                .Select(p => new UserListDto
+                {
+                    Id = p.Id,
+                    Surname = p.Surname,
+                    Name = p.Name
+                })
+                .ToList();
 
-            var totalCount = query.Count();
-            return new ReturnResult<UserDto>(list, totalCount);
+            var totalCount = baseQuery.Count();
+
+            var result = new ReturnResult<UserListDto>(items, totalCount);
+
+            return result;
         }
     
 
@@ -71,7 +85,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
             return _mapper.Map<UserDto>(user);
         }
 
-        public void Update(int id, UserDto dto)
+        public void Update(int id, UpdateUserDto dto)
         {
             var user = _context.Users.Find(id);
             if (user == null)
@@ -79,7 +93,13 @@ namespace KropkaNetApi.Y_Services.ClientSide
                 throw new NotFoundException("User not found");
             }
 
-            _mapper.Map(dto, user);  // Mapowanie UserDto na User
+            user.Name = dto.Name;
+            user.Surname = dto.Surname;
+            user.PersonalNumber = dto.PersonalNumber;
+            user.Email = dto.Email;
+            user.PhoneNumber = dto.PhoneNumber;
+            user.Note = dto.Note;
+
             _context.SaveChanges();
         }
 

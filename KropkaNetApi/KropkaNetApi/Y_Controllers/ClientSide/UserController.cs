@@ -18,26 +18,16 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             _userService = userService;
         }
 
-        // POST: api/kropkaNet/user/create
-        [HttpPost("create")]
-        //[Authorize]  // Zakładając, że każdy może tworzyć nowego użytkownika
-        public ActionResult<int> Create([FromBody] CreateUserDto dto)
-        {
-            try
-            {
-                var userId = _userService.Create(dto);
-                return CreatedAtAction(nameof(GetDetails), new { id = userId }, userId);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+
 
         // GET: api/kropkaNet/user/getAll
         [HttpGet("getAll")]
-        //[Authorize(Roles = "Employee, Moderator, Admin")] // Dostępne dla wybranych ról
-        public ActionResult<ReturnResult<UserDto>> GetAll([FromQuery] int page = 1, [FromQuery] string filter = "", [FromQuery] string sortBy = "Name", [FromQuery] SortDirection sortDirection = SortDirection.ASC)
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
+        public ActionResult<ReturnResult<UserDto>> GetAll(
+            [FromQuery] int page,
+            [FromQuery] string? filter,
+            [FromQuery] string? sortBy,
+            [FromQuery] SortDirection sortDirection)
         {
             var result = _userService.GetAll(page, filter, sortBy, sortDirection);
             return Ok(result);
@@ -46,51 +36,30 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
 
         // GET: api/kropkaNet/user/{id}
         [HttpGet("{id}")]
-        //[Authorize]  // Zakładając, że każdy może uzyskać szczegóły o użytkowniku
+        //[Authorize]
         public ActionResult<UserDto> GetDetails(int id)
         {
-            try
-            {
-                var userDto = _userService.GetDetails(id);
-                if (userDto == null) return NotFound();
-                return Ok(userDto);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var userDto = _userService.GetDetails(id);
+
+            return Ok(userDto);
         }
 
         // PUT: api/kropkaNet/user/update/{id}
         [HttpPut("update/{id}")]
-        //[Authorize]  // Zakładając, że każdy może aktualizować użytkownika
-        public IActionResult Update(int id, [FromBody] UserDto dto)
+        //[Authorize]
+        public IActionResult Update(int id, [FromBody] UpdateUserDto dto)
         {
-            try
-            {
-                _userService.Update(id, dto);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _userService.Update(id, dto);
+            return Ok();
         }
 
         // DELETE: api/kropkaNet/user/delete/{id}
         [HttpDelete("delete/{id}")]
-        //[Authorize]  // Zakładając, że każdy może usunąć użytkownika
+        //[Authorize]
         public IActionResult Delete(int id)
         {
-            try
-            {
-                _userService.Delete(id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _userService.Delete(id);
+            return NoContent();
         }
     }
 }

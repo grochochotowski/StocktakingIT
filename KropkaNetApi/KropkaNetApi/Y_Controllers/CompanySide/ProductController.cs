@@ -51,16 +51,10 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
         // GET api/kropkaNet/product/{id}
         [HttpGet("{productId}")]
-        public ActionResult<IEnumerable<ProductDto>> GetById(
-            [FromRoute] int productId,
-            [FromQuery] int page,
-            [FromQuery] string? filters,
-            [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
-            )
+        public ActionResult<ProductDto> GetById([FromRoute] int productId)
         {
-            var productDtos = _productService.GetById(productId, page, filters, sortBy, sortDireciton);
-            return Ok(productDtos);
+            var productDto = _productService.GetById(productId);
+            return Ok(productDto);
         }
 
         // PUT api/kropkaNet/product/update/5
@@ -72,13 +66,12 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
             return Ok($"{productId}");
         }
 
-        // DELETE: /api/kropkaNet/product/delete/{id}
-        [HttpDelete("delete")]
-        public ActionResult Delete([FromRoute] int id)
+        // DELETE: /api/kropkaNet/product/delete/{productId}
+        [HttpDelete("delete/{productId}")]
+        public ActionResult Delete([FromRoute] int productId)
         {
-            var result = _productService.Delete(id);
+            _productService.Delete(productId);
 
-            if (result == -1) return NotFound("Product does not exist");
             return NoContent();
         }
     }
