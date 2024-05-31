@@ -28,7 +28,8 @@ namespace KropkaNetApi
             CreateMap<Department, DepartmentDto>();
             CreateMap<CreateDepartmentDto, Department>();
 
-            CreateMap<Order, OrderDto>(); 
+            CreateMap<Order, OrderDto>();
+            CreateMap<CreateOrderDto, Order>();
 
             CreateMap<UpdateUserDto, User>();
             CreateMap<User, UserDto>();
@@ -43,12 +44,11 @@ namespace KropkaNetApi
             CreateMap<CreateProductDto, Product>();
 
             CreateMap<Stocktaking, StocktakingDto>();
+            CreateMap<CreateStocktakingDto, Stocktaking>();
 
             CreateMap<Warehouse, WarehouseDto>();
 
             CreateMap<WarehouseProduct, WarehouseProductDto>();
-
-            CreateMap<CreateCompanyDto, Company>();
         }
     }
 }

@@ -44,8 +44,8 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             [FromQuery] SortDirection sortDireciton
             )
         {
-            var companyDtos = _orderService.GetListUser(userId, page, filters, sortBy, sortDireciton);
-            return Ok(companyDtos);
+            var orderDtos = _orderService.GetListUser(userId, page, filters, sortBy, sortDireciton);
+            return Ok(orderDtos);
         }
 
         // GET api/kropkaNet/order/all
@@ -58,8 +58,8 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
             [FromQuery] SortDirection sortDireciton
             )
         {
-            var companyDtos = _orderService.GetList(page, filters, sortBy, sortDireciton);
-            return Ok(companyDtos);
+            var orderDtos = _orderService.GetList(page, filters, sortBy, sortDireciton);
+            return Ok(orderDtos);
         }
 
         // GET api/kropkaNet/order/{id}
@@ -67,8 +67,8 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         //[Authorize]
         public ActionResult<OrderDto> GetDetails([FromRoute] int id)
         {
-            var companyDto = _orderService.GetDetails(id);
-            return Ok(companyDto);
+            var orderDto = _orderService.GetDetails(id);
+            return Ok(orderDto);
         }
 
         // PUT api/kropkaNet/order/update/5
