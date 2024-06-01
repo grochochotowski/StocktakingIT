@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-function OrderNew({ hideNew, updateData }) {
+function OrderNew({ hideBox, updateData }) {
 
 	const [departments, setDepartments] = useState([
 		{
@@ -38,7 +38,7 @@ function OrderNew({ hideNew, updateData }) {
 			departmentId: selectedDepartment
 		};
 		console.log(dataToSend);
-		hideNew();
+		hideBox();
 	};
 
 	return (

@@ -280,21 +280,23 @@ function OrderPage() {
                         <i className="fa-solid fa-list"></i>
                         <p>List</p>
                     </Link>
-                    <Link to={selected && `/orders/details/${selected}`} className={selected ? "button" : "disable button"}>
+                    <div onClick={() => setBox("info")} className={selected ? "button objectOption" : "disable button objectOption"}>
                         <i className="fa-solid fa-info"></i>
                         <p>Details</p>
-                    </Link>
-                    <Link to={selected && `/orders/edit/${selected}`} className={selected ? "button" : "disable button"}>
+                    </div>
+                    <div onClick={() => setBox("edit")} className={selected ? "button objectOption" : "disable button objectOption"}>
                         <i className="fa-solid fa-pen-to-square"></i>
                         <p>Edit</p>
-                    </Link>
+                    </div>
                     <div onClick={() => setBox("new")} className="button objectOption">
                         <i className="fa-solid fa-plus"></i>
                         <p>New</p>
                     </div>
                 </div>
             </div>
-            { box && box == "new" && <OrderNew hideNew={() => setBox("")} updateData={() => fetchData()}/> }
+            { box && box == "new" && <OrderNew hideBox={() => setBox("")} updateData={() => fetchData()}/> }
+            { box && box == "edit" && setSelected != 0 && <OrderEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={setSelected}/> }
+            { box && box == "info" && setSelected != 0 && <OrderEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={setSelected}/> }
         </>
     )
 }
