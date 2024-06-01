@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import NavBar from '../../components/NavBar'
+import OrderNew from './OrderNew'
 
 import '../../styles/mainSubPage.css'
 import '../../styles/form.css'
@@ -68,6 +69,7 @@ function OrderPage() {
         ],
         totalPages: 3
     })
+    const [box, setBox] = useState("new")
 
     function sortTable(column) {
         setSorting(prev => {
@@ -278,6 +280,7 @@ function OrderPage() {
                     </Link>
                 </div>
             </div>
+            { box && box == "new" && <OrderNew /> }
         </>
     )
 }

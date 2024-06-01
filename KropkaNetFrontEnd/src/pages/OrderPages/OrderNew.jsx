@@ -2,7 +2,7 @@ import React from 'react'
 
 function OrderNew() {
   return (
-    <div>OrderNew</div>
+    <div className="outside-box">OrderNew</div>
   )
 }
 
