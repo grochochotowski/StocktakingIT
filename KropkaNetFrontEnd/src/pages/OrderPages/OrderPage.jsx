@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
 import NavBar from '../../components/NavBar'
@@ -70,7 +70,20 @@ function OrderPage() {
         ],
         totalPages: 3
     })
-    const [box, setBox] = useState("new")
+    const [box, setBox] = useState("");
+    const contentRef = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+          if (event.target.closest(".outside-box") && !event.target.closest(".content")) setBox("");
+        }
+    
+        document.addEventListener("click", handleClickOutside);
+    
+        return () => {
+          document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
 
     function sortTable(column) {
         setSorting(prev => {
@@ -275,13 +288,13 @@ function OrderPage() {
                         <i className="fa-solid fa-pen-to-square"></i>
                         <p>Edit</p>
                     </Link>
-                    <Link to={`/orders/new/`} className="button">
+                    <div onClick={() => setBox("new")} className="button objectOption">
                         <i className="fa-solid fa-plus"></i>
                         <p>New</p>
-                    </Link>
+                    </div>
                 </div>
             </div>
-            { box && box == "new" && <OrderNew /> }
+            { box && box == "new" && <OrderNew hideNew={() => setBox("")} updateData={() => fetchData()}/> }
         </>
     )
 }

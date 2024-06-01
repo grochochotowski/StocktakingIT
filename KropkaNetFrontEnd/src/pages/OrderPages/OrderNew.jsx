@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-function OrderNew() {
+function OrderNew({ hideNew, updateData }) {
 
 	const [departments, setDepartments] = useState([
 		{
@@ -27,14 +27,9 @@ function OrderNew() {
 	const [selectedDepartment, setSelectedDepartment] = useState('');
 	const [orderDate, setOrderDate] = useState('');
 
-	const handleDepartmentChange = (e) => {
-		setSelectedDepartment(e.target.value);
-	};
+	const handleDepartmentChange = (e) => setSelectedDepartment(e.target.value);
 
-	const handleDateChange = (e) => {
-		setOrderDate(e.target.value);
-	}; 
-
+	const handleDateChange = (e) => setOrderDate(e.target.value);
 	
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -43,6 +38,7 @@ function OrderNew() {
 			departmentId: selectedDepartment
 		};
 		console.log(dataToSend);
+		hideNew();
 	};
 
 	return (
