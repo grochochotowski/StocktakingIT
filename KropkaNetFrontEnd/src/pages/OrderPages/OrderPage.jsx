@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import NavBar from '../../components/NavBar'
 import OrderNew from './OrderNew'
+import OrderEdit from './OrderEdit'
 
 import '../../styles/mainSubPage.css'
 import '../../styles/form.css'
@@ -296,7 +297,7 @@ function OrderPage() {
             </div>
             { box && box == "new" && <OrderNew hideBox={() => setBox("")} updateData={() => fetchData()}/> }
             { box && box == "edit" && setSelected != 0 && <OrderEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={setSelected}/> }
-            { box && box == "info" && setSelected != 0 && <OrderEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={setSelected}/> }
+            { box && box == "info" && setSelected != 0 && <OrderInfo hideBox={() => setBox("")} updateData={() => fetchData()} selected={setSelected}/> }
         </>
     )
 }

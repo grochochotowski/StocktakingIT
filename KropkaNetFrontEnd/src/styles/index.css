@@ -28,8 +28,8 @@
     --clr-bg-dark-main: #242424;
     --clr-bg-light-main: #ffffff;
 
-    --clr-warning-dark: #be3838;
-    --clr-warning-light: #ff7272;
+    --clr-warning-dark: #ff3838;
+    --clr-warning-dark-bg: #ff7272;
 
     --clr-success-dark: #7fc585;
     --clr-success-light: #387529;
@@ -111,6 +111,13 @@ button:hover,
 .button:hover {
     color: var(--clr-acc-dark-700);
     border-color: var(--clr-acc-dark-700);
+}
+
+button.warning:hover,
+.button.warning:hover {
+    color: var(--clr-txt-dark);
+    border-color: var(--clr-warning-dark);
+    background-color: var(--clr-warning-bg-dark);
 }
 
 .main-container {
