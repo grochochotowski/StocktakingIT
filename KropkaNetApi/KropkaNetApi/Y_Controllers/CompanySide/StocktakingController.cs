@@ -31,7 +31,12 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
         // GET: /api/kropkaNet/stocktaking/all
         [HttpGet("all")]
-        public ActionResult<ReturnResult<StocktakingListDto>> GetAll([FromQuery] int page = 1, [FromQuery] string filter = "", [FromQuery] string sortBy = "Id", [FromQuery] SortDirection sortDirection = SortDirection.ASC)
+        public ActionResult<ReturnResult<StocktakingListDto>> GetAll(
+            [FromQuery] int page,
+            [FromQuery] string? filter,
+            [FromQuery] string? sortBy,
+            [FromQuery] SortDirection sortDirection
+            )
         {
             var result = _stocktakingService.GetAll(page, filter, sortBy, sortDirection);
             return Ok(result);
@@ -60,8 +65,8 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
             }
         }
 
-        // PATCH: /api/kropkaNet/stocktaking/addEmployee/{stocktakingId}/{employeeId}
-        [HttpPatch("addEmployee/{stocktakingId}/{employeeId}")]
+        // PATCH: /api/kropkaNet/stocktaking/{stocktakingId}/addEmployee/{employeeId}
+        [HttpPatch("{stocktakingId}/addEmployee/{employeeId}")]
         public IActionResult AddEmployee(int stocktakingId, int employeeId)
         {
             try
@@ -75,8 +80,8 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
             }
         }
 
-        // PATCH: /api/kropkaNet/stocktaking/removeEmployee/{stocktakingId}/{employeeId}
-        [HttpPatch("removeEmployee/{stocktakingId}/{employeeId}")]
+        // PATCH: /api/kropkaNet/stocktaking/{stocktakingId}/removeEmployee/{employeeId}
+        [HttpPatch("{stocktakingId}/removeEmployee/{employeeId}")]
         public IActionResult RemoveEmployee(int stocktakingId, int employeeId)
         {
             try
