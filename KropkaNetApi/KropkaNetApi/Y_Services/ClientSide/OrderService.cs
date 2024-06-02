@@ -14,7 +14,7 @@ namespace KropkaNetApi.Y_Services.ClientSide
         int Create(int? userId, CreateOrderDto dto);
         ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton);
         ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
-        OrderDto GetDetails(int id);
+        OrderDetailsDto GetDetails(int id);
         int Update(int id, UpdateOrderDto dto);
         void AddUser(int userId, int orderId);
         void RemoveUser(int userId, int orderId);
@@ -153,24 +153,23 @@ namespace KropkaNetApi.Y_Services.ClientSide
         }
 
         // GET: get details about company
-        public OrderDto GetDetails(int id)
+        public OrderDetailsDto GetDetails(int id)
         {
             var order = _context.Orders
                 .Include(c => c.Department)
-                .Include(c => c.Stocktaking)
+                .Select(p => new OrderDetailsDto
+                {
+                    Id = p.Id,
+                    DateOfOrderExecution = p.DateOfOrderExecution,
+                    State = p.State,
+                    DepartmentName = p.Department.DepartmentName,
+                    StocktakingId = p.StocktakingId
+                })
                 .FirstOrDefault(c => c.Id == id);
 
             if (order == null) throw new NotFoundException("Order not found");
 
-
-            var orderDto = _mapper.Map<OrderDto>(order);
-
-            Console.WriteLine("\n\n");
-            Console.WriteLine(orderDto.DateOfOrderExecution);
-            Console.WriteLine(orderDto.Department.Id);
-            Console.WriteLine("\n\n");
-
-            return orderDto;
+            return order;
         }
 
         // PUT: update comany

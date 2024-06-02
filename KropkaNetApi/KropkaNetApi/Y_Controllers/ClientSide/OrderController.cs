@@ -65,7 +65,7 @@ namespace KropkaNetApi.Y_Controllers.ClientSide
         // GET api/kropkaNet/order/{id}
         [HttpGet("{id}")]
         //[Authorize]
-        public ActionResult<OrderDto> GetDetails([FromRoute] int id)
+        public ActionResult<OrderDetailsDto> GetDetails([FromRoute] int id)
         {
             var orderDto = _orderService.GetDetails(id);
             return Ok(orderDto);
