@@ -52,17 +52,10 @@ namespace KropkaNetApi.Y_Controllers.CompanySide
 
         // PUT: /api/kropkaNet/stocktaking/update/{id}
         [HttpPut("update/{id}")]
-        public IActionResult Update(int id, [FromBody] StocktakingDto dto)
+        public IActionResult Update(int id, [FromBody] UpdateStocktakingDto dto)
         {
-            try
-            {
-                _stocktakingService.Update(id, dto);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                var stocktakingId = _stocktakingService.Update(id, dto);
+                return Ok(stocktakingId);
         }
 
         // PATCH: /api/kropkaNet/stocktaking/{stocktakingId}/addEmployee/{employeeId}

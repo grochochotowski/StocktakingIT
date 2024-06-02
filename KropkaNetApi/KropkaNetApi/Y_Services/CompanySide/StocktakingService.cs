@@ -16,7 +16,7 @@ namespace KropkaNetApi.Y_Services.CompanySide
         int Create(CreateStocktakingDto dto);
         ReturnResult<StocktakingListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection);
         StocktakingDto GetDetails(int id);
-        void Update(int id, StocktakingDto dto);
+        int Update(int id, UpdateStocktakingDto dto);
         void AddEmployee(int stocktakingId, int employeeId);
         void RemoveEmployee(int stocktakingId, int employeeId);
         int Delete(int id);
@@ -100,14 +100,17 @@ namespace KropkaNetApi.Y_Services.CompanySide
             return _mapper.Map<StocktakingDto>(stocktaking);
         }
 
-        public void Update(int id, StocktakingDto dto)
+        public int Update(int id, UpdateStocktakingDto dto)
         {
             var stocktaking = _context.Stocktakings.FirstOrDefault(s => s.Id == id);
-            if (stocktaking == null)
-                throw new NotFoundException("Stocktaking not found");
+            if (stocktaking == null) throw new NotFoundException("Stocktaking not found");
 
-            _mapper.Map(dto, stocktaking);
+            stocktaking.ExpectedTimeHours = dto.ExpectedTimeHours;
+            stocktaking.Note = dto.Note;
+
             _context.SaveChanges();
+
+            return stocktaking.Id;
         }
 
         public void AddEmployee(int stocktakingId, int employeeId)
