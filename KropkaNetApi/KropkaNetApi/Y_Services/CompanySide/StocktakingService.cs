@@ -43,6 +43,9 @@ namespace KropkaNetApi.Y_Services.CompanySide
             _context.Stocktakings.Add(stocktaking);
             _context.SaveChanges();
 
+            warehouse.StocktakingId = stocktaking.Id;
+            _context.SaveChanges();
+
             return stocktaking.Id;
         }
 

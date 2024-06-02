@@ -94,3 +94,18 @@ input:focus {
 input.warning {
     border-color: var(--clr-warning-dark);
 }
+
+select {
+    padding: 0.4rem;
+
+    border-radius: 7px;
+    outline: none;
+
+    border: 2px solid var(--clr-txt-dark);
+    background-color: var(--clr-bg-dark-main);
+
+    font-size: 1.1rem;
+}
+select:focus {
+    background-color: var(--clr-acc-dark-100);
+}

@@ -10,8 +10,7 @@ namespace KropkaNetApi.X_Entities.Objects.CompanySide
 
 
 
-        [Required(ErrorMessage = "Stocktaking ID is required")]
-        public int StocktakingId { get; set; }
+        public int? StocktakingId { get; set; }
         public virtual Stocktaking Stocktaking { get; set; }
 
 

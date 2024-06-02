@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
 import NavBar from '../../components/NavBar'
+import OrderNew from './OrderNew'
+import OrderEdit from './OrderEdit'
+import OrderInfo from './OrderInfo'
 
 import '../../styles/mainSubPage.css'
 import '../../styles/form.css'
 import '../../styles/list.css'
+import '../../styles/new.css'
 
 function OrderPage() {
 
@@ -68,6 +72,20 @@ function OrderPage() {
         ],
         totalPages: 3
     })
+    const [box, setBox] = useState("");
+    const contentRef = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+          if (event.target.closest(".outside-box") && !event.target.closest(".content")) setBox("");
+        }
+    
+        document.addEventListener("click", handleClickOutside);
+    
+        return () => {
+          document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
 
     function sortTable(column) {
         setSorting(prev => {
@@ -264,20 +282,23 @@ function OrderPage() {
                         <i className="fa-solid fa-list"></i>
                         <p>List</p>
                     </Link>
-                    <Link to={selected && `/orders/details/${selected}`} className={selected ? "button" : "disable button"}>
+                    <div onClick={() => selected != 0 && setBox("info")} className={selected ? "button objectOption" : "disable button objectOption"}>
                         <i className="fa-solid fa-info"></i>
                         <p>Details</p>
-                    </Link>
-                    <Link to={selected && `/orders/edit/${selected}`} className={selected ? "button" : "disable button"}>
+                    </div>
+                    <div onClick={() => selected != 0 && setBox("edit")} className={selected ? "button objectOption" : "disable button objectOption"}>
                         <i className="fa-solid fa-pen-to-square"></i>
                         <p>Edit</p>
-                    </Link>
-                    <Link to={`/orders/new/`} className="button">
+                    </div>
+                    <div onClick={() => setBox("new")} className="button objectOption">
                         <i className="fa-solid fa-plus"></i>
                         <p>New</p>
-                    </Link>
+                    </div>
                 </div>
             </div>
+            { box && box == "new" && <OrderNew hideBox={() => setBox("")} updateData={() => fetchData()}/> }
+            { box && box == "edit" && <OrderEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={selected}/> }
+            { box && box == "info" && <OrderInfo updateData={() => fetchData()} selected={selected}/> }
         </>
     )
 }

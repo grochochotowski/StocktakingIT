@@ -12,9 +12,7 @@ namespace KropkaNetApi.X_Entities.Objects.CompanySide
         public string? Note { get; set; }
 
 
-
-        [Required(ErrorMessage = "Warehouse ID is required")]
-        public int WarehouseId { get; set; }
+        public int? WarehouseId { get; set; }
         public virtual Warehouse Warehouse { get; set; }
 
 

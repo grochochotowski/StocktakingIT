@@ -27,7 +27,8 @@
     flex-direction: column;
     gap: 5vh
 }
-.list-menu a {
+.list-menu a,
+.list-menu .objectOption {
     width: 100%;
     height: 100%;
 
@@ -36,26 +37,31 @@
     justify-content: center;
     align-items: center;
 }
-.list-menu a p {
+.list-menu a p,
+.list-menu .objectOption p {
     position: absolute;
     margin: 0;
     opacity: 0;
 }
-.list-menu a.disable {
+.list-menu a.disable,
+.list-menu .objectOption.disable {
     background-color: var(--clr-acc-dark-100);
     color: var(--clr-acc-dark-200);
     border-color: var(--clr-acc-dark-200);
 }
-.list-menu a.current {
+.list-menu a.current,
+.list-menu .objectOption.current {
     background-color: var(--clr-acc-dark-200);
     color: var(--clr-acc-dark-700);
     border-color: var(--clr-acc-dark-500);
 }
-.list-menu a:hover p{
+.list-menu a:hover p,
+.list-menu .objectOption:hover p{
     opacity: 1;
     transform: translateY(100%);
 }
-.list-menu a:not(.current, .disable):hover {
+.list-menu a:not(.current, .disable):hover,
+.list-menu .objectOption:not(.current, .disable):hover {
     color: var(--clr-acc-dark-700);
     border-color: var(--clr-acc-dark-700);
 }
