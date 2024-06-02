@@ -67,7 +67,7 @@ function OrderNew({ updateData }) {
 						}
 					</div>
 				</div>
-				<Link to="/orders/stocktaking/{id}" className='button wide'>Go to stocktaking</Link>
+				<Link to={`/orders/${data.id}/stocktaking`} className='button wide'>Go to stocktaking</Link>
 			</div>
 		</div>
 	)
