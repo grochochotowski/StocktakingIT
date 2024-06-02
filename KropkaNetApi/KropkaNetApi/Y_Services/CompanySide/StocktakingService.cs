@@ -115,11 +115,15 @@ namespace KropkaNetApi.Y_Services.CompanySide
 
         public void AddEmployee(int stocktakingId, int employeeId)
         {
-            var stocktaking = _context.Stocktakings.FirstOrDefault(s => s.Id == stocktakingId);
-            var employee = _context.Employees.FirstOrDefault(e => e.Id == employeeId);
+            var stocktaking = _context.Stocktakings
+                .Include(c => c.Employee)
+                .FirstOrDefault(s => s.Id == stocktakingId);
+            var employee = _context.Employees
+                .FirstOrDefault(e => e.Id == employeeId);
 
-            if (stocktaking == null || employee == null)
-                throw new NotFoundException("Stocktaking or Employee not found");
+            if (stocktaking == null) throw new NotFoundException("Stocktaking not found");
+            if (employee == null) throw new NotFoundException("Employee not found");
+            if (stocktaking.Employee.Any(u => u.Id == employee.Id)) throw new BadRequestException("Employee already in stocktaking");
 
             stocktaking.Employee.Add(employee);
             _context.SaveChanges();
@@ -127,11 +131,15 @@ namespace KropkaNetApi.Y_Services.CompanySide
 
         public void RemoveEmployee(int stocktakingId, int employeeId)
         {
-            var stocktaking = _context.Stocktakings.FirstOrDefault(s => s.Id == stocktakingId);
-            var employee = stocktaking?.Employee.FirstOrDefault(e => e.Id == employeeId);
+            var stocktaking = _context.Stocktakings
+                .Include(c => c.Employee)
+                .FirstOrDefault(s => s.Id == stocktakingId);
+            var employee = _context.Employees
+                .FirstOrDefault(e => e.Id == employeeId);
 
-            if (stocktaking == null || employee == null)
-                throw new NotFoundException("Stocktaking or Employee not found");
+            if (stocktaking == null) throw new NotFoundException("Stocktaking not found");
+            if (employee == null) throw new NotFoundException("Employee not found");
+            if (!stocktaking.Employee.Any(u => u.Id == employee.Id)) throw new BadRequestException("Employee is not in stocktaking");
 
             stocktaking.Employee.Remove(employee);
             _context.SaveChanges();
