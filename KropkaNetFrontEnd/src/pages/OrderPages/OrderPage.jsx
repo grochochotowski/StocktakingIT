@@ -282,11 +282,11 @@ function OrderPage() {
                         <i className="fa-solid fa-list"></i>
                         <p>List</p>
                     </Link>
-                    <div onClick={() => setBox("info")} className={selected ? "button objectOption" : "disable button objectOption"}>
+                    <div onClick={() => selected != 0 && setBox("info")} className={selected ? "button objectOption" : "disable button objectOption"}>
                         <i className="fa-solid fa-info"></i>
                         <p>Details</p>
                     </div>
-                    <div onClick={() => setBox("edit")} className={selected ? "button objectOption" : "disable button objectOption"}>
+                    <div onClick={() => selected != 0 && setBox("edit")} className={selected ? "button objectOption" : "disable button objectOption"}>
                         <i className="fa-solid fa-pen-to-square"></i>
                         <p>Edit</p>
                     </div>
@@ -297,8 +297,8 @@ function OrderPage() {
                 </div>
             </div>
             { box && box == "new" && <OrderNew hideBox={() => setBox("")} updateData={() => fetchData()}/> }
-            { box && box == "edit" && selected != 0 && <OrderEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={selected}/> }
-            { box && box == "info" && selected != 0 && <OrderInfo updateData={() => fetchData()} selected={selected}/> }
+            { box && box == "edit" && <OrderEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={selected}/> }
+            { box && box == "info" && <OrderInfo updateData={() => fetchData()} selected={selected}/> }
         </>
     )
 }
