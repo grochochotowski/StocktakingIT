@@ -87,6 +87,13 @@ a {
     text-decoration: none;
 }
 
+h6.warning {
+    color: var(--clr-warning-dark);
+}
+h6.success {
+    color: var(--clr-success-dark);
+}
+
 button,
 .button {
     padding: 1vh 0;
@@ -107,6 +114,12 @@ button,
     text-align: center;
     cursor: pointer;
 }
+
+button.wide,
+.button.wide {
+    width: 20vw;
+}
+
 button:hover,
 .button:hover {
     color: var(--clr-acc-dark-700);
