@@ -10,6 +10,7 @@ import '../../styles/mainSubPage.css'
 import '../../styles/form.css'
 import '../../styles/list.css'
 import '../../styles/new.css'
+import '../../styles/info.css'
 
 function OrderPage() {
 
