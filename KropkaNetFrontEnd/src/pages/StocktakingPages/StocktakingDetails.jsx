@@ -25,36 +25,25 @@ function StocktakingDetails() {
     })
 
     const [warehouse, setWarehouse] = useState([
-        {
-            "id": 1,
-            "category" : "PC-category-1",
-            "name" : "PC-name-1",
-            "quantity": 1
-        },
-        {
-            "id": 2,
-            "category" : "PC-category-2",
-            "name" : "PC-name-2",
-            "quantity": 2
-        },
-        {
-            "id": 3,
-            "category" : "PC-category-3",
-            "name" : "PC-name-3",
-            "quantity": 3
-        },
-        {
-            "id": 4,
-            "category" : "PC-category-4",
-            "name" : "PC-name-4",
-            "quantity": 4
-        },
-        {
-            "id": 5,
-            "category" : "PC-category-5",
-            "name" : "PC-name-5",
-            "quantity": 5
-        }
+        { "id": 1, "category": "PC-category-1", "name": "PC-name-1", "quantity": 1 },
+        { "id": 2, "category": "PC-category-2", "name": "PC-name-2", "quantity": 2 },
+        { "id": 3, "category": "PC-category-3", "name": "PC-name-3", "quantity": 3 },
+        { "id": 4, "category": "PC-category-4", "name": "PC-name-4", "quantity": 4 },
+        { "id": 5, "category": "PC-category-5", "name": "PC-name-5", "quantity": 5 }
+    ]);
+
+    const [users, setUsers] = useState([
+        { "name": "name1", "surname": "surname1" },
+        { "name": "name2", "surname": "surname2" },
+        { "name": "name3", "surname": "surname3" },
+        { "name": "name4", "surname": "surname4" }
+    ]);
+
+    const [employees, setEmployees] = useState([
+        { "name": "name1", "surname": "surname1" },
+        { "name": "name2", "surname": "surname2" },
+        { "name": "name3", "surname": "surname3" },
+        { "name": "name4", "surname": "surname4" }
     ])
 
     const formatDateTime = (dateString) => {
@@ -87,10 +76,35 @@ function StocktakingDetails() {
                     <div className="info-element">
                         <h2>Address</h2>
                         <p>{stocktaking.address.country}, {stocktaking.address.city}, {stocktaking.address.zipCode}</p>
-                        <p>{stocktaking.address.street} {stocktaking.address.building}/{stocktaking.address.premises}</p>
+                        <p>{stocktaking.address.street} {stocktaking.address.building}
+                        {stocktaking.address.premises != null ? " / " + stocktaking.address.premises : ""}</p>
+                    </div>
+                    <div className="info-element-double">
+                        <div className="users">
+                            <h2>Users</h2>
+                            <ul>
+                                {
+                                    users.map((user) => (
+                                        <li>{user.name} {user.surname}</li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                        <div className="employees">
+                            <h2>Employees</h2>
+                            <ul>
+                                {
+                                    employees.map((employee) => (
+                                        <li>{employee.name} {employee.surname}</li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div className="warehouse">
+                    <h1>Products</h1>
+                    <hr />
                     {
                         warehouse.map((product) => (
                             <ProductBox key={product.id} product={product} />
