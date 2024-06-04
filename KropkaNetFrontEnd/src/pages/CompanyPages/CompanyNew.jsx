@@ -65,7 +65,7 @@ function CompanyNew({ hideBox, updateData }) {
                             />
                         </div>
                     </div>
-					<h4>Addred</h4>
+					<h4>Addres</h4>
 					<div className="layer row">
                         <div className="input-container">
                             <label htmlFor="country">Country:</label>

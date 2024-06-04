@@ -11,6 +11,14 @@ tbody tr:hover {
     cursor: pointer;
     background-color: var(--clr-acc-dark-300);
 }
+tbody tr.not-clickable:nth-child(even):hover {
+    cursor: auto;
+    background-color: var(--clr-acc-dark-150);
+}
+tbody tr.not-clickable:nth-child(odd):hover {
+    cursor: auto;
+    background-color: transparent;
+}
 tbody tr.selected {
     background-color: var(--clr-acc-dark-200);
 }
@@ -22,6 +30,8 @@ th {
     position: relative;
 
     user-select: none;
+}th.u-thin {
+    width: 2vw;
 }
 th.thin {
     width: 5vw;
@@ -38,9 +48,20 @@ th:hover {
     cursor: pointer;
     background-color: var(--clr-acc-dark-300);
 }
+th.no-select:hover {
+    cursor: auto;
+    background-color: transparent;
+}
 
 td {
     padding: 2vh 2vw;
+}
+td.u-thin {
+    text-align: center;
+}
+td.delete-item:hover {
+    cursor: pointer;
+    background-color: var(--clr-warning-dark);
 }
 
 ul {
