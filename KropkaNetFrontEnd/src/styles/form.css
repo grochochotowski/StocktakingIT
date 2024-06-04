@@ -36,7 +36,7 @@ form {
 .layer.row {
     flex-direction: row;
 
-    gap: 1vw;
+    gap: 2vw;
 }
 .layer.row * {
     width: calc(100% - 1vw);
@@ -108,4 +108,27 @@ select {
 }
 select:focus {
     background-color: var(--clr-acc-dark-100);
+}
+
+
+textarea {
+    padding: 0.4rem;
+
+    min-height: 15rem;
+
+    border-radius: 7px;
+    outline: none;
+
+    border: 2px solid var(--clr-txt-dark);
+    background-color: var(--clr-bg-dark-main);
+
+    font-size: 1.1rem;
+
+    resize: none;
+}
+textarea:focus {
+    background-color: var(--clr-acc-dark-100);
+}
+textarea.warning {
+    border-color: var(--clr-warning-dark);
 }

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import NavBar from '../../components/NavBar'
 import ProductBox from '../../components/ProductBox'
 
+import '../../styles/index.css'
 import '../../styles/details.css'
 
 function StocktakingDetails() {
