@@ -78,7 +78,8 @@ nav .bottom-row {
     transform: translateX(-100%);
     opacity: 0;
 }
-nav .bottom-row button {
+nav .bottom-row button,
+nav .bottom-row a {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -88,7 +89,8 @@ nav .bottom-row button {
 
     cursor: pointer;
 }
-nav .bottom-row button h6 {
+nav .bottom-row button h6,
+nav .bottom-row a h6 {
     margin: 0;
     transform: translateY(200%);
     opacity: 0;
@@ -104,10 +106,10 @@ nav:hover img {
 nav:hover {
     width: 12vw;
 }
-nav a:hover {
+nav .options a:hover {
     color: var(--clr-acc-dark-700);
 }
-nav a:hover h4 {
+nav .options a:hover h4 {
     width: 7vw;
     
     transform: translateX(0);
@@ -119,10 +121,12 @@ nav:hover .bottom-row {
     transform: translateX(0);
     opacity: 1;
 }
-nav .bottom-row button:hover * {
+nav .bottom-row button:hover *,
+nav .bottom-row a:hover * {
     color: var(--clr-acc-dark-700);
 }
-nav .bottom-row button:hover h6 {
+nav .bottom-row button:hover h6,
+nav .bottom-row a:hover h6 {
     transform: translateY(0);
     opacity: 1;
 }

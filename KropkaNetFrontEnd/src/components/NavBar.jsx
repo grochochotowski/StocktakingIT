@@ -27,16 +27,16 @@ function NavBar() {
                     <h2><i className="fa-solid fa-basket-shopping"></i></h2>
                     <h4>Orders</h4>
                 </Link>
-                <Link to='/account'>
-                    <h2><i className="fa-solid fa-user"></i></h2>
-                    <h4>Account</h4>
+                <Link to='/companies'>
+                    <h2><i className="fa-solid fa-building"></i></h2>
+                    <h4>Companies</h4>
                 </Link>
             </div>
             <div className="bottom-row">
-                <button onClick={handleSettings}>
-                    <h6>Settings</h6>
-                    <h2><i className="fa-solid fa-gear"></i></h2>
-                </button>
+                <Link to='/account'>
+                    <h6>Account</h6>
+                    <h2><i className="fa-solid fa-user"></i></h2>
+                </Link>
                 <button onClick={handleLogOut}>
                     <h6>Log out</h6>
                     <h2><i className="fa-solid fa-right-from-bracket"></i></h2>
