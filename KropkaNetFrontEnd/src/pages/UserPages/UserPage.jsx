@@ -6,7 +6,7 @@ import '../../styles/index.css'
 import '../../styles/user.css'
 import '../../styles/form.css'
 
-function User() {
+function UserPage() {
 
     const [user, setUser] = useState({
         "id": 3002,
@@ -107,4 +107,4 @@ function User() {
     )
 }
 
-export default User
+export default UserPage

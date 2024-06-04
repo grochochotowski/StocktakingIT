@@ -13,7 +13,9 @@ const OrderPage = lazy(() => import('./pages/OrderPages/OrderPage'))
 
 const StocktakingDetails = lazy(() => import('./pages/StocktakingPages/StocktakingDetails'))
 
-const User = lazy(() => import('./pages/UserPages/User'))
+const CompanyPage = lazy(() => import('./pages/CompanyPages/CompanyPage'))
+
+const UserPage = lazy(() => import('./pages/UserPages/UserPage'))
 
 const Unauthorized = lazy(() => import('./pages/ErrorPages/Unauthorized'))
 const Forbidden = lazy(() => import('./pages/ErrorPages/Forbidden'))
@@ -54,8 +56,14 @@ const router = createBrowserRouter([
 
 
     {
+        path: '/companies',
+        element: <CompanyPage />
+    },
+
+
+    {
         path: '/account/:id',
-        element: <User />
+        element: <UserPage />
     },
 
 
