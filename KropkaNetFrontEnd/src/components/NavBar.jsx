@@ -33,7 +33,7 @@ function NavBar() {
                 </Link>
             </div>
             <div className="bottom-row">
-                <Link to='/account'>
+                <Link to='/account/1'>
                     <h6>Account</h6>
                     <h2><i className="fa-solid fa-user"></i></h2>
                 </Link>
