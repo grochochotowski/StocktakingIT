@@ -1,8 +1,12 @@
+
 table {
     margin: 5vh auto 5vh 0;
     width: 98%;
 
     border-collapse: collapse;
+}
+.content table {
+    margin: 0 auto;
 }
 tr:nth-child(even){
     background-color: var(--clr-acc-dark-150);
