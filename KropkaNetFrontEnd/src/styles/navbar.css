@@ -88,6 +88,7 @@ nav .bottom-row a {
     border: none;
 
     cursor: pointer;
+    width: 50%;
 }
 nav .bottom-row button h6,
 nav .bottom-row a h6 {
@@ -104,7 +105,7 @@ nav:hover img {
 
 /* ===== OPTIONS ::HOVER =====*/
 nav:hover {
-    width: 12vw;
+    width: 20vw;
 }
 nav .options a:hover {
     color: var(--clr-acc-dark-700);
