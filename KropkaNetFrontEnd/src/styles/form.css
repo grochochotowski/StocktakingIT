@@ -25,7 +25,7 @@ form {
     justify-content: flex-start;
     align-items: center;
 
-    gap: 3vh
+    gap: 3vh;
 }
 .layer {
     width: 50%;

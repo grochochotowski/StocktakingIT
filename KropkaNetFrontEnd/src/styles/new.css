@@ -11,6 +11,7 @@
 .content {
     padding: 2%;
 
+    max-height: 80%;
     width: 50%;
     height: auto;
 
@@ -27,8 +28,25 @@
     border-radius: 7px;
     border: 2px solid var(--clr-txt-dark);
     background-color: var(--clr-bg-dark-main);
+
+    overflow: scroll;
 }
+.content.big {
+    width: 75%;
+    gap: 1vh;
+    padding: 2rem;
+}
+.content.big form {
+    width: 100%;
+}
+.content.big .layer {
+    width: 100%;
+}
+
 .content select, .content input {
     width: 60%;
     height: 3rem;
+}
+.content h4 {
+    margin-bottom: 0;
 }
