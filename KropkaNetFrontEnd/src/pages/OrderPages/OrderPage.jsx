@@ -150,7 +150,7 @@ function OrderPage() {
         return (
             <tbody>
                 {result.items && result.items.map((order) => (
-                    <tr className={order.id === selected && "selected"} key={order.id} id={order.id} onClick={() => setSelected(order.id)}>
+                    <tr className={order.id === selected ? "selected" : ""} key={order.id} id={order.id} onClick={() => setSelected(order.id)}>
                         <td>{order.id}</td>
                         <td>{order.departmentName}</td>
                         <td>{order.dateOfOrderExecution}</td>

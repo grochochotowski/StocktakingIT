@@ -150,6 +150,9 @@ button.warning:hover,
 
     background: radial-gradient(circle, rgba(9,9,121,0) 70%, rgba(66,102,19,0.1) 100%); 
 }
+.main-container.account form {
+    margin-bottom: 5vh;
+}
 
 @media (prefers-color-scheme: light) {
     :root {
