@@ -1,8 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { Suspense, lazy } from 'react'
+import React, { createContext, useContext, useState, Suspense, lazy } from 'react'
 import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { GlobalStateProvider } from './GlobalState';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
+import { GlobalStateProvider, GlobalStateContext } from './GlobalState';
 
 
 const WelcomePage = lazy(() => import('./pages/BeginPages/WelcomePage'))
@@ -25,6 +25,10 @@ const Fallback = lazy(() => import('./pages/ErrorPages/Fallback'))
 
 import './styles/index.css'
 
+const PrivateRoute = ({ children }) => {
+    const { state } = useContext(GlobalStateContext);
+    return state.isLoggedIn ? children : <Navigate to="/login" />;
+};
 
 const router = createBrowserRouter([
     { path: '/', element: <WelcomePage />, errorElement: <NotFoundPage /> },
@@ -32,14 +36,19 @@ const router = createBrowserRouter([
     { path: '/login', element: <LoginPage /> },
     { path: '/register', element: <RegisterPage /> },
 
-    { path: '/dashboard', element: <DashboardPage /> },
+    { path: '/dashboard',
+    element: <PrivateRoute><DashboardPage /></PrivateRoute> },
 
-    { path: '/orders', element: <OrderPage /> },
-    { path: '/orders/:id/stocktaking', element: <StocktakingDetails /> },
+    { path: '/orders',
+    element: <PrivateRoute><OrderPage /></PrivateRoute> },
+    { path: '/orders/:id/stocktaking',
+    element: <PrivateRoute><StocktakingDetails /></PrivateRoute> },
 
-    { path: '/companies', element: <CompanyPage /> },
+    { path: '/companies',
+    element: <PrivateRoute><CompanyPage /></PrivateRoute> },
 
-    { path: '/account/:id', element: <UserPage /> },
+    { path: '/account/:id',
+    element: <PrivateRoute><UserPage /></PrivateRoute> },
 
     { path: '/401', element: <Unauthorized /> },
     { path: '/403', element: <Forbidden /> },
