@@ -61,7 +61,6 @@ namespace KropkaNetApi.Y_Services.Shared
             {
                 Name = dto.Name,
                 Surname = dto.Surname,
-                PersonalNumber = dto.PersonalNumber,
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 Note = dto.Note,
@@ -94,7 +93,6 @@ namespace KropkaNetApi.Y_Services.Shared
             {
                 Name = dto.Name,
                 Surname = dto.Surname,
-                PersonalNumber = dto.PersonalNumber,
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 Note = dto.Note,
@@ -122,9 +120,18 @@ namespace KropkaNetApi.Y_Services.Shared
             }
 
             string position = "";
-            if (!dto.isUser)
+            var employee = _context.Employees.Include(e => e.Position).FirstOrDefault(e => e.AccountId == account.Id);
+            if (employee != null)
             {
-                position = _context.Employees.Include(e => e.Position).FirstOrDefault(e => e.AccountId == account.Id).Position.Name;
+                response.Level = "employee";
+                response.PersonId = employee.Id;
+                position = employee.Position.Name;
+            }
+            else
+            {
+                response.Level = "user";
+                var user = _context.Users.FirstOrDefault(u => u.AccountId == account.Id);
+                response.PersonId = user.Id;
             }
 
             response.IsLoggedIn = true;
@@ -153,18 +160,26 @@ namespace KropkaNetApi.Y_Services.Shared
             {
                 return response;
             }
-
+            
             string position = "";
-            if (_context.Employees.Any(e => e.AccountId == account.Id))
+            var employee = _context.Employees.Include(e => e.Position).FirstOrDefault(e => e.AccountId == account.Id);
+            if (employee != null)
             {
-                position = _context.Employees.Include(e => e.Position).FirstOrDefault(e => e.AccountId == account.Id).Position.Name;
+                response.Level = "employee";
+                response.PersonId = employee.Id;
+                position = employee.Position.Name;
+            }
+            else
+            {
+                response.Level = "user";
+                var user = _context.Users.FirstOrDefault(u => u.AccountId == account.Id);
+                response.PersonId = user.Id;
             }
 
             var loginDto = new LoginDto
             {
                 Login = account.Login,
-                Password = string.Empty,
-                isUser = !_context.Employees.Any(e => e.AccountId == account.Id)
+                Password = string.Empty
             };
 
             response.IsLoggedIn = true;
@@ -200,7 +215,7 @@ namespace KropkaNetApi.Y_Services.Shared
                 new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
                 new Claim(ClaimTypes.Name, $"{account.Login}")
             };
-            if (!dto.isUser)
+            if (position != "")
             {
                 claims.Add(new Claim(ClaimTypes.Role, position));
             }

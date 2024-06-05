@@ -1,4 +1,4 @@
-.info-box {
+.message-box {
     width: 300px;
     height: 100px;
 
@@ -18,13 +18,13 @@
 
     animation: showHide 3s ease-in-out;
 }
-.info-box.error {
+.message-box.error {
     background-color: var(--clr-warning-bg-dark);
 }
-.info-box.success {
+.message-box.success {
     background-color: var(--clr-success-bg-dark);
 }
-.info-box * {
+.message-box * {
     margin: 0;
     padding: 0;
 }

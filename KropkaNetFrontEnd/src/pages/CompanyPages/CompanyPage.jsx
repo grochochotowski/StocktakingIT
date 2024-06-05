@@ -105,7 +105,7 @@ function CompanyPage () {
         return (
             <tbody>
                 {result.items && result.items.map((company) => (
-                    <tr className={company.id === selected && "selected"} key={company.id} id={company.id} onClick={() => setSelected(company.id)}>
+                    <tr className={company.id === selected ? "selected" : ""} key={company.id} id={company.id} onClick={() => setSelected(company.id)}>
                         <td>{company.id}</td>
                         <td>{company.companyName}</td>
                     </tr>

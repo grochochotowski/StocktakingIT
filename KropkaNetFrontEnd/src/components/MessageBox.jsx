@@ -5,7 +5,7 @@ import '../styles/index.css'
 
 function MessageBox(props) {
   return (
-    <div className={props.type + ` info-box`}>
+    <div className={props.type + ` message-box`}>
         <h3>{props.header}</h3>
         <p>{props.message}</p>
     </div>

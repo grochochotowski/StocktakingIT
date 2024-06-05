@@ -95,7 +95,6 @@ namespace KropkaNetApi.Y_Services.ClientSide
 
             user.Name = dto.Name;
             user.Surname = dto.Surname;
-            user.PersonalNumber = dto.PersonalNumber;
             user.Email = dto.Email;
             user.PhoneNumber = dto.PhoneNumber;
             user.Note = dto.Note;

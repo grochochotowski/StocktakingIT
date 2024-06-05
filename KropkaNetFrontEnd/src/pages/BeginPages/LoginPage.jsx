@@ -1,12 +1,17 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { axiosInstance } from '../../api/axios'
+import { GlobalStateContext } from '../../GlobalState';
 
 import '../../styles/index.css'
 import '../../styles/form.css'
 import MessageBox from '../../components/MessageBox'
 
 function LoginPage() {
+    
+    const navigate = useNavigate();
+
+    const { state, setState } = useContext(GlobalStateContext);
 
     const [messageBoxOpt, setMessageBoxOpt] = useState({
         "active": false,
@@ -14,7 +19,6 @@ function LoginPage() {
         "message" : "",
         "type" : ""
     })
-    const navigate = useNavigate();
     
     const [inputs, setInputs] = useState({
         "login" : "",
@@ -35,7 +39,25 @@ function LoginPage() {
         try {
             const response = await axiosInstance.post('/account/login', JSON.stringify(inputs));
             localStorage.setItem("auth", JSON.stringify(response.data));
-            navigate("/dashboard")
+            
+            setState({
+                ...state,
+                "isLoggedIn": true,
+                "level": response.data.level,
+                "personId" : response.data.personId
+            });
+
+
+            if (response.data.level == "user") {
+                navigate("/orders")
+            }
+            else if (response.data.level == "employee") {
+                navigate("/dashboard")
+            }
+            else {
+                navigate("/error")
+            }
+
         } catch (error) {
             setMessageBoxOpt(
                 {

@@ -11,8 +11,6 @@ namespace KropkaNetApi.X_Entities.Objects.ClientSide
         public string Name { get; set; }
         [Required(ErrorMessage = "Surname is required")]
         public string Surname { get; set; }
-        [Required(ErrorMessage = "Perosnal number is required")]
-        public string PersonalNumber { get; set; }
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Phone number is required")]
