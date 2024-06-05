@@ -34,7 +34,7 @@ function UserPage() {
     return (
         <>
             <NavBar/>
-            <div className="container">
+            <div className="container user">
                 <h1 className="title">User {user.id}</h1>
                 <form>
                     <div className="layer row">

@@ -1,5 +1,6 @@
-.container {
+.container.user {
     width: 100%;
+    flex-direction: column;
 }
 .container form{
     width: 100%;
