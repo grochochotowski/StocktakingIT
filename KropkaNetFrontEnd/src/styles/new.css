@@ -11,6 +11,7 @@
 .content {
     padding: 2%;
 
+    max-height: 80%;
     width: 50%;
     height: auto;
 
@@ -28,7 +29,75 @@
     border: 2px solid var(--clr-txt-dark);
     background-color: var(--clr-bg-dark-main);
 }
+.content.big {
+    width: 75%;
+    gap: 1vh;
+    padding: 2rem;
+
+    overflow: scroll;
+}
+.content.big.half {
+    flex-direction: row;
+}
+.half {
+    padding-right: 1vw;
+    padding-bottom: 0;
+    width: 50%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
+
+    overflow: scroll;
+}
+.content.divide {
+    width: 100%;
+    display: flex;
+    gap: 1vw;
+}
+.content .top {
+    gap: 0;
+    width: 100%;
+}
+.content .bottom {
+    display: flex;
+    width: 100%;
+    gap: 0;
+}
+.content .bottom h3 {
+    margin-bottom: 0;
+}
+.content form {
+    width: 100%;
+}
+.content form h4 {
+    margin-bottom: 0;
+}
+.content .layer {
+    width: 100%;
+}
+.content table {
+    height: 100%;
+}
 .content select, .content input {
     width: 60%;
-    height: 3rem;
+    height: 2rem;
+}
+.content select {
+    width: 60%;
+    height: auto;
+    max-height: 20vh;
+}
+.content h4 {
+    margin-bottom: 0;
+}
+.content .list.rows-5 {
+    max-height: 45vh;
+}
+
+.new-object {
+    display: flex;
+    gap: 1vw;
 }

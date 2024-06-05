@@ -1,11 +1,34 @@
 .content h1 {
     margin: 0;
 }
+.content.scroll {
+    overflow-y: scroll;
+}
 .info-box {
     width: 100%;
+}
+.info-box.divide {
+    width: 100%;
+    display: flex;
+    gap: 1vw;
+}
+.info-box .half {
+    gap: 0;
+}
+.info-box .half.rows-5 { 
+    max-height: 45vh;
+}
+.info-box .half .list {
+    width: 100%;
+}
+.info-box .half .list table {
+    margin: 0 auto;
 }
 .info-line {
     display: flex;
     align-items: center;
     gap: 1vw;
+}
+.info-line h4 {
+    margin: 0;
 }

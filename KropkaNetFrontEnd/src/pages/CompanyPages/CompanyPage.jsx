@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
 import NavBar from '../../components/NavBar'
-import OrderNew from './OrderNew'
-import OrderEdit from './OrderEdit'
-import OrderInfo from './OrderInfo'
+import CompanyNew from './CompanyNew'
+import CompanyEdit from './CompanyEdit'
+import CompanyInfo from './CompanyInfo'
 
 import '../../styles/mainSubPage.css'
 import '../../styles/form.css'
@@ -12,69 +12,35 @@ import '../../styles/list.css'
 import '../../styles/new.css'
 import '../../styles/info.css'
 
-function OrderPage() {
+function CompanyPage () {
 
     const [sorting, setSorting] = useState(["id", 0])
     const [filters, setFilters] = useState({ "filters" : "" })
     const [selected, setSelected] = useState(0);
     const [page, setPage] = useState(1);
     const [result, setResult] = useState({
-        items: [
-            {
-            "id" : 1,
-            "dateOfOrderExecution" : "01/01/0001",
-            "departmentName" : "Department 1"
-            },
-            {
-            "id" : 2,
-            "dateOfOrderExecution" : "02/02/0002",
-            "departmentName" : "Department 2"
-            },
-            {
-            "id" : 3,
-            "dateOfOrderExecution" : "03/03/0003",
-            "departmentName" : "Department 3"
-            },
-            {
-            "id" : 4,
-            "dateOfOrderExecution" : "04/04/0004",
-            "departmentName" : "Department 4"
-            },
-            {
-            "id" : 5,
-            "dateOfOrderExecution" : "05/05/0005",
-            "departmentName" : "Department 5"
-            },
-            {
-            "id" : 6,
-            "dateOfOrderExecution" : "06/06/0006",
-            "departmentName" : "Department 6"
-            },
-            {
-            "id" : 7,
-            "dateOfOrderExecution" : "07/07/0007",
-            "departmentName" : "Department 7"
-            },
-            {
-            "id" : 8,
-            "dateOfOrderExecution" : "08/08/0008",
-            "departmentName" : "Department 8"
-            },
-            {
-            "id" : 9,
-            "dateOfOrderExecution" : "09/09/0009",
-            "departmentName" : "Department 9"
-            },
-            {
-            "id" : 10,
-            "dateOfOrderExecution" : "10/10/0010",
-            "departmentName" : "Department 10"
-            }
+        "items": [
+          {
+            "id": 4,
+            "companyName": "test"
+          },
+          {
+            "id": 1003,
+            "companyName": "string4"
+          },
+          {
+            "id": 2002,
+            "companyName": "user2company"
+          },
+          {
+            "id": 2003,
+            "companyName": "testcompany"
+          }
         ],
-        totalPages: 3
+        "totalItems": 4,
+        "totalPages": 1
     })
     const [box, setBox] = useState("");
-    const contentRef = useRef(null);
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -118,29 +84,18 @@ function OrderPage() {
                                 : <i className="fa-solid fa-arrow-up-a-z"></i>
                             )
                         }
-                        Order
+                        ID
                     </th>
-                    <th className="wide" onClick={() => sortTable("departmentName")}>
+                    <th className="wide" onClick={() => sortTable("companyName")}>
                         {
-                            sorting[0] == "departmentName" &&
+                            sorting[0] == "companyName" &&
                             (
                                 sorting[1] === 0
                                 ? <i className="fa-solid fa-arrow-down-a-z"></i>
                                 : <i className="fa-solid fa-arrow-up-a-z"></i>
                             )
                         }
-                        Department Name
-                    </th>
-                    <th className="wide" onClick={() => sortTable("dateOfOrderExecution")}>
-                        {
-                            sorting[0] == "dateOfOrderExecution" &&
-                            (
-                                sorting[1] === 0
-                                ? <i className="fa-solid fa-arrow-down-a-z"></i>
-                                : <i className="fa-solid fa-arrow-up-a-z"></i>
-                            )
-                        }
-                        Date of execution
+                        Company Name
                     </th>
                 </tr>
             </thead>
@@ -149,11 +104,10 @@ function OrderPage() {
     function generateBody() {
         return (
             <tbody>
-                {result.items && result.items.map((order) => (
-                    <tr className={order.id === selected && "selected"} key={order.id} id={order.id} onClick={() => setSelected(order.id)}>
-                        <td>{order.id}</td>
-                        <td>{order.departmentName}</td>
-                        <td>{order.dateOfOrderExecution}</td>
+                {result.items && result.items.map((company) => (
+                    <tr className={company.id === selected && "selected"} key={company.id} id={company.id} onClick={() => setSelected(company.id)}>
+                        <td>{company.id}</td>
+                        <td>{company.companyName}</td>
                     </tr>
                 ))}
             </tbody>
@@ -279,7 +233,7 @@ function OrderPage() {
                     </ul>
                 </div>
                 <div className="list-menu">
-                    <Link to="/orders" className="current button">
+                    <Link to="/companies" className="current button">
                         <i className="fa-solid fa-list"></i>
                         <p>List</p>
                     </Link>
@@ -297,11 +251,11 @@ function OrderPage() {
                     </div>
                 </div>
             </div>
-            { box && box == "new" && <OrderNew hideBox={() => setBox("")} updateData={() => fetchData()}/> }
-            { box && box == "edit" && <OrderEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={selected}/> }
-            { box && box == "info" && <OrderInfo updateData={() => fetchData()} selected={selected}/> }
+            { box && box == "new" && <CompanyNew hideBox={() => setBox("")} updateData={() => fetchData()}/> }
+            { box && box == "edit" && <CompanyEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={selected}/> }
+            { box && box == "info" && <CompanyInfo updateData={() => fetchData()} selected={selected}/> }
         </>
     )
 }
 
-export default OrderPage
+export default CompanyPage
