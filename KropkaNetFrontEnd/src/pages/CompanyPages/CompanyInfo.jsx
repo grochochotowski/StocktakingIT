@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 
 import '../../styles/info.css'
+import '../../styles/list.css'
 
 function CompanyInfo({ updateData }) {
 
@@ -30,8 +31,28 @@ function CompanyInfo({ updateData }) {
 		{ "id": 3, "departmentName": "name3" },
 		{ "id": 4, "departmentName": "name4" },
 		{ "id": 5, "departmentName": "name5" },
+		{ "id": 1, "departmentName": "name1" },
+		{ "id": 2, "departmentName": "name2" },
+		{ "id": 3, "departmentName": "name3" },
+		{ "id": 4, "departmentName": "name4" },
+		{ "id": 5, "departmentName": "name5" },
+		{ "id": 1, "departmentName": "name1" },
+		{ "id": 2, "departmentName": "name2" },
+		{ "id": 3, "departmentName": "name3" },
+		{ "id": 4, "departmentName": "name4" },
+		{ "id": 5, "departmentName": "name5" },
 	])
 	const [users, setUsers] = useState([
+		{ "id": 1, "name": "name1", "surname": "surname1" },
+		{ "id": 2, "name": "name2", "surname": "surname2" },
+		{ "id": 3, "name": "name3", "surname": "surname3" },
+		{ "id": 4, "name": "name4", "surname": "surname4" },
+		{ "id": 5, "name": "name5", "surname": "surname5" },
+		{ "id": 1, "name": "name1", "surname": "surname1" },
+		{ "id": 2, "name": "name2", "surname": "surname2" },
+		{ "id": 3, "name": "name3", "surname": "surname3" },
+		{ "id": 4, "name": "name4", "surname": "surname4" },
+		{ "id": 5, "name": "name5", "surname": "surname5" },
 		{ "id": 1, "name": "name1", "surname": "surname1" },
 		{ "id": 2, "name": "name2", "surname": "surname2" },
 		{ "id": 3, "name": "name3", "surname": "surname3" },
@@ -173,7 +194,7 @@ function CompanyInfo({ updateData }) {
 					</div>
 				</div>
 				<div className="info-box divide">
-					<div className="half">
+					<div className="half rows-5">
 						<h3>Users</h3>
 						<div className="list">
 							<table>
@@ -182,7 +203,7 @@ function CompanyInfo({ updateData }) {
 							</table>
 						</div>
 					</div>
-					<div className="half">
+					<div className="half rows-5">
 						<h3>Departments</h3>
 						<div className="list">
 							<table>

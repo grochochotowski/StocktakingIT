@@ -15,7 +15,10 @@
 .info-box .half {
     gap: 0;
 }
-.info-box .half .list{
+.info-box .half.rows-5 { 
+    max-height: 45vh;
+}
+.info-box .half .list {
     width: 100%;
 }
 .info-box .half .list table {
