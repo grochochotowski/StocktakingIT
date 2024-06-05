@@ -61,7 +61,6 @@ namespace KropkaNetApi.Y_Services.Shared
             {
                 Name = dto.Name,
                 Surname = dto.Surname,
-                PersonalNumber = dto.PersonalNumber,
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 Note = dto.Note,
@@ -94,7 +93,6 @@ namespace KropkaNetApi.Y_Services.Shared
             {
                 Name = dto.Name,
                 Surname = dto.Surname,
-                PersonalNumber = dto.PersonalNumber,
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 Note = dto.Note,

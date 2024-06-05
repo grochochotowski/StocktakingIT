@@ -9,8 +9,6 @@ namespace KropkaNetApi.X_Models.ClientSide.User
         [Required]
         public string Surname { get; set; }
         [Required]
-        public string PersonalNumber { get; set; }
-        [Required]
         public string Email { get; set; }
         [Required]
         public string PhoneNumber { get; set; }

@@ -68,7 +68,6 @@ namespace KropkaNetApi
             {
                 Name = "ROOT",
                 Surname = "",
-                PersonalNumber = "",
                 Email = "",
                 PhoneNumber = "",
                 Note = "",

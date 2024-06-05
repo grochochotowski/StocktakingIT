@@ -106,7 +106,6 @@ namespace KropkaNetApi.Y_Services.CompanySide
 
             employee.Name = dto.Name;
             employee.Surname = dto.Surname;
-            employee.PersonalNumber = dto.PersonalNumber;
             employee.Email = dto.Email;
             employee.PhoneNumber = dto.PhoneNumber;
             employee.Note = dto.Note;
