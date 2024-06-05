@@ -122,9 +122,15 @@ namespace KropkaNetApi.Y_Services.Shared
             }
 
             string position = "";
-            if (!dto.isUser)
+            var employee = _context.Employees.Include(e => e.Position).FirstOrDefault(e => e.AccountId == account.Id);
+            if (employee != null)
             {
-                position = _context.Employees.Include(e => e.Position).FirstOrDefault(e => e.AccountId == account.Id).Position.Name;
+                response.Level = "employee";
+                position = employee.Position.Name;
+            }
+            else
+            {
+                response.Level = "user";
             }
 
             response.IsLoggedIn = true;
@@ -153,18 +159,23 @@ namespace KropkaNetApi.Y_Services.Shared
             {
                 return response;
             }
-
+            
             string position = "";
-            if (_context.Employees.Any(e => e.AccountId == account.Id))
+            var employee = _context.Employees.Include(e => e.Position).FirstOrDefault(e => e.AccountId == account.Id);
+            if (employee != null)
             {
-                position = _context.Employees.Include(e => e.Position).FirstOrDefault(e => e.AccountId == account.Id).Position.Name;
+                response.Level = "employee";
+                position = employee.Position.Name;
+            }
+            else
+            {
+                response.Level = "user";
             }
 
             var loginDto = new LoginDto
             {
                 Login = account.Login,
-                Password = string.Empty,
-                isUser = !_context.Employees.Any(e => e.AccountId == account.Id)
+                Password = string.Empty
             };
 
             response.IsLoggedIn = true;
@@ -200,7 +211,7 @@ namespace KropkaNetApi.Y_Services.Shared
                 new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
                 new Claim(ClaimTypes.Name, $"{account.Login}")
             };
-            if (!dto.isUser)
+            if (position != "")
             {
                 claims.Add(new Claim(ClaimTypes.Role, position));
             }
