@@ -8,6 +8,8 @@ import '../../styles/form.css'
 import MessageBox from '../../components/MessageBox'
 
 function LoginPage() {
+    
+    const navigate = useNavigate();
 
     const { state, setState } = useContext(GlobalStateContext);
 
@@ -17,7 +19,6 @@ function LoginPage() {
         "message" : "",
         "type" : ""
     })
-    const navigate = useNavigate();
     
     const [inputs, setInputs] = useState({
         "login" : "",
