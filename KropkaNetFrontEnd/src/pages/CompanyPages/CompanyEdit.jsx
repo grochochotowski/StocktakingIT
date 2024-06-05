@@ -92,8 +92,11 @@ function CompanyEdit({ hideBox, updateData }) {
 	const [newDepartment, setNewDepartment] = useState("")
 	const handleUserChange = (e) => setAddUser(e.target.value);
 
-	function handleDelete(element) {
-		alert(`deleted ${element}`)
+	function handleDeleteUser(element) {
+		alert(`deleted user ${element}`)
+	}
+	function handleDeleteDepartment(element) {
+		alert(`deleted department ${element}`)
 	}
 
     const [sortingUser, setSortingUser] = useState(["id", 0])
@@ -147,6 +150,7 @@ function CompanyEdit({ hideBox, updateData }) {
                         }
                         Surname
                     </th>
+                    <th className="u-thin"></th>
                 </tr>
             </thead>
         );
@@ -177,6 +181,7 @@ function CompanyEdit({ hideBox, updateData }) {
                         }
                         Name
                     </th>
+                    <th className="u-thin"></th>
                 </tr>
             </thead>
         );
@@ -189,6 +194,9 @@ function CompanyEdit({ hideBox, updateData }) {
                         <td className="u-thin">{user.id}</td>
                         <td>{user.name}</td>
                         <td>{user.surname}</td>
+						<td className="u-thin delete-item" onClick={() => handleDeleteUser(user.id)}>
+							<i className="fa-solid fa-trash-can"></i>
+						</td>
                     </tr>
                 ))}
             </tbody>
@@ -201,6 +209,9 @@ function CompanyEdit({ hideBox, updateData }) {
                     <tr className="not-clickable" key={department.id} id={department.id}>
                         <td className="u-thin">{department.id}</td>
                         <td>{department.departmentName}</td>
+						<td className="u-thin delete-item" onClick={() => handleDeleteDepartment(department.id)}>
+							<i className="fa-solid fa-trash-can"></i>
+						</td>
                     </tr>
                 ))}
             </tbody>
