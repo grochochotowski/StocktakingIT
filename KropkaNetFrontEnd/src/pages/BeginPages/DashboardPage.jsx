@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { axiosInstance, refreshToken } from '../../api/axios';
 
-import NavBar from '../../components/NavBar'
+import NavBarEmployee from '../../components/NavBarEmployee'
 import MessageBox from '../../components/MessageBox'
 
 function DashboardPage() {
@@ -15,7 +15,7 @@ function DashboardPage() {
     const [result, setResult] = useState([])
 
     async function fetchData() {
-        let apiCall = `kropkaNet/product/list?page=1&sortDireciton=ASC`
+        let apiCall = `/kropkaNet/product/all?page=1`
 
         try {
             const token = await refreshToken();
@@ -24,6 +24,7 @@ function DashboardPage() {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            console.log(response.data)
             setResult(response.data)
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -44,9 +45,9 @@ function DashboardPage() {
 
     return (
         <>
-            <NavBar />
+            <NavBarEmployee />
             <div>
-                {result.map((item, key) => (
+                {result.items && result.items.map((item, key) => (
                     <p key={key}>{item.id} - {item.name} - {item.category}</p>
                 ))}
             </div>
