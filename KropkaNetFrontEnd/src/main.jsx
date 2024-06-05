@@ -2,6 +2,7 @@
 import React, { Suspense, lazy } from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { GlobalStateProvider } from './GlobalState';
 
 
 const WelcomePage = lazy(() => import('./pages/BeginPages/WelcomePage'))
@@ -26,69 +27,32 @@ import './styles/index.css'
 
 
 const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <WelcomePage />,
-        errorElement: <NotFoundPage />,
-    },
-    {
-        path: '/login',
-        element: <LoginPage  />,
-    },
-    {
-        path: '/register',
-        element: <RegisterPage  />,
-    },  
-    {
-        path: '/dashboard',
-        element: <DashboardPage />,
-    },
+    { path: '/', element: <WelcomePage />, errorElement: <NotFoundPage /> },
 
+    { path: '/login', element: <LoginPage /> },
+    { path: '/register', element: <RegisterPage /> },
 
-    {
-        path: '/orders',
-        element: <OrderPage />,
-    },
-    {
-        path: '/orders/:id/stocktaking',
-        element: <StocktakingDetails />
-    },
+    { path: '/dashboard', element: <DashboardPage /> },
 
+    { path: '/orders', element: <OrderPage /> },
+    { path: '/orders/:id/stocktaking', element: <StocktakingDetails /> },
 
-    {
-        path: '/companies',
-        element: <CompanyPage />
-    },
+    { path: '/companies', element: <CompanyPage /> },
 
+    { path: '/account/:id', element: <UserPage /> },
 
-    {
-        path: '/account/:id',
-        element: <UserPage />
-    },
-
-
-    {
-        path: '/401',
-        element: <Unauthorized  />,
-    },
-    {
-        path: '/403',
-        element: <Forbidden  />,
-    },
-    {
-        path: '/404',
-        element: <NotFoundPage  />,
-    },
-    {
-        path: '/fallback',
-        element: <Fallback  />,
-    },
-])
+    { path: '/401', element: <Unauthorized /> },
+    { path: '/403', element: <Forbidden /> },
+    { path: '/404', element: <NotFoundPage /> },
+    { path: '/fallback', element: <Fallback /> },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <Suspense fallback={<Fallback />}>
-            <RouterProvider router={router}/>
-        </Suspense>
+        <GlobalStateProvider>
+            <Suspense fallback={<Fallback />}>
+                <RouterProvider router={router} />
+            </Suspense>
+        </GlobalStateProvider>
     </React.StrictMode>
 )

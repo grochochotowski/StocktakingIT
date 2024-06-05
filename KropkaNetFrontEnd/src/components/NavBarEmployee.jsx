@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import {Link} from 'react-router-dom'
+import { GlobalStateContext } from '../GlobalState';
 
 import '../styles/navbar.css'
 
@@ -6,8 +8,17 @@ import logo from '../assets/logo.png'
 
 function NavBarEmployee() {
 
+    const { state, setState } = useContext(GlobalStateContext);
+
     const handleLogOut = () => {
-        alert("Log out")
+        localStorage.removeItem('auth');
+            
+        setState({
+            ...state,
+            "isLoggedIn": false,
+            "level": null,
+            "personId" : null
+        });
     }
 
     return (
