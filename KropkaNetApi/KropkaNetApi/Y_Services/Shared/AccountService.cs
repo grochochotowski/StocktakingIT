@@ -126,11 +126,14 @@ namespace KropkaNetApi.Y_Services.Shared
             if (employee != null)
             {
                 response.Level = "employee";
+                response.PersonId = employee.Id;
                 position = employee.Position.Name;
             }
             else
             {
                 response.Level = "user";
+                var user = _context.Users.FirstOrDefault(u => u.AccountId == account.Id);
+                response.PersonId = user.Id;
             }
 
             response.IsLoggedIn = true;
@@ -165,11 +168,14 @@ namespace KropkaNetApi.Y_Services.Shared
             if (employee != null)
             {
                 response.Level = "employee";
+                response.PersonId = employee.Id;
                 position = employee.Position.Name;
             }
             else
             {
                 response.Level = "user";
+                var user = _context.Users.FirstOrDefault(u => u.AccountId == account.Id);
+                response.PersonId = user.Id;
             }
 
             var loginDto = new LoginDto
