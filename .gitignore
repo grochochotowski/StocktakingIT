@@ -1,5 +1,5 @@
 # Ignore Visual Studio solution and user settings
-.vs/
+KropkaNet/.vs/
 
 # Ignore build output directories and temporary files
 obj/
@@ -26,7 +26,7 @@ staticwebassets.pack.json
 staticwebassets/
 
 # Ignore FileContentIndex folder (if you don't need it)
-.vs/KropkaNet/FileContentIndex/
+KropkaNet/.vs/KropkaNet/FileContentIndex/
 
 # Ignore config folder (if you don't need it)
-.vs/KropkaNet/config/
+KropkaNet/.vs/KropkaNet/config/
