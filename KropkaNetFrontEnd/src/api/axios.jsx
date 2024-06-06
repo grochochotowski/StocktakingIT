@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const baseUrl = 'https://localhost:7238/api'
-const refreshUrl = 'https://localhost:7238/api/account/refresh'
+const baseUrl = 'https://localhost:44396/api'
+const refreshUrl = 'https://localhost:44396/api/account/refresh'
 
 const getToken = () => {
     const auth = localStorage.getItem('auth');

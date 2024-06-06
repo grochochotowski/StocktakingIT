@@ -26,86 +26,6 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\nonSystem\IT\Code\stocktakingIT\KropkaNet\KropkaNet
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Addresses/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc2VzXENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Addresses/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc2VzXERlbGV0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Addresses/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc2VzXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Addresses/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc2VzXEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Addresses/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRkcmVzc2VzXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Companies/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGFuaWVzXENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Companies/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGFuaWVzXERlbGV0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Companies/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGFuaWVzXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Companies/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGFuaWVzXEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Companies/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGFuaWVzXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Departments/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVwYXJ0bWVudHNcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Departments/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVwYXJ0bWVudHNcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Departments/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVwYXJ0bWVudHNcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Departments/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVwYXJ0bWVudHNcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Departments/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVwYXJ0bWVudHNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Employees/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVzXENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Employees/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVzXERlbGV0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Employees/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVzXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Employees/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVzXEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Employees/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVzXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -114,48 +34,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Orders/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Orders/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXERlbGV0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Orders/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Orders/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Orders/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJzXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Positions/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zaXRpb25zXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Products/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Products/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Products/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Products/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Products/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdHNcSW5kZXguY3NodG1s
+[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Home/Swagger.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTd2FnZ2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Shared/Error.cshtml]
@@ -164,82 +44,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Stocktakings/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2t0YWtpbmdzXENyZWF0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Stocktakings/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2t0YWtpbmdzXERlbGV0ZS5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Stocktakings/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2t0YWtpbmdzXERldGFpbHMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Stocktakings/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2t0YWtpbmdzXEVkaXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Stocktakings/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2t0YWtpbmdzXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Users/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Users/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Users/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Users/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Users/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/WarehouseProducts/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlUHJvZHVjdHNcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/WarehouseProducts/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlUHJvZHVjdHNcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/WarehouseProducts/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlUHJvZHVjdHNcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/WarehouseProducts/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlUHJvZHVjdHNcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/WarehouseProducts/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlUHJvZHVjdHNcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Warehouses/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlc1xEZWxldGUuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Warehouses/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlc1xEZXRhaWxzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Warehouses/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlc1xFZGl0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/Warehouses/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2FyZWhvdXNlc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/nonSystem/IT/Code/stocktakingIT/KropkaNet/KropkaNet/Views/_ViewImports.cshtml]

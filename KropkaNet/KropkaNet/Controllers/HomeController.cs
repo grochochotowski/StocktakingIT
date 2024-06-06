@@ -1,4 +1,4 @@
-using KropkaNet.Models;
+using KropkaNet.Objects.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -19,6 +19,11 @@ namespace KropkaNet.Controllers
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult Swagger()
         {
             return View();
         }

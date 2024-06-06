@@ -1,0 +1,24 @@
+﻿using KropkaNet.Objects.Dtos.ClientSide.Department;
+using KropkaNet.Objects.Dtos.ClientSide.User;
+using KropkaNet.Objects.Dtos.CompanySide.Stocktaking;
+
+namespace KropkaNet.Objects.Dtos.ClientSide.Order
+{
+    public class OrderDto
+    {
+        public int Id { get; set; }
+        public DateTime DateOfOrderExecution { get; set; }
+        public int State { get; set; }
+
+
+        public int DepartmentId { get; set; }
+        public virtual DepartmentDto Department { get; set; }
+
+
+        public int? StocktakingId { get; set; }
+        public virtual StocktakingDto Stocktaking { get; set; }
+
+
+        public virtual ICollection<UserDto>? Users { get; set; }
+    }
+}
