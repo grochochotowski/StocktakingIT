@@ -1,8 +1,17 @@
-using KropkaNet.Models.system;
+using KropkaNet.Api.Services.ClientSide;
+using KropkaNet.Api.Services.CompanySide;
+using KropkaNet.Api.Services.Shared;
+using KropkaNet.Objects.Entities;
+using KropkaNet.Objects.Entities.Models.Shared;
+using KropkaNetApi;
+using KropkaNetApi.Middleware;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
-using static System.Formats.Asn1.AsnWriter;
+using System.Text;
 
 namespace KropkaNet
 {
@@ -12,22 +21,92 @@ namespace KropkaNet
         {
             var builder = WebApplication.CreateBuilder(args);
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            var authenticationSettings = new AuthenticationSettings();
+            configuration.GetSection("Authentication").Bind(authenticationSettings);
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            builder.Services.AddDbContext<StocktakingContext>(o => o.UseSqlServer(configuration.GetConnectionString("SystemDbConnection")));
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("FrontEndClient", builder =>
+                {
+                    builder.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithOrigins(configuration["AllowedOrigins"]);
+                });
+            });
+
+            builder.Services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = "Bearer";
+                option.DefaultScheme = "Bearer";
+                option.DefaultChallengeScheme = "Bearer";
+            }).AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+                cfg.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = authenticationSettings.JwtIssuer,
+                    ValidAudience = authenticationSettings.JwtIssuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+            builder.Services.AddSingleton(authenticationSettings);
+
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(option =>
+            {
+                option.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                option.OperationFilter<SecurityRequirementsOperationFilter>();
+            });
+            builder.Services.AddScoped<ErrorHandlingMiddleware>();
+            builder.Services.AddScoped<IPasswordHasher<Account>, PasswordHasher<Account>>();
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            builder.Services.AddScoped<PositionSeeder>();
-            builder.Services.AddDbContext<StocktakingContext>(o => o.UseSqlServer(configuration.GetConnectionString("SystemDbConnection")));
+            builder.Services.AddScoped<Seeder>();
+
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<ICompanyService, CompanyService>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<IPositionService, PositionService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IStocktakingService, StocktakingService>();
+            builder.Services.AddScoped<IWarehouseProductService, WarehouseProductService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
 
             var app = builder.Build();
             var scope = app.Services.CreateScope();
-            var seeder = scope.ServiceProvider.GetRequiredService<PositionSeeder>();
+            var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
 
             // Configure the HTTP request pipeline.
+            app.UseCors("FrontEndClient");
+
             seeder.Seed();
 
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
 
             if (!app.Environment.IsDevelopment())
             {
@@ -36,7 +115,12 @@ namespace KropkaNet
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
+
             app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+
             app.UseStaticFiles();
 
             app.UseRouting();
