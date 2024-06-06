@@ -1,0 +1,122 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using AutoMapper;
+using KropkaNetApi.Exceptions;
+using KropkaNet.Objects.Entities;
+using KropkaNet.Objects.Dtos.CompanySide.Product;
+using KropkaNet.Objects.Entities.Enum;
+using KropkaNet.Objects.Entities.Models.CompanySide;
+
+namespace KropkaNet.Api.Services.CompanySide
+{
+    public interface IWarehouseProductService
+    {
+        ReturnResult<ProductListDto> GetFromWarehouse(int warehouseId, int page, string filter, string sortBy, SortDirection sortDireciton);
+        void AddProduct(int warehouseId, int productId, int quantity);
+        void RemoveProduct(int warehouseId, int productId, int quantity);
+    }
+    public class WarehouseProductService : IWarehouseProductService
+    {
+        private StocktakingContext _context;
+        private readonly IMapper _mapper;
+
+        public WarehouseProductService(StocktakingContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+
+
+        // GET: get products from warehouse
+        public ReturnResult<ProductListDto> GetFromWarehouse(int warehouseId, int page, string filter, string sortBy, SortDirection sortDireciton)
+        {
+            var baseQuery = _context.WarehouseProduct
+                .Include(w => w.Product)
+                .Where(w => (string.IsNullOrEmpty(filter) || (
+                       w.Product.Id.ToString().Contains(filter) ||
+                       w.Product.Category.Contains(filter.ToLower()) ||
+                       w.Product.Name.Contains(filter.ToLower()))
+                ));
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                var columnsSelector = new Dictionary<string, Expression<Func<WarehouseProduct, object>>>
+                {
+                    { "id", c => c.Product.Id},
+                    { "Category", c => c.Product.Category},
+                    { "Name", c => c.Product.Name}
+                };
+
+                var selectedColumn = columnsSelector[sortBy];
+
+                baseQuery = sortDireciton == SortDirection.ASC
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
+
+            var items = baseQuery
+                .Skip(10 * (page - 1))
+                .Take(10)
+                .Select(w => new ProductListDto
+                {
+                    Id = w.Product.Id,
+                    Category = w.Product.Category,
+                    Name = w.Product.Name
+                })
+                .ToList();
+
+            var totalCount = baseQuery.Count();
+
+            var result = new ReturnResult<ProductListDto>(items, totalCount);
+
+            return result;
+        }
+
+
+        // PATCH: add user
+        public void AddProduct(int warehouseId, int productId, int quantity)
+        {
+            var warehouse = _context.Warehouses.FirstOrDefault(w => w.Id == warehouseId);
+            var product = _context.Products.FirstOrDefault(p => p.Id == productId);
+
+            if (warehouse == null) throw new NotFoundException("Warehouse not found");
+            if (product == null) throw new NotFoundException("Product not found");
+            if (quantity < 1) throw new BadRequestException("Quantity must be equal or greater than 1");
+
+            var warehouseProduct = _context.WarehouseProduct
+                .FirstOrDefault(w => w.WarehouseId == warehouseId && w.ProductId == productId);
+
+            if (warehouseProduct == null)
+            {
+                var warehouseProductDto = _mapper.Map<WarehouseProduct>(warehouseProduct);
+                _context.WarehouseProduct.Add(warehouseProductDto);
+            }
+            else
+            {
+                warehouseProduct.Quantity += quantity;
+            }
+
+            _context.SaveChanges();
+        }
+
+        // PATCH: remove user
+        public void RemoveProduct(int warehouseId, int productId, int quantity)
+        {
+            var warehouse = _context.Warehouses.FirstOrDefault(w => w.Id == warehouseId);
+            var product = _context.Products.FirstOrDefault(p => p.Id == productId);
+            var warehouseProduct = _context.WarehouseProduct
+                .FirstOrDefault(w => w.WarehouseId == warehouseId && w.ProductId == productId);
+
+            if (warehouse == null) throw new NotFoundException("Warehouse not found");
+            if (product == null) throw new NotFoundException("Product not found");
+            if (warehouseProduct == null) throw new NotFoundException("Product is not in warehouse");
+            if (quantity < 1) throw new BadRequestException("Quantity must be equal or greater than 1");
+            if (quantity > warehouseProduct.Quantity) throw new BadRequestException($"Quantity must be equal or less than current quantity {warehouseProduct.Quantity}");
+
+            if (warehouseProduct.Quantity == quantity) _context.WarehouseProduct.Remove(warehouseProduct);
+            else warehouseProduct.Quantity -= quantity;
+
+            _context.SaveChanges();
+        }
+    }
+}
