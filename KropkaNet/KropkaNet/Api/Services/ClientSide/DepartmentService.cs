@@ -12,7 +12,7 @@ namespace KropkaNet.Api.Services.ClientSide
 {
     public interface IDepartmentService
     {
-        int Create(CreateDepartmentDto dto);
+        int Create(int companyId, CreateDepartmentDto dto);
         ReturnResult<DepartmentListDto> GetList(int page, string? filter, string? sortBy, SortDirection sortDireciton);
         List<DepartmentListDto> GetFromCompany(int companyId, string? sortBy, SortDirection sortDireciton);
         List<UserDepartmentsDto> GetUserDepartments(int userId);
@@ -31,12 +31,13 @@ namespace KropkaNet.Api.Services.ClientSide
         }
 
         // POST: create department
-        public int Create(CreateDepartmentDto dto)
+        public int Create(int companyId, CreateDepartmentDto dto)
         {
-            var company = _context.Companies.FirstOrDefault(c => c.Id == dto.CompanyId);
+            var company = _context.Companies.FirstOrDefault(c => c.Id == companyId);
             if (company == null) throw new NotFoundException("Company not found");
 
             var department = _mapper.Map<Department>(dto);
+            department.CompanyId = companyId;
            
             _context.Departments.Add(department);
             _context.SaveChanges();

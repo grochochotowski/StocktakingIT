@@ -18,9 +18,9 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         [HttpPost("create")]
         //[Authorize]
-        public ActionResult Create([FromBody] CreateDepartmentDto dto)
+        public ActionResult Create([FromQuery] int companyId, [FromBody] CreateDepartmentDto dto)
         {
-            var createdDepartmentId = _departmentService.Create(dto);
+            var createdDepartmentId = _departmentService.Create(companyId, dto);
 
             var result = Created($"{createdDepartmentId}", null) as CreatedResult;
             if (result != null)

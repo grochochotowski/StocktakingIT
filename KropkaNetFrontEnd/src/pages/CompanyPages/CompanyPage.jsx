@@ -262,7 +262,7 @@ function CompanyPage () {
                 </div>
             </div>
             { box && box == "new" && <CompanyNew hideBox={() => setBox("")} updateData={() => fetchData()}/> }
-            { box && box == "edit" && <CompanyEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={selected}/> }
+            { box && box == "edit" && <CompanyEdit updateData={() => fetchData()} selected={selected}/> }
             { box && box == "info" && <CompanyInfo selected={selected}/> }
         </>
     )

@@ -2,11 +2,13 @@ import React, { useState, useContext, useEffect } from 'react';
 import { GlobalStateContext } from '../../GlobalState';
 import { axiosInstance, refreshToken } from '../../api/axios';
 
-function CompanyEdit({ hideBox, updateData, selected}) {
+function CompanyEdit({updateData, selected}) {
 
     const { state, setState } = useContext(GlobalStateContext);
 	
 	const [companyEdit, setCompanyEdit] = useState({})
+	const [addUser, setAddUser] = useState("")
+	const [newDepartment, setNewDepartment] = useState({"departmentName": ""})
 
 	const [company, setCompany] = useState({})
 	const [departments, setDepartments] = useState([])
@@ -67,12 +69,13 @@ function CompanyEdit({ hideBox, updateData, selected}) {
     }
 
     useEffect(() => {
-      fetchData();
-	  if (company.address != null) {
-		updateInputs();
-	  }
+		fetchData();
     }, [sortingUser, sortingDepartment])
-
+	useEffect(() => {
+        if (company.address) {
+            updateInputs();
+        }
+    }, [company]);
 
 	function updateInputs() {
 		setCompanyEdit({
@@ -89,13 +92,38 @@ function CompanyEdit({ hideBox, updateData, selected}) {
 		})
 	}
 	
-	const handleSubmit = (e) => {
+	async function handleSubmit(e) {
 		e.preventDefault();
-		//console.log(dataToSend);
+        const token = await refreshToken();
+		let apiCall = `kropkaNet/company/update/${selected}`;
+        try {
+            const response = await axiosInstance.put(apiCall, companyEdit,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setCompany(response.data);
+			updateData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
 	};
-	const addDepartment = (e) => {
+	async function addDepartment(e) {
 		e.preventDefault();
-		console.log(newDepartment);
+		
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/department/create?companyId=${selected}`;
+        try {
+            const response = await axiosInstance.post(apiCall, newDepartment, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+			fetchData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
 	};
 
     function handleInputChange(inputId) {
@@ -106,16 +134,32 @@ function CompanyEdit({ hideBox, updateData, selected}) {
             }
         ))
     }
-
-	const [addUser, setAddUser] = useState("")
-	const [newDepartment, setNewDepartment] = useState("")
 	const handleUserChange = (e) => setAddUser(e.target.value);
+	function handleInputChange(inputId) {
+        setNewDepartment(prev => (
+            {
+                ...prev,
+                [inputId]: document.getElementById(inputId).value
+            }
+        ))
+    }
 
-	function handleDeleteUser(element) {
-		alert(`deleted user ${element}`)
+	async function handleDeleteUser(element) {
 	}
-	function handleDeleteDepartment(element) {
-		alert(`deleted department ${element}`)
+	async function handleDeleteDepartment(element) {
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/department/delete/${element}`;
+        try {
+            const response = await axiosInstance.delete(apiCall, newDepartment, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+			fetchData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
 	}
 
 
@@ -380,9 +424,9 @@ function CompanyEdit({ hideBox, updateData, selected}) {
 						<div className="new-object">
 							<input
 								type="text"
-								id="newDepartment"
-								onChange={() => setNewDepartment(document.getElementById("newDepartment").value)}
-								value={newDepartment}
+								id="departmentName"
+								onChange={() => handleInputChange("departmentName")}
+								value={newDepartment.departmentName}
 							/>
 							<button type="submit" onClick={addDepartment}>Create</button>
 						</div>
