@@ -32,8 +32,14 @@ function OrderPage() {
 
     async function fetchData() {
         const token = await refreshToken();
-        let apiCall = `kropkaNet/order/all?` +
-            `${filters.filters && "filters=" + filters.filters + "&"}` +
+        let apiCall = `kropkaNet/order/`
+        if (state.level == "employee") {
+            apiCall += `all?`
+        }
+        else if (state.level == "user") {
+            apiCall += `user/${state.personId}?`
+        }
+        apiCall += `${filters.filters && "filters=" + filters.filters + "&"}` +
             `sortBy=${sorting[0]}&` +
             `sortDireciton=${sorting[1] == 0 ? "ASC" : "DESC"}&` +
             `page=${page}&` +
