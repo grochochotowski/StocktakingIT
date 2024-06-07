@@ -44,7 +44,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // GET: /api/kropkaNet/stocktaking/{id}
         [HttpGet("{id}")]
-        public ActionResult<StocktakingDto> GetById(int id)
+        public ActionResult<StocktakingDetailsDto> GetById(int id)
         {
             var stocktaking = _stocktakingService.GetDetails(id);
             return stocktaking != null ? Ok(stocktaking) : NotFound("Stocktaking not found");
