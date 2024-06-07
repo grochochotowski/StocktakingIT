@@ -14,12 +14,27 @@ function StocktakingDetails() {
     
     const [stocktaking, setStocktaking] = useState({})
 
-    function fetchData() {
+    async function fetchData() {
         getStocktaking()
+        getWarehouse()
     }
     async function getStocktaking() {
         const token = await refreshToken();
-		let apiCall = `kropkaNet/stocktaking/${params.orderId}`;
+		let apiCall = `kropkaNet/stocktaking/${params.warehouseId}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setStocktaking(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function getWarehouse() {
+        const token = await refreshToken();
+		let apiCall = `kropkaNet/warehouse/${stocktaking.warehouseId}/products`;
         try {
             const response = await axiosInstance.get(apiCall, {
                 headers: {
@@ -27,18 +42,15 @@ function StocktakingDetails() {
                 }
             });
             console.log(response.data)
-            setStocktaking(response.data);
+            setWarehouse(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     }
-    async function getWarehouse() {
+    async function getUsers(token) {
 
     }
-    async function getUsers() {
-
-    }
-    async function getEmployees() {
+    async function getEmployees(token) {
 
     }
 
@@ -46,13 +58,7 @@ function StocktakingDetails() {
         fetchData();
       }, [])
 
-    const [warehouse, setWarehouse] = useState([
-        { "id": 1, "category": "PC-category-1", "name": "PC-name-1", "quantity": 1 },
-        { "id": 2, "category": "PC-category-2", "name": "PC-name-2", "quantity": 2 },
-        { "id": 3, "category": "PC-category-3", "name": "PC-name-3", "quantity": 3 },
-        { "id": 4, "category": "PC-category-4", "name": "PC-name-4", "quantity": 4 },
-        { "id": 5, "category": "PC-category-5", "name": "PC-name-5", "quantity": 5 }
-    ]);
+    const [warehouse, setWarehouse] = useState([]);
 
     const [users, setUsers] = useState([
         { "name": "name1", "surname": "surname1" },
