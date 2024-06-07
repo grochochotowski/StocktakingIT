@@ -1,4 +1,5 @@
 ﻿using KropkaNet.Api.Services.CompanySide;
+using KropkaNet.Objects.Dtos.ClientSide.Order;
 using KropkaNet.Objects.Dtos.CompanySide.Stocktaking;
 using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Enum;
@@ -18,11 +19,11 @@ namespace KropkaNet.Api.Controllers.CompanySide
             _stocktakingService = stocktakingService;
         }
 
-        // POST: /api/kropkaNet/stocktaking/create
-        [HttpPost("create")]
-        public ActionResult<int> Create([FromBody] CreateStocktakingDto dto)
+        // POST: /api/kropkaNet/stocktaking/create/order/{orderId}
+        [HttpPost("create/order/{orderId}")]
+        public ActionResult<int> Create([FromRoute] int orderId, [FromBody] CreateStocktakingDto dto)
         {
-            var createdStocktakingId = _stocktakingService.Create(dto);
+            var createdStocktakingId = _stocktakingService.Create(orderId, dto);
             return createdStocktakingId > 0
                 ? CreatedAtAction(nameof(GetById), new { id = createdStocktakingId }, dto)
                 : BadRequest("Failed to create stocktaking");
@@ -43,7 +44,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // GET: /api/kropkaNet/stocktaking/{id}
         [HttpGet("{id}")]
-        public ActionResult<StocktakingDto> GetById(int id)
+        public ActionResult<StocktakingDetailsDto> GetById(int id)
         {
             var stocktaking = _stocktakingService.GetDetails(id);
             return stocktaking != null ? Ok(stocktaking) : NotFound("Stocktaking not found");

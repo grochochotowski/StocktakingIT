@@ -1,6 +1,7 @@
 ﻿using KropkaNet.Api.Services.ClientSide;
 using KropkaNet.Objects.Dtos.ClientSide.Order;
 using KropkaNet.Objects.Entities.Enum;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNet.Api.Controllers.ClientSide
@@ -40,10 +41,13 @@ namespace KropkaNet.Api.Controllers.ClientSide
             [FromQuery] int page,
             [FromQuery] string? filters,
             [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
+            [FromQuery] SortDirection sortDireciton,
+            [FromQuery] bool noDecision,
+            [FromQuery] bool accepted,
+            [FromQuery] bool rejected
             )
         {
-            var orderDtos = _orderService.GetListUser(userId, page, filters, sortBy, sortDireciton);
+            var orderDtos = _orderService.GetListUser(userId, page, filters, sortBy, sortDireciton, noDecision, accepted, rejected);
             return Ok(orderDtos);
         }
 
@@ -54,10 +58,13 @@ namespace KropkaNet.Api.Controllers.ClientSide
             [FromQuery] int page,
             [FromQuery] string? filters,
             [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
+            [FromQuery] SortDirection sortDireciton,
+            [FromQuery] bool noDecision,
+            [FromQuery] bool accepted,
+            [FromQuery] bool rejected
             )
         {
-            var orderDtos = _orderService.GetList(page, filters, sortBy, sortDireciton);
+            var orderDtos = _orderService.GetList(page, filters, sortBy, sortDireciton, noDecision, accepted, rejected);
             return Ok(orderDtos);
         }
 

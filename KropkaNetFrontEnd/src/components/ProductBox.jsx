@@ -1,7 +1,6 @@
 import React from "react"
 
 export default function ProductBox({product}) {
-    console.log(product)
     return (
         <div className="product-box">
             {/*<img src={product.img ? meal.img : "https://i.pinimg.com/564x/ef/e8/d3/efe8d36db6281666a126189f05bfeff1.jpg"} alt="product-img" />*/}

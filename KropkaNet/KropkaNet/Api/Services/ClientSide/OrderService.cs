@@ -6,14 +6,15 @@ using KropkaNet.Objects.Dtos.ClientSide.Order;
 using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Objects.Entities.Models.ClientSide;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace KropkaNet.Api.Services.ClientSide
 {
     public interface IOrderService
     {
         int Create(int? userId, CreateOrderDto dto);
-        ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton);
-        ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
+        ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton, bool noDecision, bool accepted, bool rejected);
+        ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton, bool noDecision, bool accepted, bool rejected);
         OrderDetailsDto GetDetails(int id);
         int Update(int id, UpdateOrderDto dto);
         void AddUser(int userId, int orderId);
@@ -46,7 +47,7 @@ namespace KropkaNet.Api.Services.ClientSide
                 order.Users = [user];
             }
 
-            order.State = -1;
+            order.State = 0;
 
             _context.Orders.Add(order);
             _context.SaveChanges();
@@ -55,8 +56,13 @@ namespace KropkaNet.Api.Services.ClientSide
         }
 
         // GET: get list of orders of user
-        public ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton)
+        public ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton, bool noDecision, bool accepted, bool rejected)
         {
+            var states = new List<int>();
+            if (noDecision) states.Add(0);
+            if (accepted) states.Add(1);
+            if (rejected) states.Add(-1);
+
             var baseQuery = _context.Orders
                 .Include(c => c.Department)
                 .Include(c => c.Users)
@@ -65,16 +71,17 @@ namespace KropkaNet.Api.Services.ClientSide
                        c.State.ToString().Contains(filter) ||
                        c.Department.DepartmentName.Contains(filter) ||
                        c.Id.ToString().Contains(filter))) &&
-                       c.Users.Any(u => u.Id == userId));
+                       c.Users.Any(u => u.Id == userId) &&
+                       states.Contains(c.State));
 
             if (!string.IsNullOrEmpty(sortBy))
             {
                 var columnsSelector = new Dictionary<string, Expression<Func<Order, object>>>
                 {
                     { "id", c => c.Id},
-                    { "DateOfOrderExecution", c => c.DateOfOrderExecution},
-                    { "State", c => c.State},
-                    { "Name", c => c.Department.DepartmentName}
+                    { "dateOfOrderExecution", c => c.DateOfOrderExecution},
+                    { "state", c => c.State},
+                    { "departmentName", c => c.Department.DepartmentName}
                 };
 
                 var selectedColumn = columnsSelector[sortBy];
@@ -104,26 +111,30 @@ namespace KropkaNet.Api.Services.ClientSide
         }
 
         // GET: get list of all orders
-        public ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton)
+        public ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton, bool noDecision, bool accepted, bool rejected)
         {
+            var states = new List<int>();
+            if (noDecision) states.Add(0);
+            if (accepted) states.Add(1);
+            if (rejected) states.Add(-1);
+
             var baseQuery = _context.Orders
                 .Include(c => c.Department)
                 .Include(c => c.Users)
                 .Where(c => (string.IsNullOrEmpty(filter) || (
-                       c.DateOfOrderExecution.ToString().Contains(filter) ||
                        c.State.ToString().Contains(filter) ||
                        c.Department.DepartmentName.Contains(filter) ||
-                       c.Id.ToString().Contains(filter))
-                ));
+                       c.Id.ToString().Contains(filter))) &&
+                       states.Contains(c.State));
 
             if (!string.IsNullOrEmpty(sortBy))
             {
                 var columnsSelector = new Dictionary<string, Expression<Func<Order, object>>>
                 {
                     { "id", c => c.Id},
-                    { "DateOfOrderExecution", c => c.DateOfOrderExecution},
-                    { "State", c => c.State},
-                    { "Name", c => c.Department.DepartmentName}
+                    { "dateOfOrderExecution", c => c.DateOfOrderExecution},
+                    { "state", c => c.State},
+                    { "departmentName", c => c.Department.DepartmentName}
                 };
 
                 var selectedColumn = columnsSelector[sortBy];
@@ -157,13 +168,15 @@ namespace KropkaNet.Api.Services.ClientSide
         {
             var order = _context.Orders
                 .Include(c => c.Department)
+                .Include(c => c.Stocktaking)
                 .Select(p => new OrderDetailsDto
                 {
                     Id = p.Id,
                     DateOfOrderExecution = p.DateOfOrderExecution,
                     State = p.State,
                     DepartmentName = p.Department.DepartmentName,
-                    StocktakingId = p.StocktakingId
+                    StocktakingId = p.StocktakingId,
+                    WarehouseId = p.Stocktaking.WarehouseId
                 })
                 .FirstOrDefault(c => c.Id == id);
 
@@ -239,6 +252,8 @@ namespace KropkaNet.Api.Services.ClientSide
         {
             var order = _context.Orders.FirstOrDefault(p => p.Id == id);
             if (order == null) throw new NotFoundException("Order not found");
+
+            if (order.StocktakingId != null) throw new BadRequestException("Can't delete order");
 
             _context.Remove(order);
             _context.SaveChanges();

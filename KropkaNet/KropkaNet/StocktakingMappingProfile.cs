@@ -26,16 +26,19 @@ namespace KropkaNetApi
 
             CreateMap<Department, DepartmentDto>();
             CreateMap<CreateDepartmentDto, Department>();
+            CreateMap<Department, DepartmentListDto>();
 
             CreateMap<Order, OrderDto>();
             CreateMap<CreateOrderDto, Order>();
 
             CreateMap<UpdateUserDto, User>();
             CreateMap<User, UserDto>();
+            CreateMap<User, UserListDto>();
 
 
 
             CreateMap<Employee, EmployeeDto>();
+            CreateMap<Employee, EmployeeListDto>();
 
             CreateMap<Position, PositionDto>(); 
 

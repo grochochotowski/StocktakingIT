@@ -6,14 +6,18 @@ using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Dtos.CompanySide.Product;
 using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Objects.Entities.Models.CompanySide;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using OfficeOpenXml;
 
 namespace KropkaNet.Api.Services.CompanySide
 {
     public interface IWarehouseProductService
     {
-        ReturnResult<ProductListDto> GetFromWarehouse(int warehouseId, int page, string filter, string sortBy, SortDirection sortDireciton);
+        List<ProductListDto> GetFromWarehouse(int warehouseId);
         void AddProduct(int warehouseId, int productId, int quantity);
         void RemoveProduct(int warehouseId, int productId, int quantity);
+        byte[] Export(int warehouseId);
     }
     public class WarehouseProductService : IWarehouseProductService
     {
@@ -28,48 +32,22 @@ namespace KropkaNet.Api.Services.CompanySide
 
 
         // GET: get products from warehouse
-        public ReturnResult<ProductListDto> GetFromWarehouse(int warehouseId, int page, string filter, string sortBy, SortDirection sortDireciton)
+        public List<ProductListDto> GetFromWarehouse(int warehouseId)
         {
-            var baseQuery = _context.WarehouseProduct
+            var products = _context.WarehouseProduct
                 .Include(w => w.Product)
-                .Where(w => (string.IsNullOrEmpty(filter) || (
-                       w.Product.Id.ToString().Contains(filter) ||
-                       w.Product.Category.Contains(filter.ToLower()) ||
-                       w.Product.Name.Contains(filter.ToLower()))
-                ));
-
-            if (!string.IsNullOrEmpty(sortBy))
-            {
-                var columnsSelector = new Dictionary<string, Expression<Func<WarehouseProduct, object>>>
-                {
-                    { "id", c => c.Product.Id},
-                    { "Category", c => c.Product.Category},
-                    { "Name", c => c.Product.Name}
-                };
-
-                var selectedColumn = columnsSelector[sortBy];
-
-                baseQuery = sortDireciton == SortDirection.ASC
-                    ? baseQuery.OrderBy(selectedColumn)
-                    : baseQuery.OrderByDescending(selectedColumn);
-            }
-
-            var items = baseQuery
-                .Skip(10 * (page - 1))
-                .Take(10)
+                .Where(w => w.WarehouseId == warehouseId)
                 .Select(w => new ProductListDto
                 {
                     Id = w.Product.Id,
+                    Name = w.Product.Name,
                     Category = w.Product.Category,
-                    Name = w.Product.Name
+                    ImgUrl = w.Product.ImgUrl,
+                    Quantity = w.Quantity
                 })
                 .ToList();
 
-            var totalCount = baseQuery.Count();
-
-            var result = new ReturnResult<ProductListDto>(items, totalCount);
-
-            return result;
+            return products;
         }
 
 
@@ -88,8 +66,13 @@ namespace KropkaNet.Api.Services.CompanySide
 
             if (warehouseProduct == null)
             {
-                var warehouseProductDto = _mapper.Map<WarehouseProduct>(warehouseProduct);
-                _context.WarehouseProduct.Add(warehouseProductDto);
+                warehouseProduct = new WarehouseProduct
+                {
+                    WarehouseId = warehouseId,
+                    ProductId = productId,
+                    Quantity = quantity
+                };
+                _context.WarehouseProduct.Add(warehouseProduct);
             }
             else
             {
@@ -117,6 +100,35 @@ namespace KropkaNet.Api.Services.CompanySide
             else warehouseProduct.Quantity -= quantity;
 
             _context.SaveChanges();
+        }
+    
+        // GET: export
+        public byte[] Export(int warehouseId)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var products = _context.WarehouseProduct
+                .Include(wp => wp.Product)
+                .Where(wp => wp.WarehouseId == warehouseId)
+                .ToList();
+
+            using var package = new ExcelPackage();
+            var worksheet = package.Workbook.Worksheets.Add("Products");
+
+            worksheet.Cells[1, 1].Value = "ID";
+            worksheet.Cells[1, 2].Value = "Name";
+            worksheet.Cells[1, 3].Value = "Category";
+            worksheet.Cells[1, 4].Value = "Quantity";
+
+            for (var i = 0; i < products.Count; i++)
+            {
+                worksheet.Cells[i + 2, 1].Value = products[i].Product.Id;
+                worksheet.Cells[i + 2, 2].Value = products[i].Product.Name;
+                worksheet.Cells[i + 2, 3].Value = products[i].Product.Category;
+                worksheet.Cells[i + 2, 4].Value = products[i].Quantity;
+            }
+
+            return package.GetAsByteArray();
         }
     }
 }

@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect, useContext } from 'react'
+import { GlobalStateContext } from '../../GlobalState';
+import { axiosInstance, refreshToken } from '../../api/axios';
 
 import NavBar from '../../components/NavBar'
+import NavBarEmployee from '../../components/NavBarEmployee'
+
 import OrderNew from './OrderNew'
 import OrderEdit from './OrderEdit'
 import OrderInfo from './OrderInfo'
@@ -14,67 +17,51 @@ import '../../styles/info.css'
 
 function OrderPage() {
 
+    const { state, setState } = useContext(GlobalStateContext);
+
     const [sorting, setSorting] = useState(["id", 0])
     const [filters, setFilters] = useState({ "filters" : "" })
     const [selected, setSelected] = useState(0);
     const [page, setPage] = useState(1);
-    const [result, setResult] = useState({
-        items: [
-            {
-            "id" : 1,
-            "dateOfOrderExecution" : "01/01/0001",
-            "departmentName" : "Department 1"
-            },
-            {
-            "id" : 2,
-            "dateOfOrderExecution" : "02/02/0002",
-            "departmentName" : "Department 2"
-            },
-            {
-            "id" : 3,
-            "dateOfOrderExecution" : "03/03/0003",
-            "departmentName" : "Department 3"
-            },
-            {
-            "id" : 4,
-            "dateOfOrderExecution" : "04/04/0004",
-            "departmentName" : "Department 4"
-            },
-            {
-            "id" : 5,
-            "dateOfOrderExecution" : "05/05/0005",
-            "departmentName" : "Department 5"
-            },
-            {
-            "id" : 6,
-            "dateOfOrderExecution" : "06/06/0006",
-            "departmentName" : "Department 6"
-            },
-            {
-            "id" : 7,
-            "dateOfOrderExecution" : "07/07/0007",
-            "departmentName" : "Department 7"
-            },
-            {
-            "id" : 8,
-            "dateOfOrderExecution" : "08/08/0008",
-            "departmentName" : "Department 8"
-            },
-            {
-            "id" : 9,
-            "dateOfOrderExecution" : "09/09/0009",
-            "departmentName" : "Department 9"
-            },
-            {
-            "id" : 10,
-            "dateOfOrderExecution" : "10/10/0010",
-            "departmentName" : "Department 10"
-            }
-        ],
-        totalPages: 3
-    })
+    const [result, setResult] = useState({})
     const [box, setBox] = useState("");
-    const contentRef = useRef(null);
+    const [checked, setChecked] = useState({
+        "none": true,
+        "reject": true,
+        "accept": true
+    })
+
+    async function fetchData() {
+        const token = await refreshToken();
+        let apiCall = `kropkaNet/order/`
+        if (state.level == "employee") {
+            apiCall += `all?`
+        }
+        else if (state.level == "user") {
+            apiCall += `user/${state.personId}?`
+        }
+        apiCall += `${filters.filters && "filters=" + filters.filters + "&"}` +
+            `sortBy=${sorting[0]}&` +
+            `sortDireciton=${sorting[1] == 0 ? "ASC" : "DESC"}&` +
+            `page=${page}&` +
+            `noDecision=${checked.none}&` +
+            `accepted=${checked.accept}&` +
+            `rejected=${checked.reject}`
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setResult(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    useEffect(() => {
+      fetchData();
+    }, [sorting, page, checked])
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -100,9 +87,13 @@ function OrderPage() {
         }))
     }
     function filter() {
-        if(token) {
-            fetchData();
-        }
+        fetchData();
+    }
+    function updateCheckBoxes(checkBox) {
+        setChecked(prev => ({
+            ...prev,
+            [checkBox] : !prev[checkBox]
+        }))
     }
 
     function generateHeader() {
@@ -142,6 +133,17 @@ function OrderPage() {
                         }
                         Date of execution
                     </th>
+                    <th className="wide" onClick={() => sortTable("state")}>
+                        {
+                            sorting[0] == "state" &&
+                            (
+                                sorting[1] === 0
+                                ? <i className="fa-solid fa-arrow-down-a-z"></i>
+                                : <i className="fa-solid fa-arrow-up-a-z"></i>
+                            )
+                        }
+                        State
+                    </th>
                 </tr>
             </thead>
         );
@@ -153,7 +155,23 @@ function OrderPage() {
                     <tr className={order.id === selected ? "selected" : ""} key={order.id} id={order.id} onClick={() => setSelected(order.id)}>
                         <td>{order.id}</td>
                         <td>{order.departmentName}</td>
-                        <td>{order.dateOfOrderExecution}</td>
+                        <td>{formatDateTime(order.dateOfOrderExecution)}</td>
+                        {
+							(() => {
+								if (order.state == -1) {
+									return <td className='warning'>Rejected</td>;
+								}
+								else if (order.state == 0) {
+									return <td>No decision</td>;
+								} 
+								else if (order.state == 1) {
+									return <td className='success'>Accepted</td>;
+								} 
+								else {
+									return <td className='warning'>State error</td>;
+								}
+							})()
+                        }
                     </tr>
                 ))}
             </tbody>
@@ -255,13 +273,18 @@ function OrderPage() {
         }
     }
 
+    const formatDateTime = (dateString) => {
+		const date = new Date(dateString);
+		const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+		return date.toLocaleString(undefined, options);
+	};
 
     return (
         <>
-            <NavBar />
+            { state.level == "employee" ? <NavBarEmployee /> : <NavBar /> }
             <div className="container">
                 <div className="list">
-                    <div className="filter">
+                    <div className="filter w-check">
                         <input
                             type="text"
                             id="filters"
@@ -269,6 +292,20 @@ function OrderPage() {
                             value={filters.filters}
                         />
                         <button onClick={() => filter()}>Filter</button>
+                        <div className="checkBoxex">
+                            <div className="input-container">
+                                <label htmlFor="none">No decision</label>
+                                <input type="checkbox" name="none" id="none" checked={checked.none} onChange={() => updateCheckBoxes("none")}/>
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="accept">Accepted</label>
+                                <input type="checkbox" name="accept" id="accept" checked={checked.accept} onChange={() => updateCheckBoxes("accept")}/>
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="reject">Rejected</label>
+                                <input type="checkbox" name="reject" id="reject" checked={checked.reject} onChange={() => updateCheckBoxes("reject")}/>
+                            </div>
+                        </div>
                     </div>
                     <table>
                         { generateHeader() }
@@ -279,10 +316,10 @@ function OrderPage() {
                     </ul>
                 </div>
                 <div className="list-menu">
-                    <Link to="/orders" className="current button">
+                    <div className="current button objectOption" onClick={() => fetchData()}>
                         <i className="fa-solid fa-list"></i>
-                        <p>List</p>
-                    </Link>
+                        <p>Refresh data</p>
+                    </div>
                     <div onClick={() => selected != 0 && setBox("info")} className={selected ? "button objectOption" : "disable button objectOption"}>
                         <i className="fa-solid fa-info"></i>
                         <p>Details</p>
@@ -298,8 +335,8 @@ function OrderPage() {
                 </div>
             </div>
             { box && box == "new" && <OrderNew hideBox={() => setBox("")} updateData={() => fetchData()}/> }
-            { box && box == "edit" && <OrderEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={selected}/> }
-            { box && box == "info" && <OrderInfo updateData={() => fetchData()} selected={selected}/> }
+            { box && box == "edit" && <OrderEdit updateData={() => fetchData()} selected={selected}/> }
+            { box && box == "info" && <OrderInfo selected={selected}/> }
         </>
     )
 }

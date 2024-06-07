@@ -1,44 +1,59 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react';
+import { GlobalStateContext } from '../../GlobalState';
+import { axiosInstance, refreshToken } from '../../api/axios';
 
 function OrderNew({ hideBox, updateData }) {
 
-	const [departments, setDepartments] = useState([
-		{
-			"id": 1,
-			"departmentName": "name1"
-		},
-		{
-			"id": 2,
-			"departmentName": "name2"
-		},
-		{
-			"id": 3,
-			"departmentName": "name3"
-		},
-		{
-			"id": 4,
-			"departmentName": "name4"
-		},
-		{
-			"id": 5,
-			"departmentName": "name5"
-		},
-	])
+    const { state, setState } = useContext(GlobalStateContext);
+
+	const [departments, setDepartments] = useState([])
 	const [selectedDepartment, setSelectedDepartment] = useState('');
 	const [orderDate, setOrderDate] = useState('');
 
-	const handleDepartmentChange = (e) => setSelectedDepartment(e.target.value);
+	async function fetchData() {
+        const token = await refreshToken();
+        const apiCall = `kropkaNet/department/user/${state.personId}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setDepartments(response.data);
+			setSelectedDepartment(response.data[0].id)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
 
+    useEffect(() => {
+      fetchData();
+    }, [])
+
+	const handleDepartmentChange = (e) => setSelectedDepartment(e.target.value);
 	const handleDateChange = (e) => setOrderDate(e.target.value);
 	
-	const handleSubmit = (e) => {
+	async function handleSubmit(e) {
 		e.preventDefault();
 		const dataToSend = {
-			dateOfOrderExecution: orderDate,
-			departmentId: selectedDepartment
+			dateOfOrderExecution: orderDate + ":00.000Z",
+			departmentId: parseInt(selectedDepartment)
 		};
-		console.log(dataToSend);
-		hideBox();
+		
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/order/create?userId=${state.personId}`;
+        try {
+            const response = await axiosInstance.post(apiCall, dataToSend, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+			updateData();
+			hideBox();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
 	};
 
 	return (
@@ -48,7 +63,7 @@ function OrderNew({ hideBox, updateData }) {
 				<form>
 					<select name="department" id="department" onChange={handleDepartmentChange}>
 						{departments.map(department => (
-							<option key={department.id} value={department.id}>{department.departmentName}</option>
+							<option key={department.id} value={department.id}>{department.companyName} - {department.departmentName}</option>
 						))}
 					</select>
 					<input 

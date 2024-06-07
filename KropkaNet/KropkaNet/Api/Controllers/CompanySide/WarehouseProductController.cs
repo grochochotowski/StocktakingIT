@@ -19,15 +19,9 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // GET api/kropkaNet/warehouse/{warehouseId}/products
         [HttpGet("products")]
-        public ActionResult<IEnumerable<CompanyDto>> GetFromWarehouse(
-            [FromRoute] int warehouseId,
-            [FromQuery] int page,
-            [FromQuery] string? filters,
-            [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
-            )
+        public ActionResult<IEnumerable<CompanyDto>> GetFromWarehouse([FromRoute] int warehouseId)
         {
-            var companyDtos = _warehouseProductService.GetFromWarehouse(warehouseId, page, filters, sortBy, sortDireciton);
+            var companyDtos = _warehouseProductService.GetFromWarehouse(warehouseId);
             return Ok(companyDtos);
         }
 
@@ -47,6 +41,17 @@ namespace KropkaNet.Api.Controllers.CompanySide
             _warehouseProductService.RemoveProduct(warehouseId, productId, quantity);
 
             return Ok();
+        }
+
+        // GET api/kropkaNet/warehouse/{warehouseId}/export
+        [HttpGet("export")]
+        public async Task<IActionResult> Export([FromRoute] int warehouseId)
+        {
+            var fileContent = _warehouseProductService.Export(warehouseId);
+            var fileName = $"Products_{System.DateTime.Now:yyyyMMddHHmmss}.xlsx";
+            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            return File(fileContent, contentType, fileName);
         }
     }
 }

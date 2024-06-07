@@ -65,7 +65,7 @@ namespace KropkaNet.Api.Services.ClientSide
         }
 
         // GET: get list of comanies of user
-        public ReturnResult<CompanyListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton)
+        public ReturnResult<CompanyListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDirection)
         {
             var baseQuery = _context.Companies
                 .Include(c => c.Address)
@@ -82,12 +82,12 @@ namespace KropkaNet.Api.Services.ClientSide
                 var columnsSelector = new Dictionary<string, Expression<Func<Company, object>>>
                 {
                     { "id", c => c.Id},
-                    { "CompanyName", c => c.CompanyName}
+                    { "companyName", c => c.CompanyName}
                 };
 
                 var selectedColumn = columnsSelector[sortBy];
 
-                baseQuery = sortDireciton == SortDirection.ASC
+                baseQuery = sortDirection == SortDirection.ASC
                     ? baseQuery.OrderBy(selectedColumn)
                     : baseQuery.OrderByDescending(selectedColumn);
             }
@@ -110,7 +110,7 @@ namespace KropkaNet.Api.Services.ClientSide
         }
 
         // GET: get list of all companies
-        public ReturnResult<CompanyListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton)
+        public ReturnResult<CompanyListDto> GetList(int page, string filter, string sortBy, SortDirection sortDirection)
         {
             var baseQuery = _context.Companies
                 .Include(c => c.Address)
@@ -126,12 +126,12 @@ namespace KropkaNet.Api.Services.ClientSide
                 var columnsSelector = new Dictionary<string, Expression<Func<Company, object>>>
                 {
                     { "id", c => c.Id},
-                    { "CompanyName", c => c.CompanyName}
+                    { "companyName", c => c.CompanyName}
                 };
 
                 var selectedColumn = columnsSelector[sortBy];
 
-                baseQuery = sortDireciton == SortDirection.ASC
+                baseQuery = sortDirection == SortDirection.ASC
                     ? baseQuery.OrderBy(selectedColumn)
                     : baseQuery.OrderByDescending(selectedColumn);
             }

@@ -3,6 +3,8 @@ using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Dtos.ClientSide.User;
 using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Api.Services.ClientSide;
+using KropkaNet.Objects.Entities.Models.ClientSide;
+using System.Globalization;
 
 namespace KropkaNet.Api.Controllers.ClientSide
 {
@@ -29,6 +31,43 @@ namespace KropkaNet.Api.Controllers.ClientSide
             [FromQuery] SortDirection sortDirection)
         {
             var result = _userService.GetAll(page, filter, sortBy, sortDirection);
+            return Ok(result);
+        }
+
+        // GET: api/kropkaNet/user/getAll/notInCompany
+        [HttpGet("getAll/notInCompany")]
+        //[Authorize]
+        public ActionResult NotInCompany(
+            [FromQuery] int companyId)
+        {
+            var result = _userService.NotInCompany(companyId);
+            return Ok(result);
+        }
+
+        // GET: api/kropkaNet/user/getAll/notInOrder
+        [HttpGet("getAll/notInOrder")]
+        //[Authorize]
+        public ActionResult NotInOrder([FromQuery] int orderId)
+        {
+            var result = _userService.NotInOrder(orderId);
+            return Ok(result);
+        }
+
+        // GET: api/kropkaNet/user/getFromOrder/{orderId}
+        [HttpGet("getFromOrder/{orderId}")]
+        //[Authorize]
+        public ActionResult<ReturnResult<UserDto>> GetFromOrder([FromRoute] int orderId, [FromQuery] string? sortBy, [FromQuery] SortDirection sortDirection)
+        {
+            var result = _userService.GetFromOrder(orderId, sortBy, sortDirection);
+            return Ok(result);
+        }
+
+        // GET: api/kropkaNet/user/getFromCompany/{companyId}
+        [HttpGet("getFromCompany/{companyId}")]
+        //[Authorize]
+        public ActionResult GetFromCompany([FromRoute] int companyId, [FromQuery] string? sortBy, [FromQuery] SortDirection sortDirection)
+        {
+            var result = _userService.GetFromCompany(companyId, sortBy, sortDirection);
             return Ok(result);
         }
 

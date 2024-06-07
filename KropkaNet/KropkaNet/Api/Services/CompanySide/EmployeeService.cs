@@ -6,12 +6,14 @@ using KropkaNet.Objects.Dtos.CompanySide.Employee;
 using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Models.CompanySide;
+using KropkaNet.Objects.Dtos.ClientSide.User;
 
 namespace KropkaNet.Api.Services.CompanySide
 {
     public interface IEmployeeService
     {
         ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
+        List<EmployeeListDto> GetFromStocktaking(int stocktakingId);
         EmployeeDto GetById(int employeeId);
         int Update(int id, UpdateEmployeeDto dto);
         void ChangePosition(int employeeId, int positionId);
@@ -75,6 +77,17 @@ namespace KropkaNet.Api.Services.CompanySide
             var result = new ReturnResult<EmployeeListDto>(items, totalCount);
 
             return result;
+        }
+
+        public List<EmployeeListDto> GetFromStocktaking(int stocktakingId)
+        {
+            var employees = _context.Employees
+                .Include(u => u.Stocktakings)
+                .Where(u => u.Stocktakings.Any(o => o.Id == stocktakingId))
+                .ToList();
+
+            var employeesDto = _mapper.Map<List<EmployeeListDto>>(employees);
+            return employeesDto;
         }
         // GET: get list of employees by id - to fix
         public EmployeeDto GetById(int employeeId)

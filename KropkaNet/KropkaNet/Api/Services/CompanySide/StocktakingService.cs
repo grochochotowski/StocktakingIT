@@ -2,6 +2,7 @@
 using KropkaNet.Objects.Dtos.CompanySide.Stocktaking;
 using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Enum;
+using KropkaNet.Objects.Entities.Models.ClientSide;
 using KropkaNet.Objects.Entities.Models.CompanySide;
 using KropkaNetApi.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -11,9 +12,9 @@ namespace KropkaNet.Api.Services.CompanySide
 {
     public interface IStocktakingService
     {
-        int Create(CreateStocktakingDto dto);
+        int Create(int orderId, CreateStocktakingDto dto);
         ReturnResult<StocktakingListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection);
-        StocktakingDto GetDetails(int id);
+        StocktakingDetailsDto GetDetails(int id);
         int Update(int id, UpdateStocktakingDto dto);
         void AddEmployee(int stocktakingId, int employeeId);
         void RemoveEmployee(int stocktakingId, int employeeId);
@@ -31,9 +32,10 @@ namespace KropkaNet.Api.Services.CompanySide
             _mapper = mapper;
         }
 
-        public int Create(CreateStocktakingDto dto)
+        public int Create(int orderId, CreateStocktakingDto dto)
         {
             var stocktaking = _mapper.Map<Stocktaking>(dto);
+            stocktaking.OrderId = orderId;
 
             var warehouse = new Warehouse();
             _context.Warehouses.Add(warehouse);
@@ -45,6 +47,10 @@ namespace KropkaNet.Api.Services.CompanySide
             _context.SaveChanges();
 
             warehouse.StocktakingId = stocktaking.Id;
+            _context.SaveChanges();
+
+            var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
+            order.StocktakingId = stocktaking.Id;
             _context.SaveChanges();
 
             return stocktaking.Id;
@@ -92,13 +98,29 @@ namespace KropkaNet.Api.Services.CompanySide
             return result;
         }
 
-        public StocktakingDto GetDetails(int id)
+        public StocktakingDetailsDto GetDetails(int id)
         {
-            var stocktaking = _context.Stocktakings.FirstOrDefault(s => s.Id == id);
+            var stocktaking = _context.Stocktakings
+                .Include(s => s.Order)
+                    .ThenInclude(o => o.Department)
+                    .ThenInclude(d => d.Company)
+                    .ThenInclude(c => c.Address)
+                .FirstOrDefault(s => s.Id == id);
             if (stocktaking == null)
                 throw new NotFoundException("Stocktaking not found");
 
-            return _mapper.Map<StocktakingDto>(stocktaking);
+            var result = new StocktakingDetailsDto {
+                Id = stocktaking.Id,
+                ExpectedTimeHours = stocktaking.ExpectedTimeHours,
+                Note = stocktaking.Note,
+                WarehouseId = stocktaking.WarehouseId,
+                DateOfOrderExecution = stocktaking.Order.DateOfOrderExecution,
+                CompanyName = stocktaking.Order.Department.Company.CompanyName,
+                DepartmentName = stocktaking.Order.Department.DepartmentName,
+                Address = stocktaking.Order.Department.Company.Address
+            };
+
+            return result;
         }
 
         public int Update(int id, UpdateStocktakingDto dto)

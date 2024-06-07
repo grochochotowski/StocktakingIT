@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { useParams } from 'react-router-dom'
+import { axiosInstance, refreshToken } from '../../api/axios';
+import { GlobalStateContext } from '../../GlobalState';
 
 import NavBar from '../../components/NavBar'
+import NavBarEmployee from '../../components/NavBarEmployee'
 import ProductBox from '../../components/ProductBox'
 
 import '../../styles/index.css'
@@ -8,57 +12,117 @@ import '../../styles/details.css'
 
 function StocktakingDetails() {
 
-    const [stocktaking, setStocktaking] = useState({
-        "id" : 1,
-        "expectedTimeHours": 6,
-        "note" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, labore odit asperiores minima impedit dolorum officia similique temporibus nulla neque, commodi nemo ab nostrum quaerat in libero assumenda est id.",
-        "dateOfOrderExecution": "2024-05-27T20:48:41.712",
-        "companyName": "Company name",
-        "departmentName": "Department name",
-        "address": {
-            "country" : "Address element",
-            "city" : "Address element",
-            "zipCode" : "Address element",
-            "street" : "Address element",
-            "building" : "Address element",
-            "premises" : "Address element",
+    const { state, setState } = useContext(GlobalStateContext);
+    const params = useParams();
+    
+    const [stocktaking, setStocktaking] = useState({})
+    const [warehouse, setWarehouse] = useState([]);
+    const [users, setUsers] = useState([]);
+    const [employees, setEmployees] = useState([])
+
+    async function fetchData() {
+        const token = await refreshToken();
+        getStocktaking(token)
+        getWarehouse(token)
+        getUsers(token)
+        getEmployees(token)
+    }
+    async function getStocktaking(token) {
+		let apiCall = `kropkaNet/stocktaking/${params.stocktakingId}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setStocktaking(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
-    })
+    }
+    async function getWarehouse(token) {
+		let apiCall = `kropkaNet/warehouse/${params.warehouseId}/products`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setWarehouse(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function getUsers(token) {
+		let apiCall = `kropkaNet/user/GetFromOrder/${params.orderId}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setUsers(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function getEmployees(token) {
+		let apiCall = `company/employee/${params.stocktakingId}/GetFromStocktaking`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setEmployees(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
 
-    const [warehouse, setWarehouse] = useState([
-        { "id": 1, "category": "PC-category-1", "name": "PC-name-1", "quantity": 1 },
-        { "id": 2, "category": "PC-category-2", "name": "PC-name-2", "quantity": 2 },
-        { "id": 3, "category": "PC-category-3", "name": "PC-name-3", "quantity": 3 },
-        { "id": 4, "category": "PC-category-4", "name": "PC-name-4", "quantity": 4 },
-        { "id": 5, "category": "PC-category-5", "name": "PC-name-5", "quantity": 5 }
-    ]);
-
-    const [users, setUsers] = useState([
-        { "name": "name1", "surname": "surname1" },
-        { "name": "name2", "surname": "surname2" },
-        { "name": "name3", "surname": "surname3" },
-        { "name": "name4", "surname": "surname4" }
-    ]);
-
-    const [employees, setEmployees] = useState([
-        { "name": "name1", "surname": "surname1" },
-        { "name": "name2", "surname": "surname2" },
-        { "name": "name3", "surname": "surname3" },
-        { "name": "name4", "surname": "surname4" }
-    ])
+    useEffect(() => {
+        fetchData();
+    }, [])
 
     const formatDateTime = (dateString) => {
 		const date = new Date(dateString);
-		const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+		const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
 		return date.toLocaleString(undefined, options);
 	};
 
+    async function exportData() {
+        const token = await refreshToken();
+		let apiCall = `kropkaNet/warehouse/${params.warehouseId}/export`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                responseType: 'blob',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `Products_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.xlsx`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
     return (
         <>
-            <NavBar />
+            { state.level == "employee" ? <NavBarEmployee /> : <NavBar /> }
             <div className="container">
                 <div className="details">
-                    <h1>Stocktaking {stocktaking.id}</h1>
+                    <div className="stocktaking-header">
+                        <h1>Stocktaking {stocktaking.id}</h1>
+                        <button onClick={exportData}>Export data</button>
+                    </div>
                     <hr />
                     <div className="info-element">
                         <h2>Date & time</h2>
@@ -76,9 +140,14 @@ function StocktakingDetails() {
                     </div>
                     <div className="info-element">
                         <h2>Address</h2>
-                        <p>{stocktaking.address.country}, {stocktaking.address.city}, {stocktaking.address.zipCode}</p>
-                        <p>{stocktaking.address.street} {stocktaking.address.building}
-                        {stocktaking.address.premises != null ? " / " + stocktaking.address.premises : ""}</p>
+                        {stocktaking.address && (
+                            <>
+                                <p>{stocktaking.address.country}, {stocktaking.address.city}, {stocktaking.address.zipCode}</p>
+                                <p>{stocktaking.address.street} {stocktaking.address.building}
+                                    {stocktaking.address.premises ? ` / ${stocktaking.address.premises}` : ''}
+                                </p>
+                            </>
+                        )}
                     </div>
                     <div className="info-element-double">
                         <div className="users">

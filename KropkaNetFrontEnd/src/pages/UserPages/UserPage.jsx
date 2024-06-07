@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import { GlobalStateContext } from '../../GlobalState';
+import { axiosInstance, refreshToken } from '../../api/axios';
 
 import NavBar from '../../components/NavBar'
 
@@ -8,15 +10,38 @@ import '../../styles/form.css'
 
 function UserPage() {
 
-    const [user, setUser] = useState({
-        "id": 3002,
-        "name": "userName",
-        "surname": "userSurname",
-        "personalNumber": "userNumber",
-        "email": "userEmail",
-        "phoneNumber": "userPhone",
-        "note": "userNote"
-    })
+    const { state, setState } = useContext(GlobalStateContext);
+
+    const [user, setUser] = useState({})
+    const [updateUser, setUpdateUser] = useState({})
+
+    async function fetchData() {
+        const token = await refreshToken();
+        let apiCall = `kropkaNet/user/${state.personId}`
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setUser(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+    useEffect(() => {
+        setUpdateUser({
+            "name": user.name,
+            "surname": user.surname,
+            "email": user.email,
+            "phoneNumber": user.phoneNumber,
+            "note": user.note ? user.note : "",
+        })
+    }, [user])
 
     function handleInputChange(inputId) {
         setUser(prev => (
@@ -27,8 +52,20 @@ function UserPage() {
         ))
     }
 
-    function update() {
-        alert("update")
+    async function updateDate(e) {
+        e.preventDefault();
+        const token = await refreshToken();
+        let apiCall = `kropkaNet/user/update/${state.personId}`
+        try {
+            const response = await axiosInstance.put(apiCall, updateUser, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            fetchData()
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     }
 
     return (
@@ -44,7 +81,7 @@ function UserPage() {
                                 type="text"
                                 id="name"
                                 onChange={() => handleInputChange("name")}
-                                value={user.name}
+                                value={updateUser.name}
                             />
                         </div>
                         <div className="input-container">
@@ -53,16 +90,7 @@ function UserPage() {
                                 type="text"
                                 id="surname"
                                 onChange={() => handleInputChange("surname")}
-                                value={user.surname}
-                            />
-                        </div>
-                        <div className="input-container">
-                            <label htmlFor="personalNumber">Personal Number:</label>
-                            <input
-                                type="text"
-                                id="personalNumber"
-                                onChange={() => handleInputChange("personalNumber")}
-                                value={user.personalNumber}
+                                value={updateUser.surname}
                             />
                         </div>
                     </div>
@@ -73,7 +101,7 @@ function UserPage() {
                                 type="text"
                                 id="email"
                                 onChange={() => handleInputChange("email")}
-                                value={user.email}
+                                value={updateUser.email}
                             />
                         </div>
                         <div className="input-container">
@@ -82,7 +110,7 @@ function UserPage() {
                                 type="text"
                                 id="phoneNumber"
                                 onChange={() => handleInputChange("phoneNumber")}
-                                value={user.phoneNumber}
+                                value={updateUser.phoneNumber}
                             />
                         </div>
                     </div>
@@ -93,13 +121,13 @@ function UserPage() {
                                 type="text"
                                 id="note"
                                 onChange={() => handleInputChange("note")}
-                                value={user.note}
+                                value={updateUser.note}
                                 placeholder="Notes"
                             />
                         </div>
                     </div>
                     <div className="finish">
-                        <button onClick={update}>Save</button>
+                        <button onClick={updateDate}>Save</button>
                     </div>
                 </form>
             </div>

@@ -1,84 +1,198 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react';
+import { GlobalStateContext } from '../../GlobalState';
+import { axiosInstance, refreshToken } from '../../api/axios';
 
-function CompanyEdit({ hideBox, updateData }) {
+function CompanyEdit({updateData, selected}) {
 
-	const [company, setCompany] = useState({
-		"id": 2003,
-		"nip": "testcompany",
-		"krs": "testcompany",
-		"companyName": "testcompany",
-		"note": "testcompany",
-		"addressId": 4003,
-		"address": {
-		  "id": 4003,
-		  "country": "testcompany",
-		  "city": "testcompany",
-		  "zipCode": "testcompany",
-		  "street": "testcompany",
-		  "building": "testcompany",
-		  "premises": "testcompany"
-		},
-		"departments": [],
-		"users": []
-	})
+    const { state, setState } = useContext(GlobalStateContext);
 
-	const [companyEdit, setCompanyEdit] = useState({
-		"nip": company.nip,
-		"krs": company.krs,
-		"companyName": company.companyName,
-		"note": company.note,
-		"country": company.address.country,
-		"city": company.address.city,
-		"zipCode": company.address.zipCode,
-		"street": company.address.street,
-		"building": company.address.building,
-		"premises": company.address.premises
-	})
-
-	const [departments, setDepartments] = useState([
-		{ "id": 1, "departmentName": "name1" },
-		{ "id": 2, "departmentName": "name2" },
-		{ "id": 3, "departmentName": "name3" },
-		{ "id": 4, "departmentName": "name4" },
-		{ "id": 5, "departmentName": "name5" },
-		{ "id": 1, "departmentName": "name1" },
-		{ "id": 2, "departmentName": "name2" },
-		{ "id": 3, "departmentName": "name3" },
-		{ "id": 4, "departmentName": "name4" },
-		{ "id": 5, "departmentName": "name5" },
-		{ "id": 1, "departmentName": "name1" },
-		{ "id": 2, "departmentName": "name2" },
-		{ "id": 3, "departmentName": "name3" },
-		{ "id": 4, "departmentName": "name4" },
-		{ "id": 5, "departmentName": "name5" },
-	])
-	const [users, setUsers] = useState([
-		{ "id": 1, "name": "name1", "surname": "surname1" },
-		{ "id": 2, "name": "name2", "surname": "surname2" },
-		{ "id": 3, "name": "name3", "surname": "surname3" },
-		{ "id": 4, "name": "name4", "surname": "surname4" },
-		{ "id": 5, "name": "name5", "surname": "surname5" },
-		{ "id": 1, "name": "name1", "surname": "surname1" },
-		{ "id": 2, "name": "name2", "surname": "surname2" },
-		{ "id": 3, "name": "name3", "surname": "surname3" },
-		{ "id": 4, "name": "name4", "surname": "surname4" },
-		{ "id": 5, "name": "name5", "surname": "surname5" },
-		{ "id": 1, "name": "name1", "surname": "surname1" },
-		{ "id": 2, "name": "name2", "surname": "surname2" },
-		{ "id": 3, "name": "name3", "surname": "surname3" },
-		{ "id": 4, "name": "name4", "surname": "surname4" },
-		{ "id": 5, "name": "name5", "surname": "surname5" },
-	])
+	const [company, setCompany] = useState({})
+	const [departments, setDepartments] = useState([])
+	const [users, setUsers] = useState([])
+	const [notInUsers, setNotInUsers] = useState([])
 	
-	const handleSubmit = (e) => {
+	const [companyEdit, setCompanyEdit] = useState({})
+	const [newUser, setNewUser] = useState("")
+	const [newDepartment, setNewDepartment] = useState({"departmentName": ""})
+
+    const [sortingUser, setSortingUser] = useState(["id", 0])
+	const [sortingDepartment, setSortingDepartment] = useState(["id", 0])
+
+    async function fetchData() {
+        const token = await refreshToken();
+        getCompany(token)
+        getDepartments(token)
+        getUsers(token)
+        getNotInUsers(token)
+    }
+
+    async function getCompany(token) {
+        let apiCall = `kropkaNet/company/${selected}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setCompany(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function getDepartments(token) {
+        let apiCall = `kropkaNet/department/company/${selected}?` +
+        `sortBy=${sortingDepartment[0]}&` +
+        `sortDirection=${sortingDepartment[1] == 0 ? "ASC" : "DESC"}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setDepartments(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function getUsers(token) {
+        let apiCall = `kropkaNet/user/getFromCompany/${selected}?` +
+            `sortBy=${sortingUser[0]}&` +
+            `sortDirection=${sortingUser[1] == 0 ? "ASC" : "DESC"}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setUsers(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function getNotInUsers(token) {
+        let apiCall = `kropkaNet/user/getAll/notInCompany?companyId=${selected}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setNotInUsers(response.data);
+			setNewUser(response.data[0].id)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    useEffect(() => {
+		fetchData();
+    }, [sortingUser, sortingDepartment])
+	useEffect(() => {
+        if (company.address) {
+            updateInputs();
+        }
+    }, [company]);
+
+	function updateInputs() {
+		setCompanyEdit({
+			"nip": company.nip,
+			"krs": company.krs,
+			"companyName": company.companyName,
+			"note": company.note,
+			"country": company.address.country,
+			"city": company.address.city,
+			"zipCode": company.address.zipCode,
+			"street": company.address.street,
+			"building": company.address.building,
+			"premises": company.address.premises
+		})
+	}
+	
+	async function handleSubmit(e) {
 		e.preventDefault();
-		//console.log(dataToSend);
+        const token = await refreshToken();
+		let apiCall = `kropkaNet/company/update/${selected}`;
+        try {
+            const response = await axiosInstance.put(apiCall, companyEdit,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setCompany(response.data);
+			updateData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
 	};
-	const addDepartment = (e) => {
+	async function addDepartment(e) {
 		e.preventDefault();
-		console.log(newDepartment);
+		
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/department/create?companyId=${selected}`;
+        try {
+            const response = await axiosInstance.post(apiCall, newDepartment, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+			fetchData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+	};
+	async function addUser(e) {
+		e.preventDefault();
+		
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/company/addUser?userId=${newUser}&companyId=${selected}`;
+        try {
+            const response = await axiosInstance.patch(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+			fetchData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
 	};
 
+
+	async function handleDeleteUser(element) {
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/company/removeUser/?userId=${element}&companyId=${selected}`;
+        try {
+            const response = await axiosInstance.patch(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+			fetchData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+	}
+	async function handleDeleteDepartment(element) {
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/department/delete/${element}`;
+        try {
+            const response = await axiosInstance.delete(apiCall, newDepartment, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+			fetchData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+	}
+
+
+	const handleUserChange = (e) => setNewUser(e.target.value);
     function handleInputChange(inputId) {
         setCompanyEdit(prev => (
             {
@@ -87,20 +201,17 @@ function CompanyEdit({ hideBox, updateData }) {
             }
         ))
     }
+	function handleInputChange(inputId) {
+        setNewDepartment(prev => (
+            {
+                ...prev,
+                [inputId]: document.getElementById(inputId).value
+            }
+        ))
+    }
 
-	const [addUser, setAddUser] = useState("")
-	const [newDepartment, setNewDepartment] = useState("")
-	const handleUserChange = (e) => setAddUser(e.target.value);
 
-	function handleDeleteUser(element) {
-		alert(`deleted user ${element}`)
-	}
-	function handleDeleteDepartment(element) {
-		alert(`deleted department ${element}`)
-	}
 
-    const [sortingUser, setSortingUser] = useState(["id", 0])
-	const [sortingDepartment, setSortingDepartment] = useState(["id", 0])
 	function sortTableUser(column) {
         setSortingUser(prev => {
             if (prev[0] === column && prev[1] === 0) return [column, 1]
@@ -113,7 +224,8 @@ function CompanyEdit({ hideBox, updateData }) {
             return [column, 0]
         })
     }
-    function generateHeaderUser() {
+    
+	function generateHeaderUser() {
         return (
             <thead>
                 <tr>
@@ -255,64 +367,69 @@ function CompanyEdit({ hideBox, updateData }) {
                 	        </div>
                 	    </div>
 						<h4>Addres</h4>
-						<div className="layer row">
-                	        <div className="input-container">
-                	            <label htmlFor="country">Country:</label>
-                	            <input
-                	                type="text"
-                	                id="country"
-                	                onChange={() => handleInputChange("country")}
-                	                value={companyEdit.country}
-                	            />
-                	        </div>
-                	        <div className="input-container">
-                	            <label htmlFor="city">City:</label>
-                	            <input
-                	                type="text"
-                	                id="city"
-                	                onChange={() => handleInputChange("city")}
-                	                value={companyEdit.city}
-                	            />
-                	        </div>
-                	        <div className="input-container">
-                	            <label htmlFor="zipCode">Zip code:</label>
-                	            <input
-                	                type="text"
-                	                id="zipCode"
-                	                onChange={() => handleInputChange("zipCode")}
-                	                value={companyEdit.zipCode}
-                	            />
-                	        </div>
-                	    </div>
-						<div className="layer row">
-                	        <div className="input-container">
-                	            <label htmlFor="street">Street:</label>
-                	            <input
-                	                type="text"
-                	                id="street"
-                	                onChange={() => handleInputChange("street")}
-                	                value={companyEdit.street}
-                	            />
-                	        </div>
-                	        <div className="input-container">
-                	            <label htmlFor="building">Building:</label>
-                	            <input
-                	                type="text"
-                	                id="building"
-                	                onChange={() => handleInputChange("building")}
-                	                value={companyEdit.building}
-                	            />
-                	        </div>
-                	        <div className="input-container">
-                	            <label htmlFor="premises">Premises:</label>
-                	            <input
-                	                type="text"
-                	                id="premises"
-                	                onChange={() => handleInputChange("premises")}
-                	                value={companyEdit.premises}
-                	            />
-                	        </div>
-                	    </div>
+						{
+							company.address != null &&
+							<>
+								<div className="layer row">
+									<div className="input-container">
+										<label htmlFor="country">Country:</label>
+										<input
+											type="text"
+											id="country"
+											onChange={() => handleInputChange("country")}
+											value={companyEdit.country}
+										/>
+									</div>
+									<div className="input-container">
+										<label htmlFor="city">City:</label>
+										<input
+											type="text"
+											id="city"
+											onChange={() => handleInputChange("city")}
+											value={companyEdit.city}
+										/>
+									</div>
+									<div className="input-container">
+										<label htmlFor="zipCode">Zip code:</label>
+										<input
+											type="text"
+											id="zipCode"
+											onChange={() => handleInputChange("zipCode")}
+											value={companyEdit.zipCode}
+										/>
+									</div>
+								</div>
+								<div className="layer row">
+									<div className="input-container">
+										<label htmlFor="street">Street:</label>
+										<input
+											type="text"
+											id="street"
+											onChange={() => handleInputChange("street")}
+											value={companyEdit.street}
+										/>
+									</div>
+									<div className="input-container">
+										<label htmlFor="building">Building:</label>
+										<input
+											type="text"
+											id="building"
+											onChange={() => handleInputChange("building")}
+											value={companyEdit.building}
+										/>
+									</div>
+									<div className="input-container">
+										<label htmlFor="premises">Premises:</label>
+										<input
+											type="text"
+											id="premises"
+											onChange={() => handleInputChange("premises")}
+											value={companyEdit.premises}
+										/>
+									</div>
+								</div>
+							</>
+						}
 						<h4>Notes</h4>
 						<div className="layer row">
                 	        <div className="input-container">
@@ -338,11 +455,11 @@ function CompanyEdit({ hideBox, updateData }) {
 						</div>
 						<div className="new-object">
 							<select name="user" id="user" onChange={handleUserChange}>
-								{users.map(user => (
+								{notInUsers.map(user => (
 									<option key={user.id} value={user.id}>{user.name} {user.surname}</option>
 								))}
 							</select>
-							<button type="submit" onClick={addDepartment}>Add</button>
+							<button type="submit" onClick={addUser}>Add</button>
 						</div>
 					</div>
 					<div className="half">
@@ -356,9 +473,9 @@ function CompanyEdit({ hideBox, updateData }) {
 						<div className="new-object">
 							<input
 								type="text"
-								id="newDepartment"
-								onChange={() => setNewDepartment(document.getElementById("newDepartment").value)}
-								value={newDepartment}
+								id="departmentName"
+								onChange={() => handleInputChange("departmentName")}
+								value={newDepartment.departmentName}
 							/>
 							<button type="submit" onClick={addDepartment}>Create</button>
 						</div>
