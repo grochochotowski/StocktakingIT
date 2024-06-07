@@ -94,7 +94,7 @@ function OrderNew({selected}) {
 						}
 					</div>
 				</div>
-				<Link to={`/orders/${data.id}/stocktaking/${data.stocktakingId}/${data.warehouseId}`} className='button wide'>Go to stocktaking</Link>
+				{data.stocktakingId && <Link to={`/orders/${data.id}/stocktaking/${data.stocktakingId}/${data.warehouseId}`} className='button wide'>Go to stocktaking</Link>}
 			</div>
 		</div>
 	)
