@@ -15,15 +15,17 @@ function StocktakingDetails() {
     const [stocktaking, setStocktaking] = useState({})
     const [warehouse, setWarehouse] = useState([]);
     const [users, setUsers] = useState([]);
+    const [employees, setEmployees] = useState([])
 
     async function fetchData() {
         getStocktaking()
         getWarehouse()
         getUsers()
+        getEmployees()
     }
     async function getStocktaking() {
         const token = await refreshToken();
-		let apiCall = `kropkaNet/stocktaking/${params.orderId}`;
+		let apiCall = `kropkaNet/stocktaking/${params.stocktakingId}`;
         try {
             const response = await axiosInstance.get(apiCall, {
                 headers: {
@@ -51,7 +53,7 @@ function StocktakingDetails() {
     }
     async function getUsers() {
         const token = await refreshToken();
-		let apiCall = `kropkaNet/user/${params.id}/getAll`;
+		let apiCall = `kropkaNet/user/${params.orderId}/GetFromOrder`;
         try {
             const response = await axiosInstance.get(apiCall, {
                 headers: {
@@ -64,21 +66,23 @@ function StocktakingDetails() {
         }
     }
     async function getEmployees() {
-
+        const token = await refreshToken();
+		let apiCall = `company/employee/${params.stocktakingId}/GetFromStocktaking`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setEmployees(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     }
 
     useEffect(() => {
         fetchData();
       }, [])
-
-
-
-    const [employees, setEmployees] = useState([
-        { "name": "name1", "surname": "surname1" },
-        { "name": "name2", "surname": "surname2" },
-        { "name": "name3", "surname": "surname3" },
-        { "name": "name4", "surname": "surname4" }
-    ])
 
     const formatDateTime = (dateString) => {
 		const date = new Date(dateString);

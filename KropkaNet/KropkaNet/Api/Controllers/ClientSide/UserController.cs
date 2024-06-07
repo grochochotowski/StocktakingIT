@@ -33,8 +33,8 @@ namespace KropkaNet.Api.Controllers.ClientSide
             return Ok(result);
         }
 
-        // GET: api/kropkaNet/user/{orderId}/getAll
-        [HttpGet("{orderId}/getAll")]
+        // GET: api/kropkaNet/user/{orderId}/GetFromOrder
+        [HttpGet("{orderId}/GetFromOrder")]
         //[Authorize]
         public ActionResult<ReturnResult<UserDto>> GetFromOrder([FromRoute] int orderId)
         {

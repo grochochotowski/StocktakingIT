@@ -1,5 +1,7 @@
 ﻿using KropkaNet.Api.Services.CompanySide;
+using KropkaNet.Objects.Dtos.ClientSide.User;
 using KropkaNet.Objects.Dtos.CompanySide.Employee;
+using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Enum;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +32,16 @@ namespace KropkaNet.Api.Controllers.CompanySide
             var employeeDtos = _employeeService.GetList(page, filters, sortBy, sortDireciton);
             return Ok(employeeDtos);
         }
+
+        // GET: api/kropkaNet/user/{stocktakingId}/GetFromStocktaking
+        [HttpGet("{stocktakingId}/GetFromStocktaking")]
+        //[Authorize]
+        public ActionResult<ReturnResult<UserDto>> GetFromStocktaking([FromRoute] int stocktakingId)
+        {
+            var result = _employeeService.GetFromStocktaking(stocktakingId);
+            return Ok(result);
+        }
+
         // GET api/kropkaNet/employee/{id}
         [HttpGet("{employeeId}")]
         //[Authorize(Roles = "Employee, Moderator, Admin")]
