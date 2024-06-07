@@ -16,7 +16,21 @@
     gap: 5vw;
 }
 .filter input {
-    width: 40%;
+    width: 50%;
+}
+.filter button {
+    max-height: 3rem;
+}
+.filter.w-check .checkBoxex{
+    display: flex;
+    gap: 1vw;
+    width: 50%;
+}
+.filter.w-check .checkBoxex .input-container{
+    justify-content: center;
+    align-items: center;
+    flex-basis: 40%;
+    flex-grow: 1;
 }
 
 .list-menu {

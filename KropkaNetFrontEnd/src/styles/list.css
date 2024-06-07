@@ -60,6 +60,14 @@ th.no-select:hover {
 td {
     padding: 2vh 2vw;
 }
+
+td.warning {
+    color: var(--clr-warning-dark);
+}
+td.success {
+    color: var(--clr-success-dark);
+}
+
 td.u-thin {
     text-align: center;
 }

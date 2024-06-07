@@ -132,3 +132,12 @@ textarea:focus {
 textarea.warning {
     border-color: var(--clr-warning-dark);
 }
+
+input[type='checkbox'] {
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+}
+input[type='checkbox']:checked{
+    accent-color: var(--clr-acc-dark-500);
+} 
