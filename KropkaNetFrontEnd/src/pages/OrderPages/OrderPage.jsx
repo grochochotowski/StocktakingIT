@@ -36,7 +36,10 @@ function OrderPage() {
             `${filters.filters && "filters=" + filters.filters + "&"}` +
             `sortBy=${sorting[0]}&` +
             `sortDireciton=${sorting[1] == 0 ? "ASC" : "DESC"}&` +
-            `page=${page}`
+            `page=${page}&` +
+            `noDecision=${checked.none}&` +
+            `accepted=${checked.accept}&` +
+            `rejected=${checked.reject}`
         try {
             const response = await axiosInstance.get(apiCall, {
                 headers: {
@@ -51,7 +54,7 @@ function OrderPage() {
 
     useEffect(() => {
       fetchData();
-    }, [sorting, page])
+    }, [sorting, page, checked])
     
 
     useEffect(() => {
@@ -293,15 +296,15 @@ function OrderPage() {
                         <div className="checkBoxex">
                             <div className="input-container">
                                 <label htmlFor="none">No decision</label>
-                                <input type="checkbox" name="none" id="none" checked={checked.none} onClick={() => updateCheckBoxes("none")}/>
+                                <input type="checkbox" name="none" id="none" checked={checked.none} onChange={() => updateCheckBoxes("none")}/>
                             </div>
                             <div className="input-container">
                                 <label htmlFor="accept">Accepted</label>
-                                <input type="checkbox" name="accept" id="accept" checked={checked.accept} onClick={() => updateCheckBoxes("accept")}/>
+                                <input type="checkbox" name="accept" id="accept" checked={checked.accept} onChange={() => updateCheckBoxes("accept")}/>
                             </div>
                             <div className="input-container">
                                 <label htmlFor="reject">Rejected</label>
-                                <input type="checkbox" name="reject" id="reject" checked={checked.reject} onClick={() => updateCheckBoxes("reject")}/>
+                                <input type="checkbox" name="reject" id="reject" checked={checked.reject} onChange={() => updateCheckBoxes("reject")}/>
                             </div>
                         </div>
                     </div>

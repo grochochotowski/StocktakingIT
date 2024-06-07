@@ -6,14 +6,15 @@ using KropkaNet.Objects.Dtos.ClientSide.Order;
 using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Objects.Entities.Models.ClientSide;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace KropkaNet.Api.Services.ClientSide
 {
     public interface IOrderService
     {
         int Create(int? userId, CreateOrderDto dto);
-        ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton);
-        ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
+        ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton, bool noDecision, bool accepted, bool rejected);
+        ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton, bool noDecision, bool accepted, bool rejected);
         OrderDetailsDto GetDetails(int id);
         int Update(int id, UpdateOrderDto dto);
         void AddUser(int userId, int orderId);
@@ -55,8 +56,13 @@ namespace KropkaNet.Api.Services.ClientSide
         }
 
         // GET: get list of orders of user
-        public ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton)
+        public ReturnResult<OrderListDto> GetListUser(int userId, int page, string filter, string sortBy, SortDirection sortDireciton, bool noDecision, bool accepted, bool rejected)
         {
+            var states = new List<int>();
+            if (noDecision) states.Add(0);
+            if (accepted) states.Add(1);
+            if (rejected) states.Add(-1);
+
             var baseQuery = _context.Orders
                 .Include(c => c.Department)
                 .Include(c => c.Users)
@@ -65,7 +71,8 @@ namespace KropkaNet.Api.Services.ClientSide
                        c.State.ToString().Contains(filter) ||
                        c.Department.DepartmentName.Contains(filter) ||
                        c.Id.ToString().Contains(filter))) &&
-                       c.Users.Any(u => u.Id == userId));
+                       c.Users.Any(u => u.Id == userId) &&
+                       states.Contains(c.State));
 
             if (!string.IsNullOrEmpty(sortBy))
             {
@@ -104,16 +111,21 @@ namespace KropkaNet.Api.Services.ClientSide
         }
 
         // GET: get list of all orders
-        public ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton)
+        public ReturnResult<OrderListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton, bool noDecision, bool accepted, bool rejected)
         {
+            var states = new List<int>();
+            if (noDecision) states.Add(0);
+            if (accepted) states.Add(1);
+            if (rejected) states.Add(-1);
+
             var baseQuery = _context.Orders
                 .Include(c => c.Department)
                 .Include(c => c.Users)
                 .Where(c => (string.IsNullOrEmpty(filter) || (
                        c.State.ToString().Contains(filter) ||
                        c.Department.DepartmentName.Contains(filter) ||
-                       c.Id.ToString().Contains(filter))
-                ));
+                       c.Id.ToString().Contains(filter))) &&
+                       states.Contains(c.State));
 
             if (!string.IsNullOrEmpty(sortBy))
             {
