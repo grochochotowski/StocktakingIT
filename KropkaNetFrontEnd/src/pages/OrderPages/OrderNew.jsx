@@ -32,6 +32,7 @@ function OrderNew({ hideBox, updateData }) {
 
 	const handleDepartmentChange = (e) => setSelectedDepartment(e.target.value);
 	const handleDateChange = (e) => setOrderDate(e.target.value);
+	
 	async function handleSubmit(e) {
 		e.preventDefault();
 		const dataToSend = {

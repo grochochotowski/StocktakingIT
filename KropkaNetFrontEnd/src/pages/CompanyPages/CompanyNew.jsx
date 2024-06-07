@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { GlobalStateContext } from '../../GlobalState';
+import { axiosInstance, refreshToken } from '../../api/axios';
 
 function CompanyNew({ hideBox, updateData }) {
+
+    const { state, setState } = useContext(GlobalStateContext);
 
 	const [newCompanyData, setNewCompanyData] = useState({
 		"nip": "",
@@ -15,10 +19,23 @@ function CompanyNew({ hideBox, updateData }) {
 		"premises": ""
 	})
 	
-	const handleSubmit = (e) => {
+	async function handleSubmit(e) {
 		e.preventDefault();
-		//console.log(dataToSend);
-		hideBox();
+		
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/company/create?userId=${state.personId}`;
+        try {
+            const response = await axiosInstance.post(apiCall, newCompanyData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+			updateData();
+			hideBox();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
 	};
 
     function handleInputChange(inputId) {
