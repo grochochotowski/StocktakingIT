@@ -19,15 +19,9 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // GET api/kropkaNet/warehouse/{warehouseId}/products
         [HttpGet("products")]
-        public ActionResult<IEnumerable<CompanyDto>> GetFromWarehouse(
-            [FromRoute] int warehouseId,
-            [FromQuery] int page,
-            [FromQuery] string? filters,
-            [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
-            )
+        public ActionResult<IEnumerable<CompanyDto>> GetFromWarehouse([FromRoute] int warehouseId)
         {
-            var companyDtos = _warehouseProductService.GetFromWarehouse(warehouseId, page, filters, sortBy, sortDireciton);
+            var companyDtos = _warehouseProductService.GetFromWarehouse(warehouseId);
             return Ok(companyDtos);
         }
 
