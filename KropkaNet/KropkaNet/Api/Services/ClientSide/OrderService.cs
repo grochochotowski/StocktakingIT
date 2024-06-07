@@ -110,7 +110,6 @@ namespace KropkaNet.Api.Services.ClientSide
                 .Include(c => c.Department)
                 .Include(c => c.Users)
                 .Where(c => (string.IsNullOrEmpty(filter) || (
-                       c.DateOfOrderExecution.ToString().Contains(filter) ||
                        c.State.ToString().Contains(filter) ||
                        c.Department.DepartmentName.Contains(filter) ||
                        c.Id.ToString().Contains(filter))
@@ -121,9 +120,9 @@ namespace KropkaNet.Api.Services.ClientSide
                 var columnsSelector = new Dictionary<string, Expression<Func<Order, object>>>
                 {
                     { "id", c => c.Id},
-                    { "DateOfOrderExecution", c => c.DateOfOrderExecution},
-                    { "State", c => c.State},
-                    { "Name", c => c.Department.DepartmentName}
+                    { "dateOfOrderExecution", c => c.DateOfOrderExecution},
+                    { "state", c => c.State},
+                    { "departmentName", c => c.Department.DepartmentName}
                 };
 
                 var selectedColumn = columnsSelector[sortBy];
