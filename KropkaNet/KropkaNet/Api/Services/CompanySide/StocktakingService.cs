@@ -113,6 +113,7 @@ namespace KropkaNet.Api.Services.CompanySide
                 Id = stocktaking.Id,
                 ExpectedTimeHours = stocktaking.ExpectedTimeHours,
                 Note = stocktaking.Note,
+                WarehouseId = stocktaking.WarehouseId,
                 DateOfOrderExecution = stocktaking.Order.DateOfOrderExecution,
                 CompanyName = stocktaking.Order.Department.Company.CompanyName,
                 DepartmentName = stocktaking.Order.Department.DepartmentName,

@@ -10,9 +10,10 @@ namespace KropkaNet.Objects.Dtos.CompanySide.Stocktaking
         public int Id { get; set; }
         public int ExpectedTimeHours { get; set; }
         public string? Note { get; set; }
+        public int? WarehouseId { get; set; }
         public DateTime DateOfOrderExecution { get; set; }
         public string CompanyName { get; set; }
         public string DepartmentName { get; set; }
-        public Address Address{ get; set; }
+        public Address Address { get; set; }
     }
 }

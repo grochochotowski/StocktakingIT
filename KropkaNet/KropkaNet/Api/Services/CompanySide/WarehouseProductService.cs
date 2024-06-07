@@ -6,6 +6,8 @@ using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Dtos.CompanySide.Product;
 using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Objects.Entities.Models.CompanySide;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace KropkaNet.Api.Services.CompanySide
 {
@@ -88,8 +90,13 @@ namespace KropkaNet.Api.Services.CompanySide
 
             if (warehouseProduct == null)
             {
-                var warehouseProductDto = _mapper.Map<WarehouseProduct>(warehouseProduct);
-                _context.WarehouseProduct.Add(warehouseProductDto);
+                warehouseProduct = new WarehouseProduct
+                {
+                    WarehouseId = warehouseId,
+                    ProductId = productId,
+                    Quantity = quantity
+                };
+                _context.WarehouseProduct.Add(warehouseProduct);
             }
             else
             {
