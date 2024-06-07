@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react';
 import { GlobalStateContext } from '../../GlobalState';
 import { axiosInstance, refreshToken } from '../../api/axios';
 
@@ -20,6 +20,7 @@ function OrderNew({ hideBox, updateData }) {
                 }
             });
             setDepartments(response.data);
+			setSelectedDepartment(response.data[0].id)
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -46,7 +47,6 @@ function OrderNew({ hideBox, updateData }) {
                     Authorization: `Bearer ${token}`
                 }
             });
-			console.log(response)
 
 			updateData();
 			hideBox();
