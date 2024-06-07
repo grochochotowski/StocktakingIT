@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { axiosInstance, refreshToken } from '../../api/axios';
+import { GlobalStateContext } from '../../GlobalState';
 
 import NavBar from '../../components/NavBar'
+import NavBarEmployee from '../../components/NavBarEmployee'
 import ProductBox from '../../components/ProductBox'
 
 import '../../styles/index.css'
@@ -10,6 +12,7 @@ import '../../styles/details.css'
 
 function StocktakingDetails() {
 
+    const { state, setState } = useContext(GlobalStateContext);
     const params = useParams();
     
     const [stocktaking, setStocktaking] = useState({})
@@ -51,7 +54,7 @@ function StocktakingDetails() {
         }
     }
     async function getUsers(token) {
-		let apiCall = `kropkaNet/user/${params.orderId}/GetFromOrder`;
+		let apiCall = `kropkaNet/user/GetFromOrder/${params.orderId}`;
         try {
             const response = await axiosInstance.get(apiCall, {
                 headers: {
@@ -89,7 +92,7 @@ function StocktakingDetails() {
 
     return (
         <>
-            <NavBar />
+            { state.level == "employee" ? <NavBarEmployee /> : <NavBar /> }
             <div className="container">
                 <div className="details">
                     <h1>Stocktaking {stocktaking.id}</h1>

@@ -4,6 +4,7 @@ import { GlobalStateContext } from '../../GlobalState';
 import { axiosInstance, refreshToken } from '../../api/axios';
 
 import NavBar from '../../components/NavBar'
+import NavBarEmployee from '../../components/NavBarEmployee'
 import CompanyNew from './CompanyNew'
 import CompanyEdit from './CompanyEdit'
 import CompanyInfo from './CompanyInfo'
@@ -222,7 +223,7 @@ function CompanyPage () {
 
     return (
         <>
-            <NavBar />
+            { state.level == "employee" ? <NavBarEmployee /> : <NavBar /> }
             <div className="container">
                 <div className="list">
                     <div className="filter">
@@ -243,10 +244,10 @@ function CompanyPage () {
                     </ul>
                 </div>
                 <div className="list-menu">
-                    <Link to="/companies" className="current button">
+                    <div className="current button objectOption" onClick={() => fetchData()}>
                         <i className="fa-solid fa-list"></i>
-                        <p>List</p>
-                    </Link>
+                        <p>Refresh data</p>
+                    </div>
                     <div onClick={() => selected != 0 && setBox("info")} className={selected ? "button objectOption" : "disable button objectOption"}>
                         <i className="fa-solid fa-info"></i>
                         <p>Details</p>

@@ -3,6 +3,8 @@ import { GlobalStateContext } from '../../GlobalState';
 import { axiosInstance, refreshToken } from '../../api/axios';
 
 import NavBar from '../../components/NavBar'
+import NavBarEmployee from '../../components/NavBarEmployee'
+
 import OrderNew from './OrderNew'
 import OrderEdit from './OrderEdit'
 import OrderInfo from './OrderInfo'
@@ -279,7 +281,7 @@ function OrderPage() {
 
     return (
         <>
-            <NavBar />
+            { state.level == "employee" ? <NavBarEmployee /> : <NavBar /> }
             <div className="container">
                 <div className="list">
                     <div className="filter w-check">
