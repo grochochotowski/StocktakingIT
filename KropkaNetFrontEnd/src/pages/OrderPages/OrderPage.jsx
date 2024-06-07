@@ -24,6 +24,11 @@ function OrderPage() {
     const [page, setPage] = useState(1);
     const [result, setResult] = useState({})
     const [box, setBox] = useState("");
+    const [checked, setChecked] = useState({
+        "none": true,
+        "reject": true,
+        "accept": true
+    })
 
     async function fetchData() {
         const token = await refreshToken();
@@ -86,6 +91,12 @@ function OrderPage() {
     }
     function filter() {
         fetchData();
+    }
+    function updateCheckBoxes(checkBox) {
+        setChecked(prev => ({
+            ...prev,
+            [checkBox] : !prev[checkBox]
+        }))
     }
 
     function generateHeader() {
@@ -279,7 +290,20 @@ function OrderPage() {
                             value={filters.filters}
                         />
                         <button onClick={() => filter()}>Filter</button>
-                        
+                        <div className="checkBoxex">
+                            <div className="input-container">
+                                <label htmlFor="none">No decision</label>
+                                <input type="checkbox" name="none" id="none" checked={checked.none} onClick={() => updateCheckBoxes("none")}/>
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="accept">Accepted</label>
+                                <input type="checkbox" name="accept" id="accept" checked={checked.accept} onClick={() => updateCheckBoxes("accept")}/>
+                            </div>
+                            <div className="input-container">
+                                <label htmlFor="reject">Rejected</label>
+                                <input type="checkbox" name="reject" id="reject" checked={checked.reject} onClick={() => updateCheckBoxes("reject")}/>
+                            </div>
+                        </div>
                     </div>
                     <table>
                         { generateHeader() }
