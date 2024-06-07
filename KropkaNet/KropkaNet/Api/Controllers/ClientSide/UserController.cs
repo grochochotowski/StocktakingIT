@@ -3,6 +3,7 @@ using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Dtos.ClientSide.User;
 using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Api.Services.ClientSide;
+using KropkaNet.Objects.Entities.Models.ClientSide;
 
 namespace KropkaNet.Api.Controllers.ClientSide
 {
@@ -29,6 +30,15 @@ namespace KropkaNet.Api.Controllers.ClientSide
             [FromQuery] SortDirection sortDirection)
         {
             var result = _userService.GetAll(page, filter, sortBy, sortDirection);
+            return Ok(result);
+        }
+
+        // GET: api/kropkaNet/user/{orderId}/getAll
+        [HttpGet("{orderId}/getAll")]
+        //[Authorize]
+        public ActionResult<ReturnResult<UserDto>> GetFromOrder([FromRoute] int orderId)
+        {
+            var result = _userService.GetFromOrder(orderId);
             return Ok(result);
         }
 

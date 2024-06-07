@@ -5,12 +5,14 @@ using KropkaNet.Objects.Dtos.ClientSide.User;
 using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Objects.Entities.Models.ClientSide;
+using Microsoft.EntityFrameworkCore;
 
 namespace KropkaNet.Api.Services.ClientSide
 {
     public interface IUserService
     {
         ReturnResult<UserListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection);
+        List<UserListDto> GetFromOrder(int orderId);
         UserDto GetDetails(int id);
         void Update(int id, UpdateUserDto dto);
         void Delete(int id);
@@ -72,7 +74,19 @@ namespace KropkaNet.Api.Services.ClientSide
 
             return result;
         }
-    
+
+        public List<UserListDto> GetFromOrder(int orderId)
+        {
+            var users = _context.Users
+                .Include(u => u.Orderds)
+                .Where(u => u.Orderds.Any(o => o.Id == orderId))
+                .ToList();
+
+            var usersDto = _mapper.Map<List<UserListDto>>(users);
+            return usersDto;
+        }
+
+
 
         public UserDto GetDetails(int id)
         {
