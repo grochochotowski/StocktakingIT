@@ -11,7 +11,7 @@ namespace KropkaNet.Api.Services.CompanySide
 {
     public interface IStocktakingService
     {
-        int Create(CreateStocktakingDto dto);
+        int Create(int orderId, CreateStocktakingDto dto);
         ReturnResult<StocktakingListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection);
         StocktakingDto GetDetails(int id);
         int Update(int id, UpdateStocktakingDto dto);
@@ -31,9 +31,10 @@ namespace KropkaNet.Api.Services.CompanySide
             _mapper = mapper;
         }
 
-        public int Create(CreateStocktakingDto dto)
+        public int Create(int orderId, CreateStocktakingDto dto)
         {
             var stocktaking = _mapper.Map<Stocktaking>(dto);
+            stocktaking.OrderId = orderId;
 
             var warehouse = new Warehouse();
             _context.Warehouses.Add(warehouse);
@@ -45,6 +46,10 @@ namespace KropkaNet.Api.Services.CompanySide
             _context.SaveChanges();
 
             warehouse.StocktakingId = stocktaking.Id;
+            _context.SaveChanges();
+
+            var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
+            order.StocktakingId = stocktaking.Id;
             _context.SaveChanges();
 
             return stocktaking.Id;
