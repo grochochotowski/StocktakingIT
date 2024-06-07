@@ -18,13 +18,13 @@ function StocktakingDetails() {
     const [employees, setEmployees] = useState([])
 
     async function fetchData() {
-        getStocktaking()
-        getWarehouse()
-        getUsers()
-        getEmployees()
-    }
-    async function getStocktaking() {
         const token = await refreshToken();
+        getStocktaking(token)
+        getWarehouse(token)
+        getUsers(token)
+        getEmployees(token)
+    }
+    async function getStocktaking(token) {
 		let apiCall = `kropkaNet/stocktaking/${params.stocktakingId}`;
         try {
             const response = await axiosInstance.get(apiCall, {
@@ -37,9 +37,8 @@ function StocktakingDetails() {
             console.error('Error fetching data:', error);
         }
     }
-    async function getWarehouse() {
-        const token = await refreshToken();
-		let apiCall = `kropkaNet/warehouse/${stocktaking.warehouseId}/products`;
+    async function getWarehouse(token) {
+		let apiCall = `kropkaNet/warehouse/${params.warehouseId}/products`;
         try {
             const response = await axiosInstance.get(apiCall, {
                 headers: {
@@ -51,8 +50,7 @@ function StocktakingDetails() {
             console.error('Error fetching data:', error);
         }
     }
-    async function getUsers() {
-        const token = await refreshToken();
+    async function getUsers(token) {
 		let apiCall = `kropkaNet/user/${params.orderId}/GetFromOrder`;
         try {
             const response = await axiosInstance.get(apiCall, {
@@ -65,8 +63,7 @@ function StocktakingDetails() {
             console.error('Error fetching data:', error);
         }
     }
-    async function getEmployees() {
-        const token = await refreshToken();
+    async function getEmployees(token) {
 		let apiCall = `company/employee/${params.stocktakingId}/GetFromStocktaking`;
         try {
             const response = await axiosInstance.get(apiCall, {
@@ -82,7 +79,7 @@ function StocktakingDetails() {
 
     useEffect(() => {
         fetchData();
-      }, [])
+    }, [])
 
     const formatDateTime = (dateString) => {
 		const date = new Date(dateString);

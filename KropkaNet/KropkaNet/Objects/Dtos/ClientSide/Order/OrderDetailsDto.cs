@@ -11,5 +11,7 @@
 
 
         public int? StocktakingId { get; set; }
+
+        public int? WarehouseId { get; set; }
     }
 }

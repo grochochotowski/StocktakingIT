@@ -168,13 +168,15 @@ namespace KropkaNet.Api.Services.ClientSide
         {
             var order = _context.Orders
                 .Include(c => c.Department)
+                .Include(c => c.Stocktaking)
                 .Select(p => new OrderDetailsDto
                 {
                     Id = p.Id,
                     DateOfOrderExecution = p.DateOfOrderExecution,
                     State = p.State,
                     DepartmentName = p.Department.DepartmentName,
-                    StocktakingId = p.StocktakingId
+                    StocktakingId = p.StocktakingId,
+                    WarehouseId = p.Stocktaking.WarehouseId
                 })
                 .FirstOrDefault(c => c.Id == id);
 
