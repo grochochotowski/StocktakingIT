@@ -31,14 +31,28 @@ function OrderNew({ hideBox, updateData }) {
 
 	const handleDepartmentChange = (e) => setSelectedDepartment(e.target.value);
 	const handleDateChange = (e) => setOrderDate(e.target.value);
-	const handleSubmit = (e) => {
+	async function handleSubmit(e) {
 		e.preventDefault();
 		const dataToSend = {
-			dateOfOrderExecution: orderDate,
-			departmentId: selectedDepartment
+			dateOfOrderExecution: orderDate + ":00.000Z",
+			departmentId: parseInt(selectedDepartment)
 		};
-		console.log(dataToSend);
-		hideBox();
+		
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/order/create?userId=${state.personId}`;
+        try {
+            const response = await axiosInstance.post(apiCall, dataToSend, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+			console.log(response)
+
+			updateData();
+			hideBox();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
 	};
 
 	return (
