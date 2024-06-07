@@ -4,6 +4,7 @@ using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Objects.Entities.Models.ClientSide;
 using KropkaNetApi.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace KropkaNet.Api.Services.ClientSide
@@ -11,9 +12,10 @@ namespace KropkaNet.Api.Services.ClientSide
     public interface IDepartmentService
     {
         int Create(CreateDepartmentDto dto);
-        public ReturnResult<DepartmentListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
+        ReturnResult<DepartmentListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
         ReturnResult<DepartmentListDto> GetListCompany(int companyId, int page, string filter, string sortBy, SortDirection sortDireciton);
-        public int Update(int id, CreateDepartmentDto dto);
+        List<UserDepartmentsDto> GetUserDepartments(int userId);
+        int Update(int id, CreateDepartmentDto dto);
         int Delete(int id);
     }
     public class DepartmentService : IDepartmentService
@@ -83,8 +85,24 @@ namespace KropkaNet.Api.Services.ClientSide
             return result;
         }
 
-        //GET : get list of orders
+        //GET : get list of user departments
+        public List<UserDepartmentsDto> GetUserDepartments(int userId)
+        {
+            var departments = _context.Departments
+                .Include(d => d.Company)
+                .Where(d => d.Company.Users.Any(u => u.Id == userId))
+                .Select(d => new UserDepartmentsDto
+                {
+                    Id = d.Id,
+                    CompanyName = d.Company.CompanyName,
+                    DepartmentName = d.DepartmentName
+                })
+                .ToList();
 
+            return departments;
+        }
+
+        //GET : get list of companies
         public ReturnResult<DepartmentListDto> GetListCompany(int companyId, int page, string filter, string sortBy, SortDirection sortDireciton)
         {
             var baseQuery = _context.Departments
