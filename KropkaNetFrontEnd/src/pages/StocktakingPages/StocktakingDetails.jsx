@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { axiosInstance, refreshToken } from '../../api/axios';
 
 import NavBar from '../../components/NavBar'
 import ProductBox from '../../components/ProductBox'
@@ -8,22 +10,41 @@ import '../../styles/details.css'
 
 function StocktakingDetails() {
 
-    const [stocktaking, setStocktaking] = useState({
-        "id" : 1,
-        "expectedTimeHours": 6,
-        "note" : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, labore odit asperiores minima impedit dolorum officia similique temporibus nulla neque, commodi nemo ab nostrum quaerat in libero assumenda est id.",
-        "dateOfOrderExecution": "2024-05-27T20:48:41.712",
-        "companyName": "Company name",
-        "departmentName": "Department name",
-        "address": {
-            "country" : "Address element",
-            "city" : "Address element",
-            "zipCode" : "Address element",
-            "street" : "Address element",
-            "building" : "Address element",
-            "premises" : "Address element",
+    const params = useParams();
+    
+    const [stocktaking, setStocktaking] = useState({})
+
+    function fetchData() {
+        getStocktaking()
+    }
+    async function getStocktaking() {
+        const token = await refreshToken();
+		let apiCall = `kropkaNet/stocktaking/${params.orderId}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log(response.data)
+            setStocktaking(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
-    })
+    }
+    async function getWarehouse() {
+
+    }
+    async function getUsers() {
+
+    }
+    async function getEmployees() {
+
+    }
+
+    useEffect(() => {
+        fetchData();
+      }, [])
 
     const [warehouse, setWarehouse] = useState([
         { "id": 1, "category": "PC-category-1", "name": "PC-name-1", "quantity": 1 },
@@ -49,7 +70,7 @@ function StocktakingDetails() {
 
     const formatDateTime = (dateString) => {
 		const date = new Date(dateString);
-		const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+		const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
 		return date.toLocaleString(undefined, options);
 	};
 
@@ -76,9 +97,14 @@ function StocktakingDetails() {
                     </div>
                     <div className="info-element">
                         <h2>Address</h2>
-                        <p>{stocktaking.address.country}, {stocktaking.address.city}, {stocktaking.address.zipCode}</p>
-                        <p>{stocktaking.address.street} {stocktaking.address.building}
-                        {stocktaking.address.premises != null ? " / " + stocktaking.address.premises : ""}</p>
+                        {stocktaking.address && (
+                            <>
+                                <p>{stocktaking.address.country}, {stocktaking.address.city}, {stocktaking.address.zipCode}</p>
+                                <p>{stocktaking.address.street} {stocktaking.address.building}
+                                    {stocktaking.address.premises ? ` / ${stocktaking.address.premises}` : ''}
+                                </p>
+                            </>
+                        )}
                     </div>
                     <div className="info-element-double">
                         <div className="users">
