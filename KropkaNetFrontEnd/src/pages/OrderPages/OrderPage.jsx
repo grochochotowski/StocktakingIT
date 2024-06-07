@@ -335,7 +335,7 @@ function OrderPage() {
             </div>
             { box && box == "new" && <OrderNew hideBox={() => setBox("")} updateData={() => fetchData()}/> }
             { box && box == "edit" && <OrderEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={selected}/> }
-            { box && box == "info" && <OrderInfo updateData={() => fetchData()} selected={selected}/> }
+            { box && box == "info" && <OrderInfo selected={selected}/> }
         </>
     )
 }
