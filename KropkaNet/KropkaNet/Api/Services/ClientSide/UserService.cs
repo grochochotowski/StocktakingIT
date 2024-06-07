@@ -12,6 +12,7 @@ namespace KropkaNet.Api.Services.ClientSide
     public interface IUserService
     {
         ReturnResult<UserListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection);
+        List<UserListDto> GetAll(int companyId);
         List<UserListDto> GetFromOrder(int orderId);
         List<UserListDto> GetFromCompany(int companyId, string sortBy, SortDirection sortDirection);
         UserDto GetDetails(int id);
@@ -73,6 +74,17 @@ namespace KropkaNet.Api.Services.ClientSide
             var result = new ReturnResult<UserListDto>(items, totalCount);
 
             return result;
+        }
+
+        public List<UserListDto> GetAll(int companyId)
+        {
+            var users = _context.Users
+               .Where(u => !u.Companies.Any(c => c.Id == companyId))
+               .ToList();
+
+            var userDtos = _mapper.Map<List<UserListDto>>(users);
+
+            return userDtos;
         }
 
         public List<UserListDto> GetFromOrder(int orderId)

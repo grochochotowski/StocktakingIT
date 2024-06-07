@@ -34,6 +34,16 @@ namespace KropkaNet.Api.Controllers.ClientSide
             return Ok(result);
         }
 
+        // GET: api/kropkaNet/user/getAll/list
+        [HttpGet("getAll/list")]
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
+        public ActionResult GetAllList(
+            [FromQuery] int companyId)
+        {
+            var result = _userService.GetAll(companyId);
+            return Ok(result);
+        }
+
         // GET: api/kropkaNet/user/{orderId}/GetFromOrder
         [HttpGet("{orderId}/GetFromOrder")]
         //[Authorize]

@@ -5,14 +5,15 @@ import { axiosInstance, refreshToken } from '../../api/axios';
 function CompanyEdit({updateData, selected}) {
 
     const { state, setState } = useContext(GlobalStateContext);
-	
-	const [companyEdit, setCompanyEdit] = useState({})
-	const [addUser, setAddUser] = useState("")
-	const [newDepartment, setNewDepartment] = useState({"departmentName": ""})
 
 	const [company, setCompany] = useState({})
 	const [departments, setDepartments] = useState([])
 	const [users, setUsers] = useState([])
+	const [notInUsers, setNotInUsers] = useState([])
+	
+	const [companyEdit, setCompanyEdit] = useState({})
+	const [newUser, setNewUser] = useState("")
+	const [newDepartment, setNewDepartment] = useState({"departmentName": ""})
 
     const [sortingUser, setSortingUser] = useState(["id", 0])
 	const [sortingDepartment, setSortingDepartment] = useState(["id", 0])
@@ -22,6 +23,7 @@ function CompanyEdit({updateData, selected}) {
         getCompany(token)
         getDepartments(token)
         getUsers(token)
+        getNotInUsers(token)
     }
 
     async function getCompany(token) {
@@ -63,6 +65,20 @@ function CompanyEdit({updateData, selected}) {
                 }
             });
             setUsers(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function getNotInUsers(token) {
+        let apiCall = `kropkaNet/user/getAll/list?companyId=${selected}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setNotInUsers(response.data);
+			setNewUser(response.data[0].id)
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -125,26 +141,39 @@ function CompanyEdit({updateData, selected}) {
             console.error('Error fetching data:', error);
         }
 	};
+	async function addUser(e) {
+		e.preventDefault();
+		
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/company/addUser?userId=${newUser}&companyId=${selected}`;
+        try {
+            const response = await axiosInstance.patch(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
-    function handleInputChange(inputId) {
-        setCompanyEdit(prev => (
-            {
-                ...prev,
-                [inputId]: document.getElementById(inputId).value
-            }
-        ))
-    }
-	const handleUserChange = (e) => setAddUser(e.target.value);
-	function handleInputChange(inputId) {
-        setNewDepartment(prev => (
-            {
-                ...prev,
-                [inputId]: document.getElementById(inputId).value
-            }
-        ))
-    }
+			fetchData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+	};
+
 
 	async function handleDeleteUser(element) {
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/company/removeUser/?userId=${element}&companyId=${selected}`;
+        try {
+            const response = await axiosInstance.patch(apiCall, newDepartment, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+			fetchData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
 	}
 	async function handleDeleteDepartment(element) {
 		const token = await refreshToken();
@@ -161,6 +190,26 @@ function CompanyEdit({updateData, selected}) {
             console.error('Error fetching data:', error);
         }
 	}
+
+
+	const handleUserChange = (e) => setNewUser(e.target.value);
+    function handleInputChange(inputId) {
+        setCompanyEdit(prev => (
+            {
+                ...prev,
+                [inputId]: document.getElementById(inputId).value
+            }
+        ))
+    }
+	function handleInputChange(inputId) {
+        setNewDepartment(prev => (
+            {
+                ...prev,
+                [inputId]: document.getElementById(inputId).value
+            }
+        ))
+    }
+
 
 
 	function sortTableUser(column) {
@@ -406,11 +455,11 @@ function CompanyEdit({updateData, selected}) {
 						</div>
 						<div className="new-object">
 							<select name="user" id="user" onChange={handleUserChange}>
-								{users.map(user => (
+								{notInUsers.map(user => (
 									<option key={user.id} value={user.id}>{user.name} {user.surname}</option>
 								))}
 							</select>
-							<button type="submit" onClick={addDepartment}>Add</button>
+							<button type="submit" onClick={addUser}>Add</button>
 						</div>
 					</div>
 					<div className="half">
