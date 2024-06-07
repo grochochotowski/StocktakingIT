@@ -323,10 +323,10 @@ function OrderPage() {
                     </ul>
                 </div>
                 <div className="list-menu">
-                    <Link to="/orders" className="current button">
+                    <div className="current button objectOption" onClick={() => fetchData()}>
                         <i className="fa-solid fa-list"></i>
-                        <p>List</p>
-                    </Link>
+                        <p>Refresh data</p>
+                    </div>
                     <div onClick={() => selected != 0 && setBox("info")} className={selected ? "button objectOption" : "disable button objectOption"}>
                         <i className="fa-solid fa-info"></i>
                         <p>Details</p>
