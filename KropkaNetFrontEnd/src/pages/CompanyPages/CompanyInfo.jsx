@@ -1,67 +1,74 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { axiosInstance, refreshToken } from '../../api/axios';
 
 import '../../styles/info.css'
 import '../../styles/list.css'
 
-function CompanyInfo({ updateData }) {
+function CompanyInfo({selected}) {
 
-	const [company, setCompany] = useState({
-		"id": 2003,
-		"nip": "testcompany",
-		"krs": "testcompany",
-		"companyName": "testcompany",
-		"note": "testcompany",
-		"addressId": 4003,
-		"address": {
-		  "id": 4003,
-		  "country": "testcompany",
-		  "city": "testcompany",
-		  "zipCode": "testcompany",
-		  "street": "testcompany",
-		  "building": "testcompany",
-		  "premises": "testcompany"
-		},
-		"departments": [],
-		"users": []
-	})
-	const [departments, setDepartments] = useState([
-		{ "id": 1, "departmentName": "name1" },
-		{ "id": 2, "departmentName": "name2" },
-		{ "id": 3, "departmentName": "name3" },
-		{ "id": 4, "departmentName": "name4" },
-		{ "id": 5, "departmentName": "name5" },
-		{ "id": 1, "departmentName": "name1" },
-		{ "id": 2, "departmentName": "name2" },
-		{ "id": 3, "departmentName": "name3" },
-		{ "id": 4, "departmentName": "name4" },
-		{ "id": 5, "departmentName": "name5" },
-		{ "id": 1, "departmentName": "name1" },
-		{ "id": 2, "departmentName": "name2" },
-		{ "id": 3, "departmentName": "name3" },
-		{ "id": 4, "departmentName": "name4" },
-		{ "id": 5, "departmentName": "name5" },
-	])
-	const [users, setUsers] = useState([
-		{ "id": 1, "name": "name1", "surname": "surname1" },
-		{ "id": 2, "name": "name2", "surname": "surname2" },
-		{ "id": 3, "name": "name3", "surname": "surname3" },
-		{ "id": 4, "name": "name4", "surname": "surname4" },
-		{ "id": 5, "name": "name5", "surname": "surname5" },
-		{ "id": 1, "name": "name1", "surname": "surname1" },
-		{ "id": 2, "name": "name2", "surname": "surname2" },
-		{ "id": 3, "name": "name3", "surname": "surname3" },
-		{ "id": 4, "name": "name4", "surname": "surname4" },
-		{ "id": 5, "name": "name5", "surname": "surname5" },
-		{ "id": 1, "name": "name1", "surname": "surname1" },
-		{ "id": 2, "name": "name2", "surname": "surname2" },
-		{ "id": 3, "name": "name3", "surname": "surname3" },
-		{ "id": 4, "name": "name4", "surname": "surname4" },
-		{ "id": 5, "name": "name5", "surname": "surname5" },
-	])
+	const [company, setCompany] = useState({})
+	const [departments, setDepartments] = useState([])
+	const [users, setUsers] = useState([])
 
-	const [sortingUser, setSortingUser] = useState(["id", 0])
+    const [sortingUser, setSortingUser] = useState(["id", 0])
 	const [sortingDepartment, setSortingDepartment] = useState(["id", 0])
+
+    async function fetchData() {
+        const token = await refreshToken();
+        getCompany(token)
+        getDepartments(token)
+        getUsers(token)
+    }
+
+    async function getCompany(token) {
+        let apiCall = `kropkaNet/company/${selected}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setCompany(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function getDepartments(token) {
+        let apiCall = `kropkaNet/department/company/${selected}?` +
+        `sortBy=${sortingDepartment[0]}&` +
+        `sortDirection=${sortingDepartment[1] == 0 ? "ASC" : "DESC"}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setDepartments(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    async function getUsers(token) {
+        let apiCall = `kropkaNet/user/getFromCompany/${selected}?` +
+            `sortBy=${sortingUser[0]}&` +
+            `sortDirection=${sortingUser[1] == 0 ? "ASC" : "DESC"}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setUsers(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    useEffect(() => {
+      fetchData();
+    }, [sortingUser, sortingDepartment])
+
+
 	function sortTableUser(column) {
         setSortingUser(prev => {
             if (prev[0] === column && prev[1] === 0) return [column, 1]
@@ -189,8 +196,11 @@ function CompanyInfo({ updateData }) {
 					</div>
 					<div className="info-line">
 						<h4>Address:</h4>
-						<p>{company.address.street} {company.address.building} {company.address.zipCode} {company.address.building}
-                        {company.address.premises != null ? " / " + company.address.premises : ""}</p>
+                        {
+                            company.address &&
+                                <p>{company.address.street} {company.address.building} {company.address.zipCode} {company.address.building}
+                                {company.address.premises != null ? " / " + company.address.premises : ""}</p>
+                        }
 					</div>
 				</div>
 				<div className="info-box divide">

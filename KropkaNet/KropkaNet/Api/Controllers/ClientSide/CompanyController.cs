@@ -40,10 +40,10 @@ namespace KropkaNet.Api.Controllers.ClientSide
             [FromQuery] int page,
             [FromQuery] string? filters,
             [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
+            [FromQuery] SortDirection sortDirection
             )
         {
-            var companyDtos = _companyService.GetListUser(userId, page, filters, sortBy, sortDireciton);
+            var companyDtos = _companyService.GetListUser(userId, page, filters, sortBy, sortDirection);
             return Ok(companyDtos);
         }
 
@@ -54,10 +54,10 @@ namespace KropkaNet.Api.Controllers.ClientSide
             [FromQuery] int page,
             [FromQuery] string? filters,
             [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
+            [FromQuery] SortDirection sortDirection
             )
         {
-            var companyDtos = _companyService.GetList(page, filters, sortBy, sortDireciton);
+            var companyDtos = _companyService.GetList(page, filters, sortBy, sortDirection);
             return Ok(companyDtos);
         }
 

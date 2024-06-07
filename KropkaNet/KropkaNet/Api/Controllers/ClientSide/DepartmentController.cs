@@ -38,25 +38,23 @@ namespace KropkaNet.Api.Controllers.ClientSide
             [FromQuery] int page,
             [FromQuery] string? filters,
             [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
+            [FromQuery] SortDirection sortDirection
             )
         {
-            var departmentDtos = _departmentService.GetList(page, filters, sortBy, sortDireciton);
+            var departmentDtos = _departmentService.GetList(page, filters, sortBy, sortDirection);
             return Ok(departmentDtos);
         }
 
-        // GET api/kropkaNet/company/departemnt/{companyId}
-        [HttpGet("company/department/{companyId}")]
+        // GET api/kropkaNet/company/{companyId}
+        [HttpGet("company/{companyId}")]
         //[Authorize]
-        public ActionResult<IEnumerable<DepartmentListDto>> GetListCompany(
+        public ActionResult GetFromCompany(
             [FromRoute] int companyId,
-            [FromQuery] int page,
-            [FromQuery] string? filters,
             [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
+            [FromQuery] SortDirection sortDirection
             )
         {
-            var departmentDtos = _departmentService.GetListCompany(companyId, page, filters, sortBy, sortDireciton);
+            var departmentDtos = _departmentService.GetFromCompany(companyId, sortBy, sortDirection);
             return Ok(departmentDtos);
         }
 

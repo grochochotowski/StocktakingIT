@@ -4,6 +4,7 @@ using KropkaNet.Objects.Dtos.ClientSide.User;
 using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Api.Services.ClientSide;
 using KropkaNet.Objects.Entities.Models.ClientSide;
+using System.Globalization;
 
 namespace KropkaNet.Api.Controllers.ClientSide
 {
@@ -39,6 +40,15 @@ namespace KropkaNet.Api.Controllers.ClientSide
         public ActionResult<ReturnResult<UserDto>> GetFromOrder([FromRoute] int orderId)
         {
             var result = _userService.GetFromOrder(orderId);
+            return Ok(result);
+        }
+
+        // GET: api/kropkaNet/user/getFromCompany/{companyId}
+        [HttpGet("getFromCompany/{companyId}")]
+        //[Authorize]
+        public ActionResult GetFromCompany([FromRoute] int companyId, [FromQuery] string? sortBy, [FromQuery] SortDirection sortDirection)
+        {
+            var result = _userService.GetFromCompany(companyId, sortBy, sortDirection);
             return Ok(result);
         }
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using KropkaNet.Objects.Dtos.ClientSide.Department;
+using KropkaNet.Objects.Dtos.ClientSide.User;
 using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Objects.Entities.Models.ClientSide;
@@ -12,8 +13,8 @@ namespace KropkaNet.Api.Services.ClientSide
     public interface IDepartmentService
     {
         int Create(CreateDepartmentDto dto);
-        ReturnResult<DepartmentListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
-        ReturnResult<DepartmentListDto> GetListCompany(int companyId, int page, string filter, string sortBy, SortDirection sortDireciton);
+        ReturnResult<DepartmentListDto> GetList(int page, string? filter, string? sortBy, SortDirection sortDireciton);
+        List<DepartmentListDto> GetFromCompany(int companyId, string? sortBy, SortDirection sortDireciton);
         List<UserDepartmentsDto> GetUserDepartments(int userId);
         int Update(int id, CreateDepartmentDto dto);
         int Delete(int id);
@@ -44,7 +45,7 @@ namespace KropkaNet.Api.Services.ClientSide
         }
 
         // GET: get list of all departemnts
-        public ReturnResult<DepartmentListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton)
+        public ReturnResult<DepartmentListDto> GetList(int page, string? filter, string ?sortBy, SortDirection sortDireciton)
         {
             var baseQuery = _context.Departments
                 .Where(c => (string.IsNullOrEmpty(filter) || (
@@ -70,7 +71,6 @@ namespace KropkaNet.Api.Services.ClientSide
             var items = baseQuery
                 .Skip(10 * (page - 1))
                 .Take(10)
-                .OrderBy(p => p.DepartmentName)
                 .Select(p => new DepartmentListDto
                 {
                     Id = p.Id,
@@ -102,34 +102,28 @@ namespace KropkaNet.Api.Services.ClientSide
             return departments;
         }
 
-        //GET : get list of companies
-        public ReturnResult<DepartmentListDto> GetListCompany(int companyId, int page, string filter, string sortBy, SortDirection sortDireciton)
+        //GET : get list from companies
+        public List<DepartmentListDto> GetFromCompany(int companyId, string? sortBy, SortDirection sortDirection)
         {
             var baseQuery = _context.Departments
-                .Where(c => (string.IsNullOrEmpty(filter) || (
-                       c.DepartmentName.ToLower().Contains(filter.ToLower()) ||
-                       c.Id.ToString().Contains(filter))) &&
-                       c.CompanyId == companyId);
+                .Where(c => c.CompanyId == companyId);
 
             if (!string.IsNullOrEmpty(sortBy))
             {
                 var columnsSelector = new Dictionary<string, Expression<Func<Department, object>>>
                 {
                     { "id", c => c.Id},
-                    { "DepartmentName", c => c.DepartmentName}
+                    { "departmentName", c => c.DepartmentName}
                 };
 
                 var selectedColumn = columnsSelector[sortBy];
 
-                baseQuery = sortDireciton == SortDirection.ASC
+                baseQuery = sortDirection == SortDirection.ASC
                     ? baseQuery.OrderBy(selectedColumn)
                     : baseQuery.OrderByDescending(selectedColumn);
             }
 
-            var items = baseQuery
-                .Skip(10 * (page - 1))
-                .Take(10)
-                .OrderBy(p => p.DepartmentName)
+            var departments = baseQuery
                 .Select(p => new DepartmentListDto
                 {
                     Id = p.Id,
@@ -137,11 +131,8 @@ namespace KropkaNet.Api.Services.ClientSide
                 })
                 .ToList();
 
-            var totalCount = baseQuery.Count();
-
-            var result = new ReturnResult<DepartmentListDto>(items, totalCount);
-
-            return result;
+            var departmentDtos = _mapper.Map<List<DepartmentListDto>>(departments);
+            return departmentDtos;
         }
 
         // PUT: update department

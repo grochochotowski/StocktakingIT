@@ -36,8 +36,8 @@ function CompanyPage () {
         }
         apiCall += `${filters.filters && "filters=" + filters.filters + "&"}` +
             `sortBy=${sorting[0]}&` +
-            `sortDireciton=${sorting[1] == 0 ? "ASC" : "DESC"}&` +
-            `page=${page}&`;
+            `sortDirection=${sorting[1] == 0 ? "ASC" : "DESC"}&` +
+            `page=${page}`;
         try {
             const response = await axiosInstance.get(apiCall, {
                 headers: {
@@ -265,7 +265,7 @@ function CompanyPage () {
             </div>
             { box && box == "new" && <CompanyNew hideBox={() => setBox("")} updateData={() => fetchData()}/> }
             { box && box == "edit" && <CompanyEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={selected}/> }
-            { box && box == "info" && <CompanyInfo updateData={() => fetchData()} selected={selected}/> }
+            { box && box == "info" && <CompanyInfo selected={selected}/> }
         </>
     )
 }
