@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { GlobalStateContext } from '../../GlobalState';
+import { axiosInstance, refreshToken } from '../../api/axios';
 
 import NavBar from '../../components/NavBar'
 import CompanyNew from './CompanyNew'
@@ -14,33 +16,43 @@ import '../../styles/info.css'
 
 function CompanyPage () {
 
+    const { state, setState } = useContext(GlobalStateContext);
+
     const [sorting, setSorting] = useState(["id", 0])
     const [filters, setFilters] = useState({ "filters" : "" })
     const [selected, setSelected] = useState(0);
     const [page, setPage] = useState(1);
-    const [result, setResult] = useState({
-        "items": [
-          {
-            "id": 4,
-            "companyName": "test"
-          },
-          {
-            "id": 1003,
-            "companyName": "string4"
-          },
-          {
-            "id": 2002,
-            "companyName": "user2company"
-          },
-          {
-            "id": 2003,
-            "companyName": "testcompany"
-          }
-        ],
-        "totalItems": 4,
-        "totalPages": 1
-    })
+    const [result, setResult] = useState({})
     const [box, setBox] = useState("");
+
+    async function fetchData() {
+        const token = await refreshToken();
+        let apiCall = `kropkaNet/company/`
+        if (state.level == "employee") {
+            apiCall += `all?`
+        }
+        else if (state.level == "user") {
+            apiCall += `user/${state.personId}?`
+        }
+        apiCall += `${filters.filters && "filters=" + filters.filters + "&"}` +
+            `sortBy=${sorting[0]}&` +
+            `sortDireciton=${sorting[1] == 0 ? "ASC" : "DESC"}&` +
+            `page=${page}&`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setResult(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    useEffect(() => {
+      fetchData();
+    }, [sorting, page])
 
     useEffect(() => {
         function handleClickOutside(event) {
