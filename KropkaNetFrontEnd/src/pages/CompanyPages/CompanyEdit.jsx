@@ -70,7 +70,7 @@ function CompanyEdit({updateData, selected}) {
         }
     }
     async function getNotInUsers(token) {
-        let apiCall = `kropkaNet/user/getAll/list?companyId=${selected}`;
+        let apiCall = `kropkaNet/user/getAll/notInCompany?companyId=${selected}`;
         try {
             const response = await axiosInstance.get(apiCall, {
                 headers: {
@@ -164,7 +164,7 @@ function CompanyEdit({updateData, selected}) {
 		const token = await refreshToken();
         const apiCall = `kropkaNet/company/removeUser/?userId=${element}&companyId=${selected}`;
         try {
-            const response = await axiosInstance.patch(apiCall, newDepartment, {
+            const response = await axiosInstance.patch(apiCall, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

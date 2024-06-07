@@ -253,6 +253,8 @@ namespace KropkaNet.Api.Services.ClientSide
             var order = _context.Orders.FirstOrDefault(p => p.Id == id);
             if (order == null) throw new NotFoundException("Order not found");
 
+            if (order.StocktakingId != null) throw new BadRequestException("Can't delete order");
+
             _context.Remove(order);
             _context.SaveChanges();
         }

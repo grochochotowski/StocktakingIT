@@ -34,22 +34,31 @@ namespace KropkaNet.Api.Controllers.ClientSide
             return Ok(result);
         }
 
-        // GET: api/kropkaNet/user/getAll/list
-        [HttpGet("getAll/list")]
-        //[Authorize(Roles = "Employee, Moderator, Admin")]
-        public ActionResult GetAllList(
+        // GET: api/kropkaNet/user/getAll/notInCompany
+        [HttpGet("getAll/notInCompany")]
+        //[Authorize]
+        public ActionResult NotInCompany(
             [FromQuery] int companyId)
         {
-            var result = _userService.GetAll(companyId);
+            var result = _userService.NotInCompany(companyId);
             return Ok(result);
         }
 
-        // GET: api/kropkaNet/user/{orderId}/GetFromOrder
-        [HttpGet("{orderId}/GetFromOrder")]
+        // GET: api/kropkaNet/user/getAll/notInOrder
+        [HttpGet("getAll/notInOrder")]
         //[Authorize]
-        public ActionResult<ReturnResult<UserDto>> GetFromOrder([FromRoute] int orderId)
+        public ActionResult NotInOrder([FromQuery] int orderId)
         {
-            var result = _userService.GetFromOrder(orderId);
+            var result = _userService.NotInOrder(orderId);
+            return Ok(result);
+        }
+
+        // GET: api/kropkaNet/user/getFromOrder/{orderId}
+        [HttpGet("getFromOrder/{orderId}")]
+        //[Authorize]
+        public ActionResult<ReturnResult<UserDto>> GetFromOrder([FromRoute] int orderId, [FromQuery] string? sortBy, [FromQuery] SortDirection sortDirection)
+        {
+            var result = _userService.GetFromOrder(orderId, sortBy, sortDirection);
             return Ok(result);
         }
 
