@@ -42,5 +42,16 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
             return Ok();
         }
+
+        // GET api/kropkaNet/warehouse/{warehouseId}/export
+        [HttpGet("export")]
+        public async Task<IActionResult> Export([FromRoute] int warehouseId)
+        {
+            var fileContent = _warehouseProductService.Export(warehouseId);
+            var fileName = $"Products_{System.DateTime.Now:yyyyMMddHHmmss}.xlsx";
+            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            return File(fileContent, contentType, fileName);
+        }
     }
 }

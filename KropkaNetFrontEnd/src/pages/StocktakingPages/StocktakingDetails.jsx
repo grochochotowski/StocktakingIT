@@ -90,12 +90,39 @@ function StocktakingDetails() {
 		return date.toLocaleString(undefined, options);
 	};
 
+    async function exportData() {
+        const token = await refreshToken();
+		let apiCall = `kropkaNet/warehouse/${params.warehouseId}/export`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                responseType: 'blob',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `Products_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.xlsx`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
     return (
         <>
             { state.level == "employee" ? <NavBarEmployee /> : <NavBar /> }
             <div className="container">
                 <div className="details">
-                    <h1>Stocktaking {stocktaking.id}</h1>
+                    <div className="stocktaking-header">
+                        <h1>Stocktaking {stocktaking.id}</h1>
+                        <button onClick={exportData}>Export data</button>
+                    </div>
                     <hr />
                     <div className="info-element">
                         <h2>Date & time</h2>
