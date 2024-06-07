@@ -78,9 +78,7 @@ function CompanyPage () {
         }))
     }
     function filter() {
-        if(token) {
-            fetchData();
-        }
+        fetchData();
     }
 
     function generateHeader() {
