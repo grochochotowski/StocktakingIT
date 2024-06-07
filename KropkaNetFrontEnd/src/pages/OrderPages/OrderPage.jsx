@@ -61,19 +61,6 @@ function OrderPage() {
     useEffect(() => {
       fetchData();
     }, [sorting, page, checked])
-    
-
-    useEffect(() => {
-        function handleClickOutside(event) {
-          if (event.target.closest(".outside-box") && !event.target.closest(".content")) setBox("");
-        }
-    
-        document.addEventListener("click", handleClickOutside);
-    
-        return () => {
-          document.removeEventListener("click", handleClickOutside);
-        };
-    }, []);
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -167,7 +154,7 @@ function OrderPage() {
                     <tr className={order.id === selected ? "selected" : ""} key={order.id} id={order.id} onClick={() => setSelected(order.id)}>
                         <td>{order.id}</td>
                         <td>{order.departmentName}</td>
-                        <td>{order.dateOfOrderExecution}</td>
+                        <td>{formatDateTime(order.dateOfOrderExecution)}</td>
                         {
 							(() => {
 								if (order.state == -1) {
@@ -285,6 +272,11 @@ function OrderPage() {
         }
     }
 
+    const formatDateTime = (dateString) => {
+		const date = new Date(dateString);
+		const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+		return date.toLocaleString(undefined, options);
+	};
 
     return (
         <>
