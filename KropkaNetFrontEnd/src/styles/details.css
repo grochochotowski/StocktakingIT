@@ -99,3 +99,12 @@
 .stocktaking-header button {
     height: 3rem;
 }
+
+input.stocktaking-input {
+    padding: 0 1vh;
+    margin: 0 1vw;
+    width: 4rem;
+}
+textarea.stocktaking-textarea {
+    width: 98%;
+}

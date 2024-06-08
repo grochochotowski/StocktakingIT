@@ -14,6 +14,8 @@ function StocktakingDetails() {
 
     const { state, setState } = useContext(GlobalStateContext);
     const params = useParams();
+
+    const [changeData, setChangedata] = useState({"note" : "", "expectedTimeHours" : 0})
     
     const [stocktaking, setStocktaking] = useState({})
     const [warehouse, setWarehouse] = useState([]);
@@ -83,6 +85,12 @@ function StocktakingDetails() {
     useEffect(() => {
         fetchData();
     }, [])
+    useEffect(() => {
+        setChangedata({
+            "note" : stocktaking.note != null ? stocktaking.note : "",
+            "expectedTimeHours" : stocktaking.expectedTimeHours
+        })
+    }, [stocktaking])
 
     const formatDateTime = (dateString) => {
 		const date = new Date(dateString);
@@ -114,6 +122,27 @@ function StocktakingDetails() {
         }
     }
 
+    function handleChange(input) {
+        setChangedata(prev => ({
+            ...prev,
+            [input]: input == "expectedTimeHours" ? parseInt(document.getElementById(input).value) : document.getElementById(input).value
+        }))
+    }
+    async function saveData() {
+        const token = await refreshToken();
+        let apiCall = `kropkaNet/stocktaking/update/${params.stocktakingId}`;
+        try {
+            const response = await axiosInstance.put(apiCall, changeData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            fetchData()
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
     return (
         <>
             { state.level == "employee" ? <NavBarEmployee /> : <NavBar /> }
@@ -121,17 +150,30 @@ function StocktakingDetails() {
                 <div className="details">
                     <div className="stocktaking-header">
                         <h1>Stocktaking {stocktaking.id}</h1>
+                        {
+                            state.level == "employee" && <button onClick={saveData}>Save data</button>
+                        }
                         <button onClick={exportData}>Export data</button>
                     </div>
                     <hr />
                     <div className="info-element">
                         <h2>Date & time</h2>
                         <p>Date: {formatDateTime(stocktaking.dateOfOrderExecution)}</p>
-                        <p>Expected execution time: {stocktaking.expectedTimeHours} hours</p>
+                        <p>Expected execution time: 
+                            {
+                                state.level == "employee"
+                                ? <input id="expectedTimeHours" className="stocktaking-input" type="text" value={changeData.expectedTimeHours} onChange={() => handleChange("expectedTimeHours")}/>
+                                : stocktaking.expectedTimeHours
+                            }
+                        hours</p>
                     </div>
                     <div className="info-element">
                         <h2>Notes</h2>
-                        <p>{stocktaking.note}</p>
+                        {
+                            state.level == "employee"
+                            ? <textarea id="note" className="stocktaking-textarea" value={changeData.note} onChange={() => handleChange("note")}/>
+                            : <p>{stocktaking.note}</p>
+                        } 
                     </div>
                     <div className="info-element">
                         <h2>Order</h2>
