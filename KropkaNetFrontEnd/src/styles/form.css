@@ -109,6 +109,15 @@ select {
 select:focus {
     background-color: var(--clr-acc-dark-100);
 }
+select.warning,
+select.warning:focus {
+    background-color: var(--clr-warning-dark);
+}
+select.success,
+select.success:focus {
+    background-color: var(--clr-success-dark);
+    color: black;
+}
 
 
 textarea {

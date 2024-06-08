@@ -121,6 +121,7 @@ namespace KropkaNet.Api.Services.ClientSide
             var baseQuery = _context.Orders
                 .Include(c => c.Department)
                 .Include(c => c.Users)
+                .Include(c => c.Stocktaking)
                 .Where(c => (string.IsNullOrEmpty(filter) || (
                        c.State.ToString().Contains(filter) ||
                        c.Department.DepartmentName.Contains(filter) ||
@@ -152,7 +153,9 @@ namespace KropkaNet.Api.Services.ClientSide
                     Id = p.Id,
                     DateOfOrderExecution = p.DateOfOrderExecution,
                     State = p.State,
-                    DepartmentName = p.Department.DepartmentName
+                    DepartmentName = p.Department.DepartmentName,
+                    StocktakingId = p.StocktakingId,
+                    WarehouseId = p.Stocktaking != null ? p.Stocktaking.WarehouseId : null,
                 })
                 .ToList();
 

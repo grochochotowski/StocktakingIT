@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { GlobalStateContext } from '../../GlobalState';
 import { axiosInstance, refreshToken } from '../../api/axios';
+import { Link } from 'react-router-dom';
 
 import NavBar from '../../components/NavBar'
 import NavBarEmployee from '../../components/NavBarEmployee'
@@ -19,6 +20,7 @@ function OrderPage() {
 
     const { state, setState } = useContext(GlobalStateContext);
 
+    const [newState, setNewState] = useState([0, 0])
     const [sorting, setSorting] = useState(["id", 0])
     const [filters, setFilters] = useState({ "filters" : "" })
     const [selected, setSelected] = useState(0);
@@ -96,6 +98,60 @@ function OrderPage() {
         }))
     }
 
+    async function handleStateChange(orderId) {
+        setNewState([parseInt(document.getElementById(`state-${orderId}`).value), parseInt(orderId)])
+    }
+    useEffect(() => {
+        async function updateState() {
+            const token = await refreshToken();
+            let apiCall = `kropkaNet/order/state?` +
+                `id=${newState[1]}&state=${newState[0]}`
+            try {
+                const response = await axiosInstance.patch(apiCall, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                fetchData();
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        if (newState[1] != 0) {
+            updateState()
+        }
+    }, [newState])
+    async function createStocktaking(orderId, currentState) {
+        if (currentState == 0) {
+            const token = await refreshToken();
+            let apiCall = `kropkaNet/order/state?` +
+                `id=${parseInt(orderId)}&state=${1}`
+            try {
+                const response = await axiosInstance.patch(apiCall, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        const token = await refreshToken();
+        let apiCall = `kropkaNet/stocktaking/create/order/${orderId}`
+        try {
+            const response = await axiosInstance.post(apiCall, {"expectedTimeHours": 0}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            fetchData()
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+
+    }
+
     function generateHeader() {
         return (
             <thead>
@@ -144,6 +200,9 @@ function OrderPage() {
                         }
                         State
                     </th>
+                    {
+                        state.level == "employee" && <th>Stocktaking</th>
+                    }
                 </tr>
             </thead>
         );
@@ -157,20 +216,38 @@ function OrderPage() {
                         <td>{order.departmentName}</td>
                         <td>{formatDateTime(order.dateOfOrderExecution)}</td>
                         {
-							(() => {
-								if (order.state == -1) {
-									return <td className='warning'>Rejected</td>;
-								}
-								else if (order.state == 0) {
-									return <td>No decision</td>;
-								} 
-								else if (order.state == 1) {
-									return <td className='success'>Accepted</td>;
-								} 
-								else {
-									return <td className='warning'>State error</td>;
-								}
-							})()
+                            state.level === "employee" ?
+                            <td className={order.stocktakingId && "success"}>
+                                {!order.stocktakingId ?
+                                    <select id={`state-${order.id}`} value={order.state} onChange={() => handleStateChange(order.id)} className={order.state == -1 ? "warning" : order.state == 1 ? "success" : ""}>
+                                        <option value="-1">Rejected</option>
+                                        <option value="0">No decision</option>
+                                        <option value="1">Accepted</option>
+                                    </select>:
+                                    "Accepted"
+                                }
+                            </td> :
+                            (() => {
+                                if (order.state === -1) {
+                                    return <td className='warning'>Rejected</td>;
+                                } else if (order.state === 0) {
+                                    return <td>No decision</td>;
+                                } else if (order.state === 1) {
+                                    return <td className='success'>Accepted</td>;
+                                } else {
+                                    return <td>State error</td>;
+                                }
+                            })()
+                        }
+                        {
+                            state.level == "employee" &&
+                            <td className="stocktakingAction">
+                                {
+                                    order.stocktakingId
+                                    ? <Link to={`${order.id}/stocktaking/${order.stocktakingId}/${order.warehouseId}`}>{order.stocktakingId}</Link>
+                                    : order.state != -1 ? <button onClick={() => createStocktaking(order.id, order.state)}><i className="fa-solid fa-plus"></i></button> : ""
+                                }
+                            </td>
                         }
                     </tr>
                 ))}
