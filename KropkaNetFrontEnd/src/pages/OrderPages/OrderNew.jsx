@@ -41,7 +41,10 @@ function OrderNew({ hideBox, updateData }) {
 		};
 		
 		const token = await refreshToken();
-        const apiCall = `kropkaNet/order/create?userId=${state.personId}`;
+        const apiCall = `kropkaNet/order/create`
+		if (state.level == "user") {
+			apiCall += `?userId=${state.personId}`;
+		}
         try {
             const response = await axiosInstance.post(apiCall, dataToSend, {
                 headers: {
