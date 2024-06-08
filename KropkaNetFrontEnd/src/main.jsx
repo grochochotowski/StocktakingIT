@@ -11,12 +11,14 @@ const LoginPage = lazy(() => import('./pages/BeginPages/LoginPage'))
 const RegisterPage = lazy(() => import('./pages/BeginPages/RegisterPage'))
 
 const OrderPage = lazy(() => import('./pages/OrderPages/OrderPage'))
+const CompanyPage = lazy(() => import('./pages/CompanyPages/CompanyPage'))
+const AccountPage = lazy(() => import('./pages/AccountPages/AccountPage'))
+
+const EmployeePage = lazy(() => import('./pages/EmployeePages/EmployeePage'))
+const ProductPage = lazy(() => import('./pages/ProductPages/ProductPage'))
+const UserPage = lazy(() => import('./pages/UserPages/UserPage'))
 
 const StocktakingDetails = lazy(() => import('./pages/StocktakingPages/StocktakingDetails'))
-
-const CompanyPage = lazy(() => import('./pages/CompanyPages/CompanyPage'))
-
-const UserPage = lazy(() => import('./pages/UserPages/UserPage'))
 
 const Unauthorized = lazy(() => import('./pages/ErrorPages/Unauthorized'))
 const Forbidden = lazy(() => import('./pages/ErrorPages/Forbidden'))
@@ -48,6 +50,15 @@ const router = createBrowserRouter([
     element: <PrivateRoute><CompanyPage /></PrivateRoute> },
 
     { path: '/account/:id',
+    element: <PrivateRoute><AccountPage /></PrivateRoute> },
+
+    { path: '/employees',
+    element: <PrivateRoute><EmployeePage /></PrivateRoute> },
+
+    { path: '/products',
+    element: <PrivateRoute><ProductPage /></PrivateRoute> },
+
+    { path: '/users',
     element: <PrivateRoute><UserPage /></PrivateRoute> },
 
     { path: '/401', element: <Unauthorized /> },

@@ -2,13 +2,13 @@ import React from 'react'
 
 import NavBarEmployee from '../../components/NavBarEmployee'
 
-function UserPage() {
+function EmployeePage() {
     return (
         <>
             <NavBarEmployee />
-            <div>UserPage</div>
+            <div>EmployeePage</div>
         </>
     )
 }
 
-export default UserPage
+export default EmployeePage
