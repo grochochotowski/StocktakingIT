@@ -16,6 +16,9 @@ function StocktakingDetails() {
     const params = useParams();
 
     const [changeData, setChangedata] = useState({"note" : "", "expectedTimeHours" : 0})
+
+    const [newEmployee, setNewEmployee] = useState("")
+	const [notInEmployees, setNotInEmployees] = useState([])
     
     const [stocktaking, setStocktaking] = useState({})
     const [warehouse, setWarehouse] = useState([]);
@@ -28,6 +31,7 @@ function StocktakingDetails() {
         getWarehouse(token)
         getUsers(token)
         getEmployees(token)
+        getNotInEmployees(token)
     }
     async function getStocktaking(token) {
 		let apiCall = `kropkaNet/stocktaking/${params.stocktakingId}`;
@@ -143,6 +147,120 @@ function StocktakingDetails() {
         }
     }
 
+
+
+    async function addEmployee(e) {
+		e.preventDefault();
+		
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/stocktaking/${params.stocktakingId}/addEmployee/${newEmployee}`
+        try {
+            const response = await axiosInstance.patch(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+			fetchData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+	};
+	async function handleDeleteEmployee(element) {
+		const token = await refreshToken();
+        const apiCall = `kropkaNet/stocktaking/${params.stocktakingId}/removeEmployee/${element}`
+        try {
+            const response = await axiosInstance.patch(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+			fetchData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+	}
+    async function getNotInEmployees(token) {
+        let apiCall = `kropkaNet/employee/get/notInStocktaking?stocktakingId=${params.stocktakingId}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setNotInEmployees(response.data);
+			setNewEmployee(response.data[0].id)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+    const handleEmployeeChange = (e) => setNewEmployee(e.target.value);
+	function sortTableEmployee(column) {
+        setSortingUser(prev => {
+            if (prev[0] === column && prev[1] === 0) return [column, 1]
+            return [column, 0]
+        })
+    }
+	function generateHeaderEmployee() {
+        return (
+            <thead>
+                <tr>
+                    <th className="u-thin" onClick={() => sortTableEmployee("id")}>
+                        {
+                            sortingUser[0] == "id" &&
+                            (
+                                sortingUser[1] === 0
+                                ? <i className="fa-solid fa-arrow-down-a-z"></i>
+                                : <i className="fa-solid fa-arrow-up-a-z"></i>
+                            )
+                        }
+                        ID
+                    </th>
+                    <th className="wide" onClick={() => sortTableEmployee("name")}>
+                        {
+                            sortingUser[0] == "name" &&
+                            (
+                                sortingUser[1] === 0
+                                ? <i className="fa-solid fa-arrow-down-a-z"></i>
+                                : <i className="fa-solid fa-arrow-up-a-z"></i>
+                            )
+                        }
+                        Name
+                    </th>
+                    <th className="wide" onClick={() => sortTableEmployee("surname")}>
+                        {
+                            sortingUser[0] == "surname" &&
+                            (
+                                sortingUser[1] === 0
+                                ? <i className="fa-solid fa-arrow-down-a-z"></i>
+                                : <i className="fa-solid fa-arrow-up-a-z"></i>
+                            )
+                        }
+                        Surname
+                    </th>
+                    <th className="u-thin"></th>
+                </tr>
+            </thead>
+        );
+    }
+    function generateBodyEmployee() {
+        return (
+            <tbody>
+                {employees.map((employee) => (
+                    <tr className="not-clickable" key={employee.id} id={employee.id}>
+                        <td className="u-thin">{employee.id}</td>
+                        <td>{employee.name}</td>
+                        <td>{employee.surname}</td>
+						<td className="u-thin delete-item" onClick={() => handleDeleteEmployee(employee.id)}>
+							<i className="fa-solid fa-trash-can"></i>
+						</td>
+                    </tr>
+                ))}
+            </tbody>
+        )
+    }
+
     return (
         <>
             { state.level == "employee" ? <NavBarEmployee /> : <NavBar /> }
@@ -204,13 +322,32 @@ function StocktakingDetails() {
                         </div>
                         <div className="employees">
                             <h2>Employees</h2>
-                            <ul>
-                                {
-                                    employees.map((employee) => (
-                                        <li>{employee.name} {employee.surname}</li>
-                                    ))
-                                }
-                            </ul>
+                            {
+                                state.level == "employee" ?
+                                <ul>
+                                    {
+                                        employees.map((employee) => (
+                                            <li>{employee.name} {employee.surname}</li>
+                                        ))
+                                    }
+                                </ul> :
+                                <>
+                                    <div className="list rows-5">
+                                        <table>
+                                            { generateHeaderEmployee() }
+                                            { generateBodyEmployee() }
+                                        </table>
+                                    </div>
+                                    <div className="new-object">
+                                        <select name="employee" id="employee" onChange={handleEmployeeChange}>
+                                            {notInEmployees.map(employee => (
+                                                <option key={employee.id} value={employee.id}>{employee.name} {employee.surname}</option>
+                                            ))}
+                                        </select>
+                                        <button type="submit" onClick={addEmployee}>Add</button>
+                                    </div>
+                                </>
+                            }
                         </div>
                     </div>
                 </div>
