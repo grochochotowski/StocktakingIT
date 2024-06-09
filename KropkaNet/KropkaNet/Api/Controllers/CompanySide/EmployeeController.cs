@@ -19,17 +19,17 @@ namespace KropkaNet.Api.Controllers.CompanySide
         }
 
 
-        // GET api/kropkaNet/employee/all
-        [HttpGet("all")]
+        // GET api/kropkaNet/employee/getAll
+        [HttpGet("getAll")]
         //[Authorize(Roles = "Employee, Moderator, Admin")]
-        public ActionResult<IEnumerable<EmployeeDto>> GetList(
+        public ActionResult<IEnumerable<EmployeeDto>> GetAll(
             [FromQuery] int page,
             [FromQuery] string? filters,
             [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
+            [FromQuery] SortDirection sortDirection
             )
         {
-            var employeeDtos = _employeeService.GetList(page, filters, sortBy, sortDireciton);
+            var employeeDtos = _employeeService.GetAll(page, filters, sortBy, sortDirection);
             return Ok(employeeDtos);
         }
 

@@ -14,7 +14,7 @@ namespace KropkaNet.Api.Services.CompanySide
 {
     public interface IEmployeeService
     {
-        ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
+        ReturnResult<EmployeeListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection);
         List<EmployeeListDto> NotInStocktaking(int stocktakingId);
         List<EmployeeListDto> GetFromStocktaking(int stocktakingId, string? sortBy, SortDirection sortDirection);
         EmployeeDto GetById(int employeeId);
@@ -34,7 +34,7 @@ namespace KropkaNet.Api.Services.CompanySide
         }
 
         // GET: get list of employees
-        public ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton)
+        public ReturnResult<EmployeeListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection)
         {
             var baseQuery = _context.Employees
                .Include(e => e.Position)
@@ -51,14 +51,14 @@ namespace KropkaNet.Api.Services.CompanySide
                 var columnsSelector = new Dictionary<string, Expression<Func<Employee, object>>>
                 {
                     { "id", e => e.Id},
-                    { "Name", e => e.Name},
-                    { "Surname", e => e.Surname},
-                    { "Position", e => e.PositionId}
+                    { "name", e => e.Name},
+                    { "surname", e => e.Surname},
+                    { "position", e => e.PositionId}
                 };
 
                 var selectedColumn = columnsSelector[sortBy];
 
-                baseQuery = sortDireciton == SortDirection.ASC
+                baseQuery = sortDirection == SortDirection.ASC
                     ? baseQuery.OrderBy(selectedColumn)
                     : baseQuery.OrderByDescending(selectedColumn);
             }
@@ -66,7 +66,6 @@ namespace KropkaNet.Api.Services.CompanySide
             var items = baseQuery
                 .Skip(10 * (page - 1))
                 .Take(10)
-                .OrderBy(p => p.Surname)
                 .Select(p => new EmployeeListDto
                 {
                     Id = p.Id,
