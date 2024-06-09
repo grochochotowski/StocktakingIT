@@ -9,7 +9,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 {
     [Route("api/kropkaNet/product")]
     [ApiController]
-    [Authorize(Roles = "Employee, Moderator, Admin")]
+    //[Authorize(Roles = "Employee, Moderator, Admin")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -42,10 +42,18 @@ namespace KropkaNet.Api.Controllers.CompanySide
             [FromQuery] int page,
             [FromQuery] string? filters,
             [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
+            [FromQuery] SortDirection sortDirection
             )
         {
-            var companyDtos = _productService.GetAll(page, filters, sortBy, sortDireciton);
+            var companyDtos = _productService.GetAll(page, filters, sortBy, sortDirection);
+            return Ok(companyDtos);
+        }
+
+        // GET api/kropkaNet/product/all/getNoPag
+        [HttpGet("all/getNoPag")]
+        public ActionResult<IEnumerable<CompanyDto>> GetNoPag([FromQuery] string? filters, [FromQuery] string? sortBy, [FromQuery] SortDirection sortDirection)
+        {
+            var companyDtos = _productService.GetNoPag(filters, sortBy, sortDirection);
             return Ok(companyDtos);
         }
 

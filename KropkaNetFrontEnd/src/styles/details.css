@@ -13,12 +13,34 @@
 
     overflow-y: scroll;
 }
+
 .warehouse {
     padding: 1vh 1vw 1vw 6vw;
 
     width: 33%;
 
     overflow-y: scroll;
+}
+.new-product {
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 15vh;
+    border-radius: 10px;
+
+    border: dashed 2px var(--clr-txt-dark);
+
+    font-size: 3rem;
+
+    cursor: pointer;
+}
+.new-product:hover {
+    background-color: var(--clr-acc-dark-200);
+    color: var(--clr-acc-dark-700);
+    border-color: var(--clr-acc-dark-700);
 }
 
 .info-element-double {

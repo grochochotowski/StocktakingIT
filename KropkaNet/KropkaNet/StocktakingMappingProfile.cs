@@ -44,6 +44,7 @@ namespace KropkaNetApi
 
             CreateMap<Product, ProductDto>();
             CreateMap<CreateProductDto, Product>();
+            CreateMap<Product, ProductListDto>();
 
             CreateMap<Stocktaking, StocktakingDto>();
             CreateMap<CreateStocktakingDto, Stocktaking>();

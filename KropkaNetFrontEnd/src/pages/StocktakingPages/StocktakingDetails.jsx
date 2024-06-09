@@ -9,11 +9,15 @@ import ProductBox from '../../components/ProductBox'
 
 import '../../styles/index.css'
 import '../../styles/details.css'
+import '../../styles/list.css'
+import AddProduct from '../ProductPages/AddProduct';
 
 function StocktakingDetails() {
 
     const { state, setState } = useContext(GlobalStateContext);
     const params = useParams();
+    
+    const [box, setBox] = useState("");
 
     const [changeData, setChangedata] = useState({"note" : "", "expectedTimeHours" : 0})
 
@@ -242,7 +246,7 @@ function StocktakingDetails() {
                         }
                         Surname
                     </th>
-                    <th className="u-thin"></th>
+                    <th className="u-thin no-select"></th>
                 </tr>
             </thead>
         );
@@ -264,6 +268,18 @@ function StocktakingDetails() {
         )
     }
 
+    useEffect(() => {
+        function handleClickOutside(event) {
+          if (event.target.closest(".outside-box") && !event.target.closest(".content")) setBox("");
+        }
+    
+        document.addEventListener("click", handleClickOutside);
+    
+        return () => {
+          document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
+
     return (
         <>
             { state.level == "employee" ? <NavBarEmployee /> : <NavBar /> }
@@ -277,18 +293,18 @@ function StocktakingDetails() {
                         <button onClick={exportData}>Export data</button>
                     </div>
                     <hr />
-                    <div className="info-element">
+{/*date&time*/}     <div className="info-element">
                         <h2>Date & time</h2>
                         <p>Date: {formatDateTime(stocktaking.dateOfOrderExecution)}</p>
-                        <p>Expected execution time: 
+                        <p>Expected execution time:&nbsp;
                             {
                                 state.level == "employee"
                                 ? <input id="expectedTimeHours" className="stocktaking-input" type="text" value={changeData.expectedTimeHours} onChange={() => handleChange("expectedTimeHours")}/>
                                 : stocktaking.expectedTimeHours
                             }
-                        hours</p>
+                        &nbsp;hours</p>
                     </div>
-                    <div className="info-element">
+{/*note*/}          <div className="info-element">
                         <h2>Notes</h2>
                         {
                             state.level == "employee"
@@ -296,12 +312,12 @@ function StocktakingDetails() {
                             : <p>{stocktaking.note}</p>
                         } 
                     </div>
-                    <div className="info-element">
+{/*order*/}         <div className="info-element">
                         <h2>Order</h2>
                         <p>Company: {stocktaking.companyName}</p>
                         <p>Department: {stocktaking.departmentName}</p>
                     </div>
-                    <div className="info-element">
+{/*address*/}       <div className="info-element">
                         <h2>Address</h2>
                         {stocktaking.address && (
                             <>
@@ -312,7 +328,7 @@ function StocktakingDetails() {
                             </>
                         )}
                     </div>
-                    <div className="info-element-double">
+{/*user&employee*/} <div className="info-element-double">
                         <div className="users">
                             <h2>Users</h2>
                             <ul>
@@ -358,12 +374,19 @@ function StocktakingDetails() {
                     <h1>Products</h1>
                     <hr />
                     {
+                        state.level == "employee" && 
+                            <div className="new-product" onClick={() => setBox("addProduct")}>
+                                <i className="fa-solid fa-plus"></i>
+                            </div>
+                    }
+                    {
                         warehouse.map((product) => (
                             <ProductBox key={product.id} product={product} />
                         ))
                     }
                 </div>
             </div>
+            { box && box == "addProduct" && <AddProduct hideBox={() => setBox("")} warehouseId={params.warehouseId} updateData={fetchData}/> }
         </>
     )
 }
