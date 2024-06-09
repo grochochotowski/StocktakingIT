@@ -126,7 +126,6 @@ namespace KropkaNet.Api.Services.ClientSide
             var usersDto = _mapper.Map<List<UserListDto>>(users);
             return usersDto;
         }
-
         public List<UserListDto> GetFromCompany(int companyId, string? sortBy, SortDirection sortDirection)
         {
             var baseQuery = _context.Users
@@ -179,7 +178,6 @@ namespace KropkaNet.Api.Services.ClientSide
 
             _context.SaveChanges();
         }
-
 
         public void Delete(int id)
         {

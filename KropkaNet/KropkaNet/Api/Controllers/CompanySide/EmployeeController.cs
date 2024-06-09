@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNet.Api.Controllers.CompanySide
 {
-    [Route("api/company/employee")]
+    [Route("api/kropkaNet/employee")]
     [ApiController]
     public class EmployeeController : ControllerBase
     {
@@ -33,12 +33,21 @@ namespace KropkaNet.Api.Controllers.CompanySide
             return Ok(employeeDtos);
         }
 
-        // GET: api/kropkaNet/user/{stocktakingId}/GetFromStocktaking
-        [HttpGet("{stocktakingId}/GetFromStocktaking")]
-        //[Authorize]
-        public ActionResult<ReturnResult<UserDto>> GetFromStocktaking([FromRoute] int stocktakingId)
+        // GET: api/kropkaNet/employee/get/notInStocktaking
+        [HttpGet("get/notInStocktaking")]
+        //[Authorize(Roles = "Employee, Moderator, Admin")]
+        public ActionResult NotInStocktaking([FromQuery] int stocktakingId)
         {
-            var result = _employeeService.GetFromStocktaking(stocktakingId);
+            var result = _employeeService.NotInStocktaking(stocktakingId);
+            return Ok(result);
+        }
+
+        // GET: api/kropkaNet/user/GetFromStocktaking/{stocktakingId}
+        [HttpGet("GetFromStocktaking/{stocktakingId}")]
+        //[Authorize]
+        public ActionResult<ReturnResult<UserDto>> GetFromStocktaking([FromRoute] int stocktakingId, [FromQuery] string? sortBy, [FromQuery] SortDirection sortDirection)
+        {
+            var result = _employeeService.GetFromStocktaking(stocktakingId, sortBy, sortDirection);
             return Ok(result);
         }
 

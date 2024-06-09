@@ -7,13 +7,16 @@ using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Models.CompanySide;
 using KropkaNet.Objects.Dtos.ClientSide.User;
+using System.Globalization;
+using KropkaNet.Objects.Entities.Models.ClientSide;
 
 namespace KropkaNet.Api.Services.CompanySide
 {
     public interface IEmployeeService
     {
         ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton);
-        List<EmployeeListDto> GetFromStocktaking(int stocktakingId);
+        List<EmployeeListDto> NotInStocktaking(int stocktakingId);
+        List<EmployeeListDto> GetFromStocktaking(int stocktakingId, string? sortBy, SortDirection sortDirection);
         EmployeeDto GetById(int employeeId);
         int Update(int id, UpdateEmployeeDto dto);
         void ChangePosition(int employeeId, int positionId);
@@ -30,6 +33,7 @@ namespace KropkaNet.Api.Services.CompanySide
             _mapper = mapper;
         }
 
+        // GET: get list of employees
         public ReturnResult<EmployeeListDto> GetList(int page, string filter, string sortBy, SortDirection sortDireciton)
         {
             var baseQuery = _context.Employees
@@ -79,16 +83,48 @@ namespace KropkaNet.Api.Services.CompanySide
             return result;
         }
 
-        public List<EmployeeListDto> GetFromStocktaking(int stocktakingId)
+        // GET: get list of employees that are not in stocktaking
+        public List<EmployeeListDto> NotInStocktaking(int stocktakingId)
         {
             var employees = _context.Employees
-                .Include(u => u.Stocktakings)
-                .Where(u => u.Stocktakings.Any(o => o.Id == stocktakingId))
+               .Where(u => !u.Stocktakings.Any(c => c.Id == stocktakingId))
+               .ToList();
+
+            var employeeDtos = _mapper.Map<List<EmployeeListDto>>(employees);
+
+            return employeeDtos;
+        }
+
+        // GET: get list of employees from stocktaking
+        public List<EmployeeListDto> GetFromStocktaking(int stocktakingId, string? sortBy, SortDirection sortDirection)
+        {
+            var baseQuery = _context.Employees
+                 .Include(u => u.Stocktakings)
+                 .Where(u => u.Stocktakings.Any(o => o.Id == stocktakingId));
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                var columnsSelector = new Dictionary<string, Expression<Func<Employee, object>>>
+                {
+                    { "id", u => u.Id},
+                    { "name", u => u.Name},
+                    { "surname", u => u.Surname}
+                };
+
+                var selectedColumn = columnsSelector[sortBy];
+
+                baseQuery = sortDirection == SortDirection.ASC
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
+
+            var employees = baseQuery
                 .ToList();
 
             var employeesDto = _mapper.Map<List<EmployeeListDto>>(employees);
             return employeesDto;
         }
+        
         // GET: get list of employees by id - to fix
         public EmployeeDto GetById(int employeeId)
         {
