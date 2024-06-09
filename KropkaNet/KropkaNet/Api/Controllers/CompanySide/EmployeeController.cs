@@ -70,7 +70,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
         }
 
         // PATCH api/kropkaNet/employee/changeposition/{employeeId}
-        [HttpPut("changeposition/{employeeId}")]
+        [HttpPatch("changeposition/{employeeId}")]
         //[Authorize(Roles = "Admin")]
         public ActionResult ChangePosition([FromRoute] int employeeId, [FromQuery] int positionId)
         {

@@ -100,6 +100,9 @@
     height: auto;
     max-height: 20vh;
 }
+select#pos {
+    height: 100%;
+}
 .content h4 {
     margin-bottom: 0;
 }
