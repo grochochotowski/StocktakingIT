@@ -201,7 +201,7 @@ function CompanyEdit({updateData, selected}) {
             }
         ))
     }
-	function handleInputChange(inputId) {
+	function handleInputChangeDepartment(inputId) {
         setNewDepartment(prev => (
             {
                 ...prev,
@@ -474,7 +474,7 @@ function CompanyEdit({updateData, selected}) {
 							<input
 								type="text"
 								id="departmentName"
-								onChange={() => handleInputChange("departmentName")}
+								onChange={() => handleInputChangeDepartment("departmentName")}
 								value={newDepartment.departmentName}
 							/>
 							<button type="submit" onClick={addDepartment}>Create</button>

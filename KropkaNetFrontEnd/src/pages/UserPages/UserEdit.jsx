@@ -1,24 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react';
 import { GlobalStateContext } from '../../GlobalState';
 import { axiosInstance, refreshToken } from '../../api/axios';
 
-import NavBar from '../../components/NavBar'
-import NavBarEmployee from '../../components/NavBarEmployee'
-
-import '../../styles/index.css'
-import '../../styles/user.css'
-import '../../styles/form.css'
-
-function AccountPage() {
+function UserEdit({ updateData, selected }) {
 
     const { state, setState } = useContext(GlobalStateContext);
 
-    const [user, setUser] = useState({})
-    const [updateUser, setUpdateUser] = useState({})
+	const [user, setUser] = useState({})
+	const [userEdit, setUserEdit] = useState({})
 
     async function fetchData() {
         const token = await refreshToken();
-        let apiCall = `kropkaNet/user/${state.personId}`
+        getUser(token)
+    }
+
+    async function getUser(token) {
+        let apiCall = `kropkaNet/user/${selected}`;
         try {
             const response = await axiosInstance.get(apiCall, {
                 headers: {
@@ -34,18 +31,40 @@ function AccountPage() {
     useEffect(() => {
         fetchData();
     }, [])
-    useEffect(() => {
-        setUpdateUser({
-            "name": user.name,
+	useEffect(() => {
+        if (user) {
+            updateInputs();
+        }
+    }, [user]);
+
+    function updateInputs() {
+		setUserEdit({
+			"name": user.name,
             "surname": user.surname,
             "email": user.email,
             "phoneNumber": user.phoneNumber,
             "note": user.note ? user.note : "",
-        })
-    }, [user])
-
+		})
+	}
+	
+	async function handleSubmit(e) {
+		e.preventDefault();
+        const token = await refreshToken();
+		let apiCall = `kropkaNet/user/update/${selected}`;
+        try {
+            const response = await axiosInstance.put(apiCall, userEdit,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setUser(response.data);
+			fetchData();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+	};
     function handleInputChange(inputId) {
-        setUser(prev => (
+        setUserEdit(prev => (
             {
                 ...prev,
                 [inputId]: document.getElementById(inputId).value
@@ -53,27 +72,10 @@ function AccountPage() {
         ))
     }
 
-    async function updateData(e) {
-        e.preventDefault();
-        const token = await refreshToken();
-        let apiCall = `kropkaNet/user/update/${state.personId}`
-        try {
-            const response = await axiosInstance.put(apiCall, updateUser, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            fetchData()
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
     return (
-        <>
-            { state.level == "employee" ? <NavBarEmployee /> : <NavBar /> }
-            <div className="container user">
-                <h1 className="title">{state.level == "employee" ? "Employee" : "User"} {user.id}</h1>
+        <div className="outside-box">
+			<div className="content big scroll">
+            <h1 className="title">User {user.id}</h1>
                 <form>
                     <div className="layer row">
                         <div className="input-container">
@@ -82,7 +84,7 @@ function AccountPage() {
                                 type="text"
                                 id="name"
                                 onChange={() => handleInputChange("name")}
-                                value={updateUser.name}
+                                value={userEdit.name}
                             />
                         </div>
                         <div className="input-container">
@@ -91,7 +93,7 @@ function AccountPage() {
                                 type="text"
                                 id="surname"
                                 onChange={() => handleInputChange("surname")}
-                                value={updateUser.surname}
+                                value={userEdit.surname}
                             />
                         </div>
                     </div>
@@ -102,7 +104,7 @@ function AccountPage() {
                                 type="text"
                                 id="email"
                                 onChange={() => handleInputChange("email")}
-                                value={updateUser.email}
+                                value={userEdit.email}
                             />
                         </div>
                         <div className="input-container">
@@ -111,7 +113,7 @@ function AccountPage() {
                                 type="text"
                                 id="phoneNumber"
                                 onChange={() => handleInputChange("phoneNumber")}
-                                value={updateUser.phoneNumber}
+                                value={userEdit.phoneNumber}
                             />
                         </div>
                     </div>
@@ -122,18 +124,18 @@ function AccountPage() {
                                 type="text"
                                 id="note"
                                 onChange={() => handleInputChange("note")}
-                                value={updateUser.note}
+                                value={userEdit.note}
                                 placeholder="Notes"
                             />
                         </div>
                     </div>
                     <div className="finish">
-                        <button onClick={updateData}>Save</button>
+                        <button onClick={handleSubmit}>Save</button>
                     </div>
                 </form>
-            </div>
-        </>
+			</div>
+		</div>
     )
 }
 
-export default AccountPage
+export default UserEdit
