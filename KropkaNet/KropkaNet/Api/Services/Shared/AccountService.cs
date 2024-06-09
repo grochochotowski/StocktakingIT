@@ -124,8 +124,9 @@ namespace KropkaNet.Api.Services.Shared
             if (employee != null)
             {
                 response.Level = "employee";
-                response.PersonId = employee.Id;
                 position = employee.Position.Name;
+                response.Position = position;
+                response.PersonId = employee.Id;
             }
             else
             {
