@@ -19,6 +19,7 @@ function StocktakingDetails() {
 
     const [newEmployee, setNewEmployee] = useState("")
 	const [notInEmployees, setNotInEmployees] = useState([])
+	const [sortingEmployee, setSortingEmployee] = useState(["id", 0])
     
     const [stocktaking, setStocktaking] = useState({})
     const [warehouse, setWarehouse] = useState([]);
@@ -73,7 +74,9 @@ function StocktakingDetails() {
         }
     }
     async function getEmployees(token) {
-		let apiCall = `company/employee/${params.stocktakingId}/GetFromStocktaking`;
+		let apiCall = `kropkaNet/employee/GetFromStocktaking/${params.stocktakingId}?` +
+            `sortBy=${sortingEmployee[0]}&` +
+            `sortDirection=${sortingEmployee[1] == 0 ? "ASC" : "DESC"}`;
         try {
             const response = await axiosInstance.get(apiCall, {
                 headers: {
@@ -85,10 +88,24 @@ function StocktakingDetails() {
             console.error('Error fetching data:', error);
         }
     }
+    async function getNotInEmployees(token) {
+        let apiCall = `kropkaNet/employee/get/notInStocktaking?stocktakingId=${params.stocktakingId}`;
+        try {
+            const response = await axiosInstance.get(apiCall, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setNotInEmployees(response.data);
+			setNewEmployee(response.data[0].id)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
 
     useEffect(() => {
         fetchData();
-    }, [])
+    }, [sortingEmployee])
     useEffect(() => {
         setChangedata({
             "note" : stocktaking.note != null ? stocktaking.note : "",
@@ -181,23 +198,9 @@ function StocktakingDetails() {
             console.error('Error fetching data:', error);
         }
 	}
-    async function getNotInEmployees(token) {
-        let apiCall = `kropkaNet/employee/get/notInStocktaking?stocktakingId=${params.stocktakingId}`;
-        try {
-            const response = await axiosInstance.get(apiCall, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setNotInEmployees(response.data);
-			setNewEmployee(response.data[0].id)
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
     const handleEmployeeChange = (e) => setNewEmployee(e.target.value);
 	function sortTableEmployee(column) {
-        setSortingUser(prev => {
+        setSortingEmployee(prev => {
             if (prev[0] === column && prev[1] === 0) return [column, 1]
             return [column, 0]
         })
@@ -208,9 +211,9 @@ function StocktakingDetails() {
                 <tr>
                     <th className="u-thin" onClick={() => sortTableEmployee("id")}>
                         {
-                            sortingUser[0] == "id" &&
+                            sortingEmployee[0] == "id" &&
                             (
-                                sortingUser[1] === 0
+                                sortingEmployee[1] === 0
                                 ? <i className="fa-solid fa-arrow-down-a-z"></i>
                                 : <i className="fa-solid fa-arrow-up-a-z"></i>
                             )
@@ -219,9 +222,9 @@ function StocktakingDetails() {
                     </th>
                     <th className="wide" onClick={() => sortTableEmployee("name")}>
                         {
-                            sortingUser[0] == "name" &&
+                            sortingEmployee[0] == "name" &&
                             (
-                                sortingUser[1] === 0
+                                sortingEmployee[1] === 0
                                 ? <i className="fa-solid fa-arrow-down-a-z"></i>
                                 : <i className="fa-solid fa-arrow-up-a-z"></i>
                             )
@@ -230,9 +233,9 @@ function StocktakingDetails() {
                     </th>
                     <th className="wide" onClick={() => sortTableEmployee("surname")}>
                         {
-                            sortingUser[0] == "surname" &&
+                            sortingEmployee[0] == "surname" &&
                             (
-                                sortingUser[1] === 0
+                                sortingEmployee[1] === 0
                                 ? <i className="fa-solid fa-arrow-down-a-z"></i>
                                 : <i className="fa-solid fa-arrow-up-a-z"></i>
                             )
@@ -323,7 +326,7 @@ function StocktakingDetails() {
                         <div className="employees">
                             <h2>Employees</h2>
                             {
-                                state.level == "employee" ?
+                                state.level == "user" ?
                                 <ul>
                                     {
                                         employees.map((employee) => (

@@ -25,17 +25,32 @@
     display: flex;
     gap: 1vw;
 }
-.info-element-double > * {
-    width: 50%;
+
+.info-element-double > .users {
+    width: 40%;
 }
+
+.info-element-double > .employees {
+    width: 60%;
+}
+.info-element-double > .employees .list {
+    width: 100%;
+}
+.info-element-double > .employees table {
+    margin-top: 0;
+}
+.info-element-double > .employees .new-object select{
+    width: 100%;
+}
+
 .info-element-double ul {
     margin-top: 0;
     padding-top: 0;
     display: flex;
     flex-direction: column;
     gap: 0;
+    user-select: auto;
 }
-
 .info-element-double ul > li {
     width: 100%;
     display: flex;
