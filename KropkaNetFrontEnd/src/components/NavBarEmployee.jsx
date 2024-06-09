@@ -27,10 +27,6 @@ function NavBarEmployee() {
                 <img src={logo} alt="kropka-net-logo" />
             </div>
             <div className='options'>
-                <Link to='/dashboard'>
-                    <h2><i className="fa-solid fa-house"></i></h2>
-                    <h4>Home</h4>
-                </Link>
                 <Link to='/orders'>
                     <h2><i className="fa-solid fa-basket-shopping"></i></h2>
                     <h4>Orders</h4>
