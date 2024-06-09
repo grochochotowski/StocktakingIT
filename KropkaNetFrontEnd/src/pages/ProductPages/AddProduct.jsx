@@ -128,8 +128,8 @@ function AddProduct({warehouseId, hideBox, updateData}) {
                     Authorization: `Bearer ${token}`
                 }
             });
-            hideBox()
             updateData()
+            hideBox()
         } catch (error) {
             console.error('Error fetching data:', error);
         }

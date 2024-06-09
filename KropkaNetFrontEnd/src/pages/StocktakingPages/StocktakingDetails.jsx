@@ -381,12 +381,12 @@ function StocktakingDetails() {
                     }
                     {
                         warehouse.map((product) => (
-                            <ProductBox key={product.id} product={product} />
+                            <ProductBox key={product.id} product={product} warehouseId={params.warehouseId}/>
                         ))
                     }
                 </div>
             </div>
-            { box && box == "addProduct" && <AddProduct hideBox={() => setBox("")} warehouseId={params.warehouseId} updateData={fetchData}/> }
+            { box && box == "addProduct" && <AddProduct hideBox={() => setBox("")} warehouseId={params.warehouseId} updateData={() => fetchData()}/> }
         </>
     )
 }
