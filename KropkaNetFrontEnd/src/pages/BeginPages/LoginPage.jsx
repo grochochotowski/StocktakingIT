@@ -39,13 +39,12 @@ function LoginPage() {
         try {
             const response = await axiosInstance.post('/account/login', JSON.stringify(inputs));
             localStorage.setItem("auth", JSON.stringify(response.data));
-            setState(prev => ({
-                ...prev,
+            setState({
                 "isLoggedIn": true,
                 "level": response.data.level,
                 "personId" : response.data.personId,
                 "position" : response.data.position
-            }));
+            });
 
 
             if (response.data.level == "user" || response.data.level == "employee") {

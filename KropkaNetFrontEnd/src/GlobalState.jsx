@@ -6,7 +6,8 @@ export const GlobalStateProvider = ({ children }) => {
     const [state, setState] = useState({
         isLoggedIn: false,
         level: null,
-        personId: null
+        personId: null,
+        position: null
     });
 
     return (

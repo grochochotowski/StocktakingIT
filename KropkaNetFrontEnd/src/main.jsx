@@ -6,7 +6,6 @@ import { GlobalStateProvider, GlobalStateContext } from './GlobalState';
 
 
 const WelcomePage = lazy(() => import('./pages/BeginPages/WelcomePage'))
-const DashboardPage = lazy(() => import('./pages/BeginPages/DashboardPage'))
 const LoginPage = lazy(() => import('./pages/BeginPages/LoginPage'))
 const RegisterPage = lazy(() => import('./pages/BeginPages/RegisterPage'))
 
