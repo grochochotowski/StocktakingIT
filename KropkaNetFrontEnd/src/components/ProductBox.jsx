@@ -50,9 +50,12 @@ export default function ProductBox({warehouseId, product}) {
                     }
                 &nbsp;</p>
             </div>
-            <div className="save" onClick={save}>
-                <i className="fa-solid fa-floppy-disk"></i>
-            </div>
+            {
+                state.level == "employee" &&
+                <div className="save" onClick={save}>
+                    <i className="fa-solid fa-floppy-disk"></i>
+                </div>
+            }
         </div>
     )
 }
