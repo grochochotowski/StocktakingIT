@@ -274,7 +274,7 @@ function EmployeePage() {
                         <i className="fa-solid fa-pen-to-square"></i>
                         <p>Edit</p>
                     </div>
-                    <div onClick={() => setBox("new")} className="button objectOption">
+                    <div onClick={() => (state.position == "Moderator" || state.position == "Admin") && setBox("new")} className={`${state.position != "Moderator" && state.position != "Admin" && "disable"} button objectOption`}>
                         <i className="fa-solid fa-plus"></i>
                         <p>New</p>
                     </div>
