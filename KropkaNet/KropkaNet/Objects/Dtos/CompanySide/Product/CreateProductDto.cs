@@ -5,5 +5,6 @@
         public string Category { get; set; }
         public string Name { get; set; }
         public string? Note { get; set; }
+        public IFormFile Image { get; set; }
     }
 }

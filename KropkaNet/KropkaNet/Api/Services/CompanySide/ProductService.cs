@@ -37,6 +37,22 @@ namespace KropkaNet.Api.Services.CompanySide
         {
             var product = _mapper.Map<Product>(dto);
 
+            if (dto.Image != null)
+            {
+                var timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                var uniqueFileName = $"{timestamp}_{dto.Image.FileName}";
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", uniqueFileName);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(imagePath));
+
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    dto.Image.CopyTo(stream);
+                }
+
+                product.ImgUrl = $"/images/{uniqueFileName}";
+            }
+
             _context.Products.Add(product);
             _context.SaveChanges();
 
