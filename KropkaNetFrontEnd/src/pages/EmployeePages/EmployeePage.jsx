@@ -19,7 +19,6 @@ function EmployeePage() {
 
     const { state, setState } = useContext(GlobalStateContext);
 
-    const [newState, setNewState] = useState([0, 0])
     const [sorting, setSorting] = useState(["id", 0])
     const [filters, setFilters] = useState({ "filters" : "" })
     const [selected, setSelected] = useState(0);

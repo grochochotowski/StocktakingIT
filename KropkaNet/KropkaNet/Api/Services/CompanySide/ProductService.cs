@@ -60,8 +60,8 @@ namespace KropkaNet.Api.Services.CompanySide
                 var columnsSelector = new Dictionary<string, Expression<Func<Product, object>>>
                 {
                     { "id", d => d.Id},
-                    { "Name", d => d.Name},
-                    { "Category", d => d.Category}
+                    { "name", d => d.Name},
+                    { "category", d => d.Category}
                 };
 
                 var selectedColumn = columnsSelector[sortBy];
