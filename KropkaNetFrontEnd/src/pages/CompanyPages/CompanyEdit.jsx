@@ -147,7 +147,7 @@ function CompanyEdit({updateData, selected}) {
 		const token = await refreshToken();
         const apiCall = `kropkaNet/company/addUser?userId=${newUser}&companyId=${selected}`;
         try {
-            const response = await axiosInstance.patch(apiCall, {
+            const response = await axiosInstance.patch(apiCall, null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -164,7 +164,7 @@ function CompanyEdit({updateData, selected}) {
 		const token = await refreshToken();
         const apiCall = `kropkaNet/company/removeUser/?userId=${element}&companyId=${selected}`;
         try {
-            const response = await axiosInstance.patch(apiCall, {
+            const response = await axiosInstance.patch(apiCall, null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -179,7 +179,7 @@ function CompanyEdit({updateData, selected}) {
 		const token = await refreshToken();
         const apiCall = `kropkaNet/department/delete/${element}`;
         try {
-            const response = await axiosInstance.delete(apiCall, newDepartment, {
+            const response = await axiosInstance.delete(apiCall, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

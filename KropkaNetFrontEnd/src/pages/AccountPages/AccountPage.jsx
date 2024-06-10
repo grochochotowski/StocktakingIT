@@ -18,7 +18,7 @@ function AccountPage() {
 
     async function fetchData() {
         const token = await refreshToken();
-        let apiCall = `kropkaNet/user/${state.personId}`
+        let apiCall = `kropkaNet/${state.level == "employee"? "employee" : "user"}/${state.personId}`
         try {
             const response = await axiosInstance.get(apiCall, {
                 headers: {
@@ -56,7 +56,7 @@ function AccountPage() {
     async function updateData(e) {
         e.preventDefault();
         const token = await refreshToken();
-        let apiCall = `kropkaNet/user/update/${state.personId}`
+        let apiCall = `kropkaNet/${state.level == "employee"? "employee" : "user"}/update/${state.personId}`
         try {
             const response = await axiosInstance.put(apiCall, updateUser, {
                 headers: {

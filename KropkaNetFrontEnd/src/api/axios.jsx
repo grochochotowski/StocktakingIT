@@ -22,7 +22,10 @@ const refreshToken = async () => {
         const refreshResponse = await axios.post(refreshUrl, {
             jwtToken: tokens.jwtToken,
             refreshToken: tokens.refreshToken
+        }, {
+            withCredentials: true
         });
+        console.log("refresh")
 
         localStorage.setItem("auth", JSON.stringify(refreshResponse.data));
 

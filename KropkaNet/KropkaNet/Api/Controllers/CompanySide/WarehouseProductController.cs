@@ -8,7 +8,6 @@ namespace KropkaNet.Api.Controllers.CompanySide
 {
     [Route("api/kropkaNet/warehouse/{warehouseId}")]
     [ApiController]
-    [Authorize(Roles = "Employee, Moderator, Admin")]
     public class WarehouseProductController : ControllerBase
     {
         private readonly IWarehouseProductService _warehouseProductService;
@@ -20,6 +19,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // GET api/kropkaNet/warehouse/{warehouseId}/products
         [HttpGet("products")]
+        [Authorize]
         public ActionResult<IEnumerable<CompanyDto>> GetFromWarehouse([FromRoute] int warehouseId)
         {
             var companyDtos = _warehouseProductService.GetFromWarehouse(warehouseId);
@@ -28,6 +28,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // PATCH api/kropkaNet/warehouse/{warehouseId}/addProduct/{productId}
         [HttpPatch("addProduct/{productId}")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult AddProduct([FromRoute] int warehouseId, [FromRoute] int productId, [FromQuery] int quantity)
         {
             _warehouseProductService.AddProduct(warehouseId, productId, quantity);
@@ -37,6 +38,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // PATCH api/kropkaNet/warehouse/{warehouseId}/removeProduct/{productId}
         [HttpPatch("removeProduct/{productId}")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult RemoveProduct([FromRoute] int warehouseId, [FromRoute] int productId, [FromQuery] int quantity)
         {
             _warehouseProductService.RemoveProduct(warehouseId, productId, quantity);
@@ -46,6 +48,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // GET api/kropkaNet/warehouse/{warehouseId}/export
         [HttpGet("export")]
+        [Authorize]
         public async Task<IActionResult> Export([FromRoute] int warehouseId)
         {
             var fileContent = _warehouseProductService.Export(warehouseId);

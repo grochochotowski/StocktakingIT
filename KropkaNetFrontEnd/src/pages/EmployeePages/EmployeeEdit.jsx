@@ -85,7 +85,7 @@ function EmployeeEdit({ updateData, selected }) {
             const token = await refreshToken();
             let apiCall = `kropkaNet/employee/changeposition/${selected}?positionId=${newPos}`;
             try {
-                const response = await axiosInstance.patch(apiCall, {
+                const response = await axiosInstance.patch(apiCall, null, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

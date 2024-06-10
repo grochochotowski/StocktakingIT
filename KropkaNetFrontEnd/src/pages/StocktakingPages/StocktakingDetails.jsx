@@ -36,7 +36,9 @@ function StocktakingDetails() {
         getWarehouse(token)
         getUsers(token)
         getEmployees(token)
-        getNotInEmployees(token)
+        if (state.level == "employee") {
+            getNotInEmployees(token)
+        }
     }
     async function getStocktaking(token) {
 		let apiCall = `kropkaNet/stocktaking/${params.stocktakingId}`;
@@ -174,9 +176,15 @@ function StocktakingDetails() {
 		e.preventDefault();
 		
 		const token = await refreshToken();
+        sendUpdate(token)
+	};
+
+    async function sendUpdate(token) {
+        
+        console.log(token!=null ? token : "no-token")
         const apiCall = `kropkaNet/stocktaking/${params.stocktakingId}/addEmployee/${newEmployee}`
         try {
-            const response = await axiosInstance.patch(apiCall, {
+            const response = await axiosInstance.patch(apiCall, null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -186,12 +194,13 @@ function StocktakingDetails() {
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-	};
+    }
+
 	async function handleDeleteEmployee(element) {
 		const token = await refreshToken();
         const apiCall = `kropkaNet/stocktaking/${params.stocktakingId}/removeEmployee/${element}`
         try {
-            const response = await axiosInstance.patch(apiCall, {
+            const response = await axiosInstance.patch(apiCall, null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

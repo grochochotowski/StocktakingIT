@@ -119,6 +119,7 @@ namespace KropkaNet.Api.Services.CompanySide
             worksheet.Cells[1, 2].Value = "Name";
             worksheet.Cells[1, 3].Value = "Category";
             worksheet.Cells[1, 4].Value = "Quantity";
+            worksheet.Cells[1, 5].Value = "Notes";
 
             for (var i = 0; i < products.Count; i++)
             {
@@ -126,6 +127,7 @@ namespace KropkaNet.Api.Services.CompanySide
                 worksheet.Cells[i + 2, 2].Value = products[i].Product.Name;
                 worksheet.Cells[i + 2, 3].Value = products[i].Product.Category;
                 worksheet.Cells[i + 2, 4].Value = products[i].Quantity;
+                worksheet.Cells[i + 2, 5].Value = products[i].Product.Note;
             }
 
             return package.GetAsByteArray();

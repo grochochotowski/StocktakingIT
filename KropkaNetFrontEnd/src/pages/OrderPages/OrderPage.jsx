@@ -107,7 +107,7 @@ function OrderPage() {
             let apiCall = `kropkaNet/order/state?` +
                 `id=${newState[1]}&state=${newState[0]}`
             try {
-                const response = await axiosInstance.patch(apiCall, {
+                const response = await axiosInstance.patch(apiCall, null, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -127,7 +127,7 @@ function OrderPage() {
             let apiCall = `kropkaNet/order/state?` +
                 `id=${parseInt(orderId)}&state=${1}`
             try {
-                const response = await axiosInstance.patch(apiCall, {
+                const response = await axiosInstance.patch(apiCall, null, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -412,7 +412,7 @@ function OrderPage() {
                 </div>
             </div>
             { box && box == "new" && <OrderNew hideBox={() => setBox("")} updateData={() => fetchData()}/> }
-            { box && box == "edit" && <OrderEdit updateData={() => fetchData()} selected={selected}/> }
+            { box && box == "edit" && <OrderEdit hideBox={() => setBox("")} updateData={() => fetchData()} selected={selected}/> }
             { box && box == "info" && <OrderInfo selected={selected}/> }
         </>
     )

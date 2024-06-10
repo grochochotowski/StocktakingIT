@@ -41,7 +41,7 @@ function OrderNew({ hideBox, updateData }) {
 		};
 		
 		const token = await refreshToken();
-        const apiCall = `kropkaNet/order/create`
+        var apiCall = `kropkaNet/order/create`
 		if (state.level == "user") {
 			apiCall += `?userId=${state.personId}`;
 		}
@@ -51,7 +51,6 @@ function OrderNew({ hideBox, updateData }) {
                     Authorization: `Bearer ${token}`
                 }
             });
-
 			updateData();
 			hideBox();
         } catch (error) {

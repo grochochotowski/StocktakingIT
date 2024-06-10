@@ -23,7 +23,7 @@ export default function ProductBox({warehouseId, product}) {
         const token = await refreshToken();
         let apiCall = `kropkaNet/warehouse/${warehouseId}/${version}/${product.id}?quantity=${Math.abs(changeQuantity)}`;
         try {
-            const response = await axiosInstance.patch(apiCall, {
+            const response = await axiosInstance.patch(apiCall, null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

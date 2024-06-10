@@ -123,7 +123,7 @@ function AddProduct({warehouseId, hideBox, updateData}) {
         const token = await refreshToken();
         let apiCall = `kropkaNet/warehouse/${warehouseId}/addProduct/${productId}?quantity=${quantity == 0 ? 1 : quantity}`;
         try {
-            const response = await axiosInstance.patch(apiCall, {
+            const response = await axiosInstance.patch(apiCall, null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
