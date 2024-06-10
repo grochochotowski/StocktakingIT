@@ -67,7 +67,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // PUT api/kropkaNet/product/update/5
         [HttpPut("update/{id}")]
-        public ActionResult Update([FromRoute] int id, [FromBody] CreateProductDto dto)
+        public ActionResult Update([FromRoute] int id, [FromBody] ProductUpdateDto dto)
         {
             var productId = _productService.Update(id, dto);
 

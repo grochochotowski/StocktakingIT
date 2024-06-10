@@ -15,7 +15,7 @@ namespace KropkaNet.Api.Services.CompanySide
         ReturnResult<ProductListDto> GetAll(int page, string filters, string sortBy, SortDirection sortDirsortDirectioneciton);
         List<ProductListDto> GetNoPag(string filter, string? sortBy, SortDirection sortDirection);
         ProductDto GetById(int productId);
-        int Update(int id, CreateProductDto dto);
+        int Update(int id, ProductUpdateDto dto);
         void Delete(int productId);
     }
 
@@ -157,7 +157,7 @@ namespace KropkaNet.Api.Services.CompanySide
         }
 
         // PUT : update product
-        public int Update(int id, CreateProductDto dto)
+        public int Update(int id, ProductUpdateDto dto)
         {
             var product = _context.Products
                 .FirstOrDefault(p => p.Id == id);
