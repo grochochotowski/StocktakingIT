@@ -32,3 +32,7 @@
 .info-line h4 {
     margin: 0;
 }
+
+.half.product-info { 
+    align-items: flex-start;
+}

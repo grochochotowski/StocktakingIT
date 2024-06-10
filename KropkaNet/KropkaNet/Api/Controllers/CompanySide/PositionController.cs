@@ -1,5 +1,6 @@
 ﻿using KropkaNet.Api.Services.CompanySide;
 using KropkaNet.Objects.Dtos.CompanySide.Position;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNet.Api.Controllers.CompanySide
@@ -19,7 +20,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // GET: /api/kropkaNet/position/all
         [HttpGet("all")]
-        //[Authorize(Roles = "Employee, Moderator, Admin")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<PositionDto>> GetAll()
         {
             var positionDtos = _positionService.GetAll();

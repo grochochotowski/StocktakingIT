@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import { GlobalStateContext } from '../../GlobalState';
 import { axiosInstance, refreshToken } from '../../api/axios';
 
-function OrderNew({ updateData, selected }) {
+function OrderNew({ hideBox, updateData, selected }) {
 
     const { state, setState } = useContext(GlobalStateContext);
 
@@ -98,11 +98,12 @@ function OrderNew({ updateData, selected }) {
         const token = await refreshToken();
 		let apiCall = `kropkaNet/order/delete/${selected}`;
         try {
-            const response = await axiosInstance.delete(apiCall, orderDate,{
+            const response = await axiosInstance.delete(apiCall, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
+            hideBox();
 			updateData();
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -114,7 +115,7 @@ function OrderNew({ updateData, selected }) {
 		const token = await refreshToken();
         const apiCall = `kropkaNet/order/addUser?userId=${newUser}&orderId=${selected}`;
         try {
-            const response = await axiosInstance.patch(apiCall, {
+            const response = await axiosInstance.patch(apiCall, null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -129,7 +130,7 @@ function OrderNew({ updateData, selected }) {
 		const token = await refreshToken();
         const apiCall = `kropkaNet/order/removeUser/?userId=${element}&orderId=${selected}`;
         try {
-            const response = await axiosInstance.patch(apiCall, {
+            const response = await axiosInstance.patch(apiCall, null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

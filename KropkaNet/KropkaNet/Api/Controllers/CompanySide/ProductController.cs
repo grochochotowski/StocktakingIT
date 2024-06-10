@@ -23,7 +23,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // POST: /api/kropkaNet/product/create
         [HttpPost("create")]
-        public ActionResult Create([FromBody] CreateProductDto dto)
+        public ActionResult Create([FromForm] CreateProductDto dto)
         {
             var createdProductId = _productService.Create(dto);
 
@@ -42,10 +42,18 @@ namespace KropkaNet.Api.Controllers.CompanySide
             [FromQuery] int page,
             [FromQuery] string? filters,
             [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
+            [FromQuery] SortDirection sortDirection
             )
         {
-            var companyDtos = _productService.GetAll(page, filters, sortBy, sortDireciton);
+            var companyDtos = _productService.GetAll(page, filters, sortBy, sortDirection);
+            return Ok(companyDtos);
+        }
+
+        // GET api/kropkaNet/product/all/getNoPag
+        [HttpGet("all/getNoPag")]
+        public ActionResult<IEnumerable<CompanyDto>> GetNoPag([FromQuery] string? filters, [FromQuery] string? sortBy, [FromQuery] SortDirection sortDirection)
+        {
+            var companyDtos = _productService.GetNoPag(filters, sortBy, sortDirection);
             return Ok(companyDtos);
         }
 
@@ -59,7 +67,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // PUT api/kropkaNet/product/update/5
         [HttpPut("update/{id}")]
-        public ActionResult Update([FromRoute] int id, [FromBody] CreateProductDto dto)
+        public ActionResult Update([FromRoute] int id, [FromBody] ProductUpdateDto dto)
         {
             var productId = _productService.Update(id, dto);
 

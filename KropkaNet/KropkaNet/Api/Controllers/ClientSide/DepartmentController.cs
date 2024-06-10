@@ -1,6 +1,7 @@
 ﻿using KropkaNet.Api.Services.ClientSide;
 using KropkaNet.Objects.Dtos.ClientSide.Department;
 using KropkaNet.Objects.Entities.Enum;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNet.Api.Controllers.ClientSide
@@ -17,7 +18,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
         }
 
         [HttpPost("create")]
-        //[Authorize]
+        [Authorize]
         public ActionResult Create([FromQuery] int companyId, [FromBody] CreateDepartmentDto dto)
         {
             var createdDepartmentId = _departmentService.Create(companyId, dto);
@@ -33,7 +34,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // GET api/kropkaNet/departemnt/all
         [HttpGet("all")]
-        //[Authorize(Roles = "Employee, Moderator, Admin")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<DepartmentDto>> GetList(
             [FromQuery] int page,
             [FromQuery] string? filters,
@@ -47,7 +48,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // GET api/kropkaNet/company/{companyId}
         [HttpGet("company/{companyId}")]
-        //[Authorize]
+        [Authorize]
         public ActionResult GetFromCompany(
             [FromRoute] int companyId,
             [FromQuery] string? sortBy,
@@ -60,7 +61,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // GET api/kropkaNet/departemnt/user/{userId}
         [HttpGet("user/{userId}")]
-        //[Authorize]
+        [Authorize]
         public IActionResult GetUserDepartments([FromRoute] int userId)
         {
             var departmentDtos = _departmentService.GetUserDepartments(userId);
@@ -69,7 +70,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // PUT api/kropkaNet/department/update/5
         [HttpPut("update/{id}")]
-        //[Authorize]
+        [Authorize]
         public ActionResult Update([FromRoute] int id, [FromBody] CreateDepartmentDto dto)
         {
             var departmentId = _departmentService.Update(id, dto);
@@ -78,7 +79,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
         }
         // DELETE api/kropkaNet/department/delete{id}
         [HttpDelete("delete/{id}")]
-        //[Authorize]
+        [Authorize]
         public ActionResult<IEnumerable<DepartmentDto>> Delete([FromRoute] int id)
         {
             var departmentDtos = _departmentService.Delete(id);

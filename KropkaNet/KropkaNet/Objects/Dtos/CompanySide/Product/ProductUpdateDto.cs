@@ -1,10 +1,9 @@
 ﻿namespace KropkaNet.Objects.Dtos.CompanySide.Product
 {
-    public class CreateProductDto
+    public class ProductUpdateDto
     {
         public string Category { get; set; }
         public string Name { get; set; }
         public string? Note { get; set; }
-        public IFormFile Image { get; set; }
     }
 }

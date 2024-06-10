@@ -1,4 +1,4 @@
-﻿namespace KropkaNet.Objects.Dtos.ClientSide.Order
+﻿ namespace KropkaNet.Objects.Dtos.ClientSide.Order
 {
     public class OrderListDto
     {
@@ -6,5 +6,7 @@
         public DateTime DateOfOrderExecution { get; set; }
         public int State { get; set; }
         public string DepartmentName { get; set; }
+        public int? StocktakingId { get; set; }
+        public int? WarehouseId { get; set; }
     }
 }

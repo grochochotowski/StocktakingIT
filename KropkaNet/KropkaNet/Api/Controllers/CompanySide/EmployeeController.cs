@@ -3,11 +3,12 @@ using KropkaNet.Objects.Dtos.ClientSide.User;
 using KropkaNet.Objects.Dtos.CompanySide.Employee;
 using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Enum;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNet.Api.Controllers.CompanySide
 {
-    [Route("api/company/employee")]
+    [Route("api/kropkaNet/employee")]
     [ApiController]
     public class EmployeeController : ControllerBase
     {
@@ -19,32 +20,41 @@ namespace KropkaNet.Api.Controllers.CompanySide
         }
 
 
-        // GET api/kropkaNet/employee/all
-        [HttpGet("all")]
-        //[Authorize(Roles = "Employee, Moderator, Admin")]
-        public ActionResult<IEnumerable<EmployeeDto>> GetList(
+        // GET api/kropkaNet/employee/getAll
+        [HttpGet("getAll")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
+        public ActionResult<IEnumerable<EmployeeDto>> GetAll(
             [FromQuery] int page,
             [FromQuery] string? filters,
             [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDireciton
+            [FromQuery] SortDirection sortDirection
             )
         {
-            var employeeDtos = _employeeService.GetList(page, filters, sortBy, sortDireciton);
+            var employeeDtos = _employeeService.GetAll(page, filters, sortBy, sortDirection);
             return Ok(employeeDtos);
         }
 
-        // GET: api/kropkaNet/user/{stocktakingId}/GetFromStocktaking
-        [HttpGet("{stocktakingId}/GetFromStocktaking")]
-        //[Authorize]
-        public ActionResult<ReturnResult<UserDto>> GetFromStocktaking([FromRoute] int stocktakingId)
+        // GET: api/kropkaNet/employee/get/notInStocktaking
+        [HttpGet("get/notInStocktaking")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
+        public ActionResult NotInStocktaking([FromQuery] int stocktakingId)
         {
-            var result = _employeeService.GetFromStocktaking(stocktakingId);
+            var result = _employeeService.NotInStocktaking(stocktakingId);
+            return Ok(result);
+        }
+
+        // GET: api/kropkaNet/user/GetFromStocktaking/{stocktakingId}
+        [HttpGet("GetFromStocktaking/{stocktakingId}")]
+        [Authorize]
+        public ActionResult<ReturnResult<UserDto>> GetFromStocktaking([FromRoute] int stocktakingId, [FromQuery] string? sortBy, [FromQuery] SortDirection sortDirection)
+        {
+            var result = _employeeService.GetFromStocktaking(stocktakingId, sortBy, sortDirection);
             return Ok(result);
         }
 
         // GET api/kropkaNet/employee/{id}
         [HttpGet("{employeeId}")]
-        //[Authorize(Roles = "Employee, Moderator, Admin")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<EmployeeDto> GetById([FromRoute] int employeeId)
         {
             var employeeDto = _employeeService.GetById(employeeId);
@@ -52,7 +62,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
         }
         // PUT api/kropkaNet/employee/update/5
         [HttpPut("update/{id}")]
-        //[Authorize(Roles = "Employee, Moderator, Admin")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult Update([FromRoute] int id, [FromBody] UpdateEmployeeDto dto)
         {
             var employeeDtos = _employeeService.Update(id, dto);
@@ -61,8 +71,8 @@ namespace KropkaNet.Api.Controllers.CompanySide
         }
 
         // PATCH api/kropkaNet/employee/changeposition/{employeeId}
-        [HttpPut("changeposition/{employeeId}")]
-        //[Authorize(Roles = "Admin")]
+        [HttpPatch("changeposition/{employeeId}")]
+        [Authorize(Roles = "Admin")]
         public ActionResult ChangePosition([FromRoute] int employeeId, [FromQuery] int positionId)
         {
             _employeeService.ChangePosition(employeeId, positionId);
@@ -71,7 +81,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
         }
         // DELETE api/kropkaNet/department/delete{id}
         [HttpDelete("delete/{id}")]
-        //[Authorize(Roles = "Moderator, Admin")]
+        [Authorize(Roles = "Moderator, Admin")]
         public ActionResult<IEnumerable<EmployeeDto>> Delete([FromRoute] int id)
         {
             var employeeDtos = _employeeService.Delete(id);

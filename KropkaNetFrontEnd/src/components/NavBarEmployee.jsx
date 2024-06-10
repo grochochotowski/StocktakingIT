@@ -27,10 +27,6 @@ function NavBarEmployee() {
                 <img src={logo} alt="kropka-net-logo" />
             </div>
             <div className='options'>
-                <Link to='/dashboard'>
-                    <h2><i className="fa-solid fa-house"></i></h2>
-                    <h4>Home</h4>
-                </Link>
                 <Link to='/orders'>
                     <h2><i className="fa-solid fa-basket-shopping"></i></h2>
                     <h4>Orders</h4>
@@ -39,9 +35,21 @@ function NavBarEmployee() {
                     <h2><i className="fa-solid fa-building"></i></h2>
                     <h4>Companies</h4>
                 </Link>
+                <Link to='/employees'>
+                    <h2><i className="fa-solid fa-building-user"></i></h2>
+                    <h4>Employees</h4>
+                </Link>
+                <Link to='/users'>
+                    <h2><i className="fa-solid fa-users"></i></h2>
+                    <h4>Users</h4>
+                </Link>
+                <Link to='/products'>
+                    <h2><i className="fa-solid fa-box"></i></h2>
+                    <h4>Products</h4>
+                </Link>
             </div>
             <div className="bottom-row">
-                <Link to='/account/1'>
+                <Link to={`/account/${state.personId}`}>
                     <h6>Account</h6>
                     <h2><i className="fa-solid fa-user"></i></h2>
                 </Link>

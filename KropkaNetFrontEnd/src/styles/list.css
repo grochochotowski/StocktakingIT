@@ -75,6 +75,23 @@ td.delete-item:hover {
     cursor: pointer;
     background-color: var(--clr-warning-dark);
 }
+td.stocktakingAction button {
+    width: 100%;
+}
+td.stocktakingAction button:hover {
+    background-color: var(--clr-acc-dark-600);
+}
+td.stocktakingAction a {
+    padding: 0;
+    font-size: 1.25rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+td.stocktakingAction a:hover {
+    text-decoration: underline;
+}
 
 ul {
     padding: 2vh 0;

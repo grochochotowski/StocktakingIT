@@ -100,6 +100,9 @@
     height: auto;
     max-height: 20vh;
 }
+select#pos {
+    height: 100%;
+}
 .content h4 {
     margin-bottom: 0;
 }
@@ -110,4 +113,44 @@
 .new-object {
     display: flex;
     gap: 1vw;
+}
+
+.half input {
+    width: 97%;
+}
+.product-note {
+    width: auto;
+}
+.product.finish {
+    margin-top: 1rem;
+}
+.image-upload .layer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 1vh;
+}
+.half .image {
+    width: 25rem;
+    height: 25rem;
+
+    border: dashed 2px var(--clr-txt-dark);
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+.half .image:hover {
+    background-color: var(--clr-acc-dark-200);
+    color: var(--clr-acc-dark-700);
+    border-color: var(--clr-acc-dark-700);
+}
+.half .image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.half .image * {
+    width: 80%;
+    text-align: center;
 }

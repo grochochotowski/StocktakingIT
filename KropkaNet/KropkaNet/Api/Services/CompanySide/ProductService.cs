@@ -5,15 +5,17 @@ using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Objects.Entities.Models.CompanySide;
 using KropkaNetApi.Exceptions;
 using System.Linq.Expressions;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace KropkaNet.Api.Services.CompanySide
 {
     public interface IProductService
     {
         int Create(CreateProductDto dto);
-        ReturnResult<ProductListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDireciton);
+        ReturnResult<ProductListDto> GetAll(int page, string filters, string sortBy, SortDirection sortDirsortDirectioneciton);
+        List<ProductListDto> GetNoPag(string filter, string? sortBy, SortDirection sortDirection);
         ProductDto GetById(int productId);
-        int Update(int id, CreateProductDto dto);
+        int Update(int id, ProductUpdateDto dto);
         void Delete(int productId);
     }
 
@@ -35,6 +37,22 @@ namespace KropkaNet.Api.Services.CompanySide
         {
             var product = _mapper.Map<Product>(dto);
 
+            if (dto.Image != null)
+            {
+                var timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                var uniqueFileName = $"{timestamp}_{dto.Image.FileName}";
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", uniqueFileName);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(imagePath));
+
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    dto.Image.CopyTo(stream);
+                }
+
+                product.ImgUrl = $"/images/{uniqueFileName}";
+            }
+
             _context.Products.Add(product);
             _context.SaveChanges();
 
@@ -42,16 +60,15 @@ namespace KropkaNet.Api.Services.CompanySide
         }
 
         // GET: get list of products
-        public ReturnResult<ProductListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDireciton)
+        public ReturnResult<ProductListDto> GetAll(int page, string filter, string sortBy, SortDirection sortDirection)
         {
             var baseQuery = _context.Products
-                .Where(
-                    p => filter == null || (
+            .Where(p => (string.IsNullOrEmpty(filter) || (
                     p.Name.ToLower().Contains(filter) ||
                     p.Category.ToLower().Contains(filter) ||
                     p.Note.ToLower().Contains(filter) ||
-                    p.Id.ToString().Contains(filter)
-                ));
+                    p.Id.ToString().Contains(filter))
+            ));
 
 
             if (!string.IsNullOrEmpty(sortBy))
@@ -59,21 +76,20 @@ namespace KropkaNet.Api.Services.CompanySide
                 var columnsSelector = new Dictionary<string, Expression<Func<Product, object>>>
                 {
                     { "id", d => d.Id},
-                    { "Name", d => d.Name},
-                    { "Category", d => d.Category}
+                    { "name", d => d.Name},
+                    { "category", d => d.Category}
                 };
 
                 var selectedColumn = columnsSelector[sortBy];
 
-                baseQuery = sortDireciton == SortDirection.ASC
+                baseQuery = sortDirection == SortDirection.ASC
                     ? baseQuery.OrderBy(selectedColumn)
                     : baseQuery.OrderByDescending(selectedColumn);
             }
 
             var items = baseQuery
-               .Skip(10 * (page - 1))
-               .Take(10)
-               .OrderBy(p => p.Name)
+                .Skip(10 * (page - 1))
+                .Take(10)
                 .Select(p => new ProductListDto
                 {
                     Id = p.Id,
@@ -89,6 +105,46 @@ namespace KropkaNet.Api.Services.CompanySide
             return result;
         }
 
+        // GET: get list of products
+        public List<ProductListDto> GetNoPag(string filter, string? sortBy, SortDirection sortDirection)
+        {
+            var baseQuery = _context.Products
+            .Where(p => (string.IsNullOrEmpty(filter) || (
+                    p.Name.ToLower().Contains(filter) ||
+                    p.Category.ToLower().Contains(filter) ||
+                    p.Note.ToLower().Contains(filter) ||
+                    p.Id.ToString().Contains(filter))
+            ));
+
+
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                var columnsSelector = new Dictionary<string, Expression<Func<Product, object>>>
+                {
+                    { "id", d => d.Id},
+                    { "name", d => d.Name},
+                    { "category", d => d.Category}
+                };
+
+                var selectedColumn = columnsSelector[sortBy];
+
+                baseQuery = sortDirection == SortDirection.ASC
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
+
+            var products = baseQuery
+                .Select(p => new ProductListDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Category = p.Category
+                })
+                .ToList();
+
+            return products;
+        }
+
         // GET : get product by id
         public ProductDto GetById(int productId)
         {
@@ -101,8 +157,7 @@ namespace KropkaNet.Api.Services.CompanySide
         }
 
         // PUT : update product
-
-        public int Update(int id, CreateProductDto dto)
+        public int Update(int id, ProductUpdateDto dto)
         {
             var product = _context.Products
                 .FirstOrDefault(p => p.Id == id);
@@ -117,7 +172,6 @@ namespace KropkaNet.Api.Services.CompanySide
 
             return product.Id;
         }
-
 
         // DELETE : delete product with id
         public void Delete(int productId)

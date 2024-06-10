@@ -5,6 +5,7 @@ using KropkaNet.Objects.Entities.Enum;
 using KropkaNet.Api.Services.ClientSide;
 using KropkaNet.Objects.Entities.Models.ClientSide;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KropkaNet.Api.Controllers.ClientSide
 {
@@ -23,7 +24,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // GET: api/kropkaNet/user/getAll
         [HttpGet("getAll")]
-        //[Authorize(Roles = "Employee, Moderator, Admin")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<ReturnResult<UserDto>> GetAll(
             [FromQuery] int page,
             [FromQuery] string? filter,
@@ -36,7 +37,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // GET: api/kropkaNet/user/getAll/notInCompany
         [HttpGet("getAll/notInCompany")]
-        //[Authorize]
+        [Authorize]
         public ActionResult NotInCompany(
             [FromQuery] int companyId)
         {
@@ -46,7 +47,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // GET: api/kropkaNet/user/getAll/notInOrder
         [HttpGet("getAll/notInOrder")]
-        //[Authorize]
+        [Authorize]
         public ActionResult NotInOrder([FromQuery] int orderId)
         {
             var result = _userService.NotInOrder(orderId);
@@ -55,7 +56,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // GET: api/kropkaNet/user/getFromOrder/{orderId}
         [HttpGet("getFromOrder/{orderId}")]
-        //[Authorize]
+        [Authorize]
         public ActionResult<ReturnResult<UserDto>> GetFromOrder([FromRoute] int orderId, [FromQuery] string? sortBy, [FromQuery] SortDirection sortDirection)
         {
             var result = _userService.GetFromOrder(orderId, sortBy, sortDirection);
@@ -64,7 +65,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // GET: api/kropkaNet/user/getFromCompany/{companyId}
         [HttpGet("getFromCompany/{companyId}")]
-        //[Authorize]
+        [Authorize]
         public ActionResult GetFromCompany([FromRoute] int companyId, [FromQuery] string? sortBy, [FromQuery] SortDirection sortDirection)
         {
             var result = _userService.GetFromCompany(companyId, sortBy, sortDirection);
@@ -74,7 +75,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // GET: api/kropkaNet/user/{id}
         [HttpGet("{id}")]
-        //[Authorize]
+        [Authorize]
         public ActionResult<UserDto> GetDetails(int id)
         {
             var userDto = _userService.GetDetails(id);
@@ -84,7 +85,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // PUT: api/kropkaNet/user/update/{id}
         [HttpPut("update/{id}")]
-        //[Authorize]
+        [Authorize]
         public IActionResult Update(int id, [FromBody] UpdateUserDto dto)
         {
             _userService.Update(id, dto);
@@ -93,7 +94,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // DELETE: api/kropkaNet/user/delete/{id}
         [HttpDelete("delete/{id}")]
-        //[Authorize]
+        [Authorize]
         public IActionResult Delete(int id)
         {
             _userService.Delete(id);

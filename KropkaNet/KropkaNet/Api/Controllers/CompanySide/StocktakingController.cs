@@ -3,13 +3,13 @@ using KropkaNet.Objects.Dtos.ClientSide.Order;
 using KropkaNet.Objects.Dtos.CompanySide.Stocktaking;
 using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Enum;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNet.Api.Controllers.CompanySide
 {
     [Route("api/kropkaNet/stocktaking")]
     [ApiController]
-    //[Authorize(Roles = "Employee, Moderator, Admin")]
     public class StocktakingController : ControllerBase
     {
         private readonly IStocktakingService _stocktakingService;
@@ -21,6 +21,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // POST: /api/kropkaNet/stocktaking/create/order/{orderId}
         [HttpPost("create/order/{orderId}")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<int> Create([FromRoute] int orderId, [FromBody] CreateStocktakingDto dto)
         {
             var createdStocktakingId = _stocktakingService.Create(orderId, dto);
@@ -31,6 +32,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // GET: /api/kropkaNet/stocktaking/all
         [HttpGet("all")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<ReturnResult<StocktakingListDto>> GetAll(
             [FromQuery] int page,
             [FromQuery] string? filter,
@@ -44,6 +46,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // GET: /api/kropkaNet/stocktaking/{id}
         [HttpGet("{id}")]
+        [Authorize]
         public ActionResult<StocktakingDetailsDto> GetById(int id)
         {
             var stocktaking = _stocktakingService.GetDetails(id);
@@ -52,6 +55,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // PUT: /api/kropkaNet/stocktaking/update/{id}
         [HttpPut("update/{id}")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public IActionResult Update(int id, [FromBody] UpdateStocktakingDto dto)
         {
                 var stocktakingId = _stocktakingService.Update(id, dto);
@@ -60,6 +64,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // PATCH: /api/kropkaNet/stocktaking/{stocktakingId}/addEmployee/{employeeId}
         [HttpPatch("{stocktakingId}/addEmployee/{employeeId}")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public IActionResult AddEmployee(int stocktakingId, int employeeId)
         {
             try
@@ -75,6 +80,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // PATCH: /api/kropkaNet/stocktaking/{stocktakingId}/removeEmployee/{employeeId}
         [HttpPatch("{stocktakingId}/removeEmployee/{employeeId}")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public IActionResult RemoveEmployee(int stocktakingId, int employeeId)
         {
             try
@@ -90,6 +96,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 
         // DELETE: /api/kropkaNet/stocktaking/delete/{id}
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public IActionResult Delete(int id)
         {
             int result = _stocktakingService.Delete(id);
