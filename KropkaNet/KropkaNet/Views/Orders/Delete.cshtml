@@ -11,29 +11,86 @@
     <h4>Order</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfOrderExecution)
+        <dt class="col-sm-2">
+            Date of Execution:
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfOrderExecution)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateOfOrderExecution);
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.State)
+        <dt class="col-sm-2">
+            State:
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.State)
+        <dd class="col-sm-10">
+            @if (Model.State == -1)
+            {
+                <span class="text-danger">
+                    Rejected
+                </span>
+
+            }
+            else if (Model.State == 0)
+            {
+                <span>
+                    No decision
+                </span>
+            }
+            else if (Model.State == 1)
+            {
+                <span class="text-success">
+                    Accepted
+                </span>
+            }
+            else
+            {
+                <span class="text-danger">
+                    ERROR
+                </span>
+            }
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Department)
+        <dt class="col-sm-2">
+            Company:
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Department.Company.CompanyName)
+        </dd>
+        <dt class="col-sm-2">
+            Department:
+        </dt>
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Department.DepartmentName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StocktakingId)
+        <dt class="col-sm-2">
+            Stocktaking:
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StocktakingId)
+        <dd class="col-sm-10">
+            @if (Model.State == -1)
+            {
+                <span class="text-danger">
+                    Order rejected - no stocktaking
+                </span>
+            }
+            else if (Model.State == 0)
+            {
+                <span>
+                    Order has no decision - no stocktaking
+                </span>
+            }
+            else if (Model.State == 1 && Model.StocktakingId == null)
+            {
+                <span class="text-success">
+                    Order accepted - stocktaking not created yet
+                </span>
+            }
+            else if (Model.State == 1 && Model.StocktakingId != null)
+            {
+                <a class="text-success" asp-controller="Stocktakings" asp-action="Details" asp-route-id="@Model?.StocktakingId">@Model.StocktakingId</a>
+            }
+            else
+            {
+                <span class="text-danger">
+                    ERROR
+                </span>
+            }
         </dd>
     </dl>
     
