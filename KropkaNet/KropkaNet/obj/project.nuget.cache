@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "l/00L9yqc8I67veaM4EN4EfHHpwKJ8P5dJYlCdAy9bC2TNHzhb+MSC5h/A/m0ZEWHlHnNdwYn9QNnjHgikT8IA==",
+  "dgSpecHash": "CYHrSxr4/cgyV2kHhDDmkTWtxDWlKnLeVQfhRRoRNXDl9mHV0Qn/9gRLAVEJD34HA8Ia+xMIx/2o1SatnVMQsA==",
   "success": true,
   "projectFilePath": "C:\\nonSystem\\IT\\Code\\stocktakingIT\\KropkaNet\\KropkaNet\\KropkaNet.csproj",
   "expectedPackageFiles": [
@@ -90,10 +90,10 @@
     "C:\\Users\\gmich\\.nuget\\packages\\microsoft.entityframeworkcore\\8.0.6\\microsoft.entityframeworkcore.8.0.6.nupkg.sha512",
     "C:\\Users\\gmich\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\8.0.6\\microsoft.entityframeworkcore.abstractions.8.0.6.nupkg.sha512",
     "C:\\Users\\gmich\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\8.0.6\\microsoft.entityframeworkcore.analyzers.8.0.6.nupkg.sha512",
-    "C:\\Users\\gmich\\.nuget\\packages\\microsoft.entityframeworkcore.design\\8.0.3\\microsoft.entityframeworkcore.design.8.0.3.nupkg.sha512",
-    "C:\\Users\\gmich\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\8.0.3\\microsoft.entityframeworkcore.relational.8.0.3.nupkg.sha512",
+    "C:\\Users\\gmich\\.nuget\\packages\\microsoft.entityframeworkcore.design\\8.0.4\\microsoft.entityframeworkcore.design.8.0.4.nupkg.sha512",
+    "C:\\Users\\gmich\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\8.0.4\\microsoft.entityframeworkcore.relational.8.0.4.nupkg.sha512",
     "C:\\Users\\gmich\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\8.0.3\\microsoft.entityframeworkcore.sqlserver.8.0.3.nupkg.sha512",
-    "C:\\Users\\gmich\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\8.0.3\\microsoft.entityframeworkcore.tools.8.0.3.nupkg.sha512",
+    "C:\\Users\\gmich\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\8.0.4\\microsoft.entityframeworkcore.tools.8.0.4.nupkg.sha512",
     "C:\\Users\\gmich\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\gmich\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\8.0.0\\microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\gmich\\.nuget\\packages\\microsoft.extensions.caching.memory\\8.0.0\\microsoft.extensions.caching.memory.8.0.0.nupkg.sha512",

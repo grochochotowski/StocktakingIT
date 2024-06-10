@@ -1,0 +1,75 @@
+﻿@model IEnumerable<KropkaNet.Objects.Entities.Models.ClientSide.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                State
+            </th>
+            <th>
+                Department
+            </th>
+            <th>
+                Stocktaking
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @if (item.State == -1)
+                {
+                    <span class="text-danger">Rejected</span>
+                }
+                else if (item.State == 0)
+                {
+                    <span> No decision</span>
+                }
+                else if (item.State == 1)
+                {
+                    <span class="text-success">Accepted</span>
+                }
+                else
+                {
+                    <span class="text-danger">ERROR</span>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+            </td>
+            <td>
+                @if (item.StocktakingId != null)
+                {
+                    <span class="text-success">Yes</span>
+                }
+                else
+                {
+                    <span class="text-danger">No</span>
+                }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

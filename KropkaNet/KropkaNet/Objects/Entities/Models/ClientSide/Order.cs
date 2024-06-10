@@ -15,7 +15,7 @@ namespace KropkaNet.Objects.Entities.Models.ClientSide
 
         [Required(ErrorMessage = "Departament is required")]
         public int DepartmentId { get; set; }
-        public virtual Department Department { get; set; }
+        public virtual Department? Department { get; set; }
 
 
 

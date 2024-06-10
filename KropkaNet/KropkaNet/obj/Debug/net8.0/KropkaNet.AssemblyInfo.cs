@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KropkaNet")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3c0dc45770d56923fa19ef7a8e0e0ffe7a6140fb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4d36aca116515219761891ab429c57dd0243b9f2")]
 [assembly: System.Reflection.AssemblyProductAttribute("KropkaNet")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KropkaNet")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
