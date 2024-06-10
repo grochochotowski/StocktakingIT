@@ -1,0 +1,45 @@
+﻿@model KropkaNet.Objects.Entities.Models.CompanySide.Stocktaking
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Stocktaking</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Expecteed Time
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExpectedTimeHours)
+        </dd>
+        <dt class="col-sm-2">
+            Warehouse ID
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.WarehouseId)
+        </dd>
+        <dt class="col-sm-2">
+            Order
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-controller="Orders" asp-action="Details" asp-route-id="@Model.OrderId">@Model.OrderId</a>
+        </dd>
+        <dt class="col-sm-2">
+            Notes
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

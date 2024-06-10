@@ -11,13 +11,15 @@ const RegisterPage = lazy(() => import('./pages/BeginPages/RegisterPage'))
 
 const OrderPage = lazy(() => import('./pages/OrderPages/OrderPage'))
 const CompanyPage = lazy(() => import('./pages/CompanyPages/CompanyPage'))
-const AccountPage = lazy(() => import('./pages/AccountPages/AccountPage'))
 
 const EmployeePage = lazy(() => import('./pages/EmployeePages/EmployeePage'))
 const ProductPage = lazy(() => import('./pages/ProductPages/ProductPage'))
 const UserPage = lazy(() => import('./pages/UserPages/UserPage'))
 
 const StocktakingDetails = lazy(() => import('./pages/StocktakingPages/StocktakingDetails'))
+
+import AccountPage from './pages/AccountPages/AccountPage';
+//const AccountPage = lazy(() => import('./pages/AccountPages/AccountPage'))
 
 const Unauthorized = lazy(() => import('./pages/ErrorPages/Unauthorized'))
 const Forbidden = lazy(() => import('./pages/ErrorPages/Forbidden'))

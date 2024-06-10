@@ -13,13 +13,13 @@ namespace KropkaNet.Objects.Entities.Models.CompanySide
 
 
         public int? WarehouseId { get; set; }
-        public virtual Warehouse Warehouse { get; set; }
+        public virtual Warehouse? Warehouse { get; set; }
 
 
 
         [Required(ErrorMessage = "Order ID is required")]
         public int OrderId { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual Order? Order { get; set; }
 
 
 

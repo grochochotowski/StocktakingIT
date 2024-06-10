@@ -13,7 +13,7 @@ namespace KropkaNet.Api.Services.ClientSide
     public interface IDepartmentService
     {
         int Create(int companyId, CreateDepartmentDto dto);
-        ReturnResult<DepartmentListDto> GetList(int page, string? filter, string? sortBy, SortDirection sortDireciton);
+        List<DepartmentListDto> GetList();
         List<DepartmentListDto> GetFromCompany(int companyId, string? sortBy, SortDirection sortDireciton);
         List<UserDepartmentsDto> GetUserDepartments(int userId);
         int Update(int id, CreateDepartmentDto dto);
@@ -46,44 +46,18 @@ namespace KropkaNet.Api.Services.ClientSide
         }
 
         // GET: get list of all departemnts
-        public ReturnResult<DepartmentListDto> GetList(int page, string? filter, string ?sortBy, SortDirection sortDireciton)
+        public List<DepartmentListDto> GetList()
         {
-            var baseQuery = _context.Departments
-                .Where(c => (string.IsNullOrEmpty(filter) || (
-                       c.DepartmentName.ToLower().Contains(filter.ToLower()) ||
-                       c.Id.ToString().Contains(filter))
-                       ));
-
-            if (!string.IsNullOrEmpty(sortBy))
-            {
-                var columnsSelector = new Dictionary<string, Expression<Func<Department, object>>>
-                {
-                    { "id", d => d.Id},
-                    { "DepartmentName", d => d.DepartmentName}
-                };
-
-                var selectedColumn = columnsSelector[sortBy];
-
-                baseQuery = sortDireciton == SortDirection.ASC
-                    ? baseQuery.OrderBy(selectedColumn)
-                    : baseQuery.OrderByDescending(selectedColumn);
-            }
-
-            var items = baseQuery
-                .Skip(10 * (page - 1))
-                .Take(10)
+            var departaments = _context.Departments
                 .Select(p => new DepartmentListDto
                 {
                     Id = p.Id,
-                    DepartmentName = p.DepartmentName
+                    DepartmentName = p.DepartmentName,
+                    CompanyName = p.Company.CompanyName
                 })
                 .ToList();
 
-            var totalCount = baseQuery.Count();
-
-            var result = new ReturnResult<DepartmentListDto>(items, totalCount);
-
-            return result;
+            return departaments;
         }
 
         //GET : get list of user departments
