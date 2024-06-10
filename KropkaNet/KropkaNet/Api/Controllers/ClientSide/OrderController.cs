@@ -1,6 +1,7 @@
 ﻿using KropkaNet.Api.Services.ClientSide;
 using KropkaNet.Objects.Dtos.ClientSide.Order;
 using KropkaNet.Objects.Entities.Enum;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // POST api/kropkaNet/order/create
         [HttpPost("create")]
-        //[Authorize]
+        [Authorize]
         public ActionResult Create([FromQuery] int? userId, [FromBody] CreateOrderDto dto)
         {
             var createdOrderId = _orderService.Create(userId, dto);
@@ -35,7 +36,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // GET api/kropkaNet/order/user/{id}
         [HttpGet("user/{userId}")]
-        //[Authorize]
+        [Authorize]
         public ActionResult<IEnumerable<OrderListDto>> GetListUser(
             [FromRoute] int userId,
             [FromQuery] int page,
@@ -53,7 +54,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // GET api/kropkaNet/order/all
         [HttpGet("all")]
-        //[Authorize(Roles = "Employee, Moderator, Admin")]
+        [Authorize(Roles = "Employee, Moderator, Admin")]
         public ActionResult<IEnumerable<OrderListDto>> GetList(
             [FromQuery] int page,
             [FromQuery] string? filters,
@@ -70,7 +71,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // GET api/kropkaNet/order/{id}
         [HttpGet("{id}")]
-        //[Authorize]
+        [Authorize]
         public ActionResult<OrderDetailsDto> GetDetails([FromRoute] int id)
         {
             var orderDto = _orderService.GetDetails(id);
@@ -79,7 +80,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // PUT api/kropkaNet/order/update/5
         [HttpPut("update/{id}")]
-        //[Authorize]
+        [Authorize]
         public ActionResult Update([FromRoute] int id, [FromBody] UpdateOrderDto dto)
         {
             var orderId = _orderService.Update(id, dto);
@@ -89,7 +90,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // PATCH api/kropkaNet/order/addUser
         [HttpPatch("addUser")]
-        //[Authorize]
+        [Authorize]
         public ActionResult AddUser([FromQuery] int userId, [FromQuery] int orderId)
         {
             _orderService.AddUser(userId, orderId);
@@ -99,7 +100,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // PATCH api/kropkaNet/order/removeUser
         [HttpPatch("removeUser")]
-        //[Authorize]
+        [Authorize]
         public ActionResult RemoveUser([FromQuery] int userId, [FromQuery] int orderId)
         {
             _orderService.RemoveUser(userId, orderId);
@@ -109,7 +110,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // PATCH api/kropkaNet/order/state
         [HttpPatch("state")]
-        //[Authorize(Roles="Employee, Moderator, Admin")]
+        [Authorize(Roles="Employee, Moderator, Admin")]
         public ActionResult ChangeState([FromQuery] int id, [FromQuery] int state)
         {
             _orderService.ChangeState(id, state);
@@ -119,7 +120,7 @@ namespace KropkaNet.Api.Controllers.ClientSide
 
         // DELETE api/kropkaNet/company/delete{id}
         [HttpDelete("delete/{id}")]
-        //[Authorize]
+        [Authorize]
         public ActionResult Delete([FromRoute] int id)
         {
             _orderService.Delete(id);

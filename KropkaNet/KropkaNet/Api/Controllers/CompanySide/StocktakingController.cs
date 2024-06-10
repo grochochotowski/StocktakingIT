@@ -3,13 +3,14 @@ using KropkaNet.Objects.Dtos.ClientSide.Order;
 using KropkaNet.Objects.Dtos.CompanySide.Stocktaking;
 using KropkaNet.Objects.Entities;
 using KropkaNet.Objects.Entities.Enum;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNet.Api.Controllers.CompanySide
 {
     [Route("api/kropkaNet/stocktaking")]
     [ApiController]
-    //[Authorize(Roles = "Employee, Moderator, Admin")]
+    [Authorize(Roles = "Employee, Moderator, Admin")]
     public class StocktakingController : ControllerBase
     {
         private readonly IStocktakingService _stocktakingService;

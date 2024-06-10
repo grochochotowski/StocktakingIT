@@ -1,13 +1,14 @@
 ﻿using KropkaNet.Api.Services.CompanySide;
 using KropkaNet.Objects.Dtos.ClientSide.Company;
 using KropkaNet.Objects.Entities.Enum;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KropkaNet.Api.Controllers.CompanySide
 {
     [Route("api/kropkaNet/warehouse/{warehouseId}")]
     [ApiController]
-    //[Authorize(Roles = "Employee, Moderator, Admin")]
+    [Authorize(Roles = "Employee, Moderator, Admin")]
     public class WarehouseProductController : ControllerBase
     {
         private readonly IWarehouseProductService _warehouseProductService;

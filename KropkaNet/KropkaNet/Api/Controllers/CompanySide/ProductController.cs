@@ -9,7 +9,7 @@ namespace KropkaNet.Api.Controllers.CompanySide
 {
     [Route("api/kropkaNet/product")]
     [ApiController]
-    //[Authorize(Roles = "Employee, Moderator, Admin")]
+    [Authorize(Roles = "Employee, Moderator, Admin")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
