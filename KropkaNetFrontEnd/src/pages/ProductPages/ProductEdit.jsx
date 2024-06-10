@@ -129,7 +129,7 @@ function ProductEdit({ updateData, selected }) {
                             <img
                                 src={product.imgUrl ? `${backendUrl}${product.imgUrl}` : "https://i.pinimg.com/564x/ef/e8/d3/efe8d36db6281666a126189f05bfeff1.jpg"} 
                                 alt="product-img"
-                                style={{ width: '70%', height: 'auto' }}
+                                style={{ width: '70%', height: 'auto', borderRadius: '10px' }}
                             />
                         </div>
                     </div>
