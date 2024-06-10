@@ -7,7 +7,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Order</h4>
+    <h4>Order - @Model.Id</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -82,10 +82,7 @@
             }
             else if (Model.State == 1 && Model.StocktakingId != null)
             {
-                <span class="text-success">
-                    @Model.StocktakingId
-                </span>
-                //<a class="text-success" asp-action="Stocktaking" asp-route-id="@Model?.StocktakingId">@Model.StocktakingId</a>
+                <a class="text-success" asp-controller="Stocktakings" asp-action="Details" asp-route-id="@Model?.StocktakingId">@Model.StocktakingId</a>
             }
             else
             {
