@@ -12,7 +12,13 @@ function OrderNew({ hideBox, updateData }) {
 
 	async function fetchData() {
         const token = await refreshToken();
-        const apiCall = `kropkaNet/department/user/${state.personId}`;
+        let apiCall = `kropkaNet/department/`
+		if (state.level == "user") {
+			apiCall += `user/${state.personId}`;
+		}
+		else {
+			apiCall += `all`
+		}
         try {
             const response = await axiosInstance.get(apiCall, {
                 headers: {

@@ -35,14 +35,9 @@ namespace KropkaNet.Api.Controllers.ClientSide
         // GET api/kropkaNet/departemnt/all
         [HttpGet("all")]
         [Authorize(Roles = "Employee, Moderator, Admin")]
-        public ActionResult<IEnumerable<DepartmentDto>> GetList(
-            [FromQuery] int page,
-            [FromQuery] string? filters,
-            [FromQuery] string? sortBy,
-            [FromQuery] SortDirection sortDirection
-            )
+        public ActionResult<IEnumerable<DepartmentDto>> GetList()
         {
-            var departmentDtos = _departmentService.GetList(page, filters, sortBy, sortDirection);
+            var departmentDtos = _departmentService.GetList();
             return Ok(departmentDtos);
         }
 
