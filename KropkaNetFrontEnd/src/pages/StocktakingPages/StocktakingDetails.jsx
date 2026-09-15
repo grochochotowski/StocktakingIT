@@ -343,7 +343,7 @@ function StocktakingDetails() {
                             <ul>
                                 {
                                     users.map((user) => (
-                                        <li>{user.name} {user.surname}</li>
+                                        <li key={user.id}>{user.name} {user.surname}</li>
                                     ))
                                 }
                             </ul>
@@ -355,7 +355,7 @@ function StocktakingDetails() {
                                 <ul>
                                     {
                                         employees.map((employee) => (
-                                            <li>{employee.name} {employee.surname}</li>
+                                            <li key={employee.id}>{employee.name} {employee.surname}</li>
                                         ))
                                     }
                                 </ul> :

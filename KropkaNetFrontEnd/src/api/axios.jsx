@@ -17,22 +17,18 @@ const axiosInstance = axios.create({
 });
 
 const refreshToken = async () => {
-    try {
-        const tokens = JSON.parse(getToken())
-        const refreshResponse = await axios.post(refreshUrl, {
-            jwtToken: tokens.jwtToken,
-            refreshToken: tokens.refreshToken
-        }, {
-            withCredentials: true
-        });
-        console.log("refresh")
+    const tokens = JSON.parse(getToken())
+    const refreshResponse = await axios.post(refreshUrl, {
+        jwtToken: tokens.jwtToken,
+        refreshToken: tokens.refreshToken
+    }, {
+        withCredentials: true
+    });
+    console.log("refresh")
 
-        localStorage.setItem("auth", JSON.stringify(refreshResponse.data));
+    localStorage.setItem("auth", JSON.stringify(refreshResponse.data));
 
-        return refreshResponse.data.jwtToken;
-    } catch (error) {
-        throw error;
-    }
+    return refreshResponse.data.jwtToken;
 };
 
 export { axiosInstance, refreshToken };

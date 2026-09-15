@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { GlobalStateContext } from '../../GlobalState';
 import { axiosInstance, refreshToken } from '../../api/axios';
 
-function newEmployeeData({ hideBox, updateData }) {
+function EmployeeNew({ hideBox, updateData }) {
 
     const { state, setState } = useContext(GlobalStateContext);
 
@@ -138,4 +138,4 @@ function newEmployeeData({ hideBox, updateData }) {
     )
 }
 
-export default newEmployeeData
+export default EmployeeNew

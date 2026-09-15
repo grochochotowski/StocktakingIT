@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { GlobalStateContext } from '../../GlobalState';
 import { axiosInstance, refreshToken } from '../../api/axios';
 
-function newUserData({ hideBox, updateData }) {
+function UserNew({ hideBox, updateData }) {
 
     const { state, setState } = useContext(GlobalStateContext);
 
@@ -137,4 +137,4 @@ function newUserData({ hideBox, updateData }) {
     )
 }
 
-export default newUserData
+export default UserNew
