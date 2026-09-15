@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+
+# IDE and user-specific settings
+.idea/
+.vs/
+.vscode/
+*.user
+*.suo
+
+# .NET build output
+**/bin/
+**/obj/
+
+# Frontend dependencies and generated output
+**/node_modules/
+**/dist/
+**/.vite/
+
+# Logs and local environment files
+*.log
+.env
+.env.*
+!.env.example
